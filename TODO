@@ -1,0 +1,49 @@
+___________BOTH______________
+
+ - [X] Define ISocket
+ - [X] UnixSocket / WinSocket
+ - [X] Merge select into Socket
+ - [X] define message struct
+ - [] RFC UpToDate
+ - [] Restriction RoomName RFC
+ - [] Size Message RFC
+ - [] RFC Checked
+
+__________SERVER_____________
+
+ - [X] Implementer ThreadPool
+ - [WIP][Need Test] make Room threadSafe (mutex lock/unlock)
+ - [X] Implementer commandeHandler
+     - [WIP] Log Command :
+	   - [WIP] LogIn
+     - [WIP] Room Command :
+	   - [WIP] listRoom
+	   - [WIP] joinRoom
+	   - [X] createRoom
+	   - [] LeaveRoom
+     - [] Game Command :
+	    - [] up
+	    - [] down
+	    - [] fire
+ - [WIP] Implementer commandeHandlerGame
+     - [] ?
+ - [] Implementer ECS for GameRule
+ - [X] UML UpToDate
+
+__________CLIENT_____________
+
+ - [X] Implementer commandeHandler
+ - [X] Log Command :
+     - [X] LogIn
+ - [] Room Command :
+     - [] listRoom
+     - [] joinRoom
+     - [] createRoom
+     - [] LeaveRoom
+ - [] Game Command :
+     - [] up
+     - [] down
+     - [] fire
+ - [] Implementer ECS for UI
+ - [] Implementer UI
+ - [] UML UpToDate

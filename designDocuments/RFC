@@ -1,0 +1,406 @@
+Networking Working Group                                        Billot_t
+Request for Comments: 4242                                      Burges_q
+Category: Standards Track                                         Bloy_j
+                                                                 Barth_g
+                                                                Bogard_t
+                                                          8k Corporation
+                                                           November 2016
+
+
+               RType Communication Protocol (RCP) over UDP
+
+Status of This Memo
+
+     This document specifies an Internet protocol for the Rtype project
+     at EPITECH. Distribution of this memo is unlimited.
+
+Copyright Notice
+
+     Copyright (c) 2016 8k Corporation and the persons identified as
+     document authors. All rights reserved.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Billot_t                     Standard Tracks                    [Page 2]
+RFC 4242              RType Communication Protocol         November 2016
+
+
+Table of Contents
+
+     1. Introduction ..................................................2
+          1.1. Conventions Used in This Document ......................2
+     2. Session Management ............................................2
+     3. Message Exchange ..............................................3
+     4. Data Unit Format ..............................................4
+     5. Binary Structur Format ........................................5
+     6. List of RCP commands ..........................................6
+          6.1 Authentification ........................................7
+          6.2 Game Loop ...............................................7
+          6.3 End of Game .............................................7
+          6.4 Disconnection ...........................................7
+
+
+1.      Introduction
+
+  This document describes how the RType Communication Protocol (RCP) is
+  mapped onto a multiple Client‐Server UDP connection.  UDP is described
+  in [RFCxxxx].
+
+1.1.    Conventions Used in This Document
+
+  The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+  "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this
+  document are to be interpreted as described in [RFC2119].
+
+2.      Session Management
+
+  Mapping the RCP onto the UDP service is straightforward.  First it
+  requires the creation of a UDP connection between two peers, both
+  peers can then communicate.  Since no handshake is required and
+  following the RType project requirements, one peer is identified as
+  the server, the other as the client.
+
+  A server MUST listen for UDP requests on a unused UDP port.  A client
+  MUST connect to a server by specifing the listening port of the
+  server. Once established, the server MUST send a RCP <Login> command
+  to the client to confirm the connection.
+
+  The communication is normally ended by a client issuing an RCP
+  <Logout> command.  A server receiving an RCP <Logout> command MUST end
+  the connection and close the UDP connection.
+
+  A server MAY limit the lifespan of a client.  A client inactive for
+  more than a server‐defined period MAY be closed by the server.
+
+
+
+
+
+
+
+
+Billot_t                     Standard Tracks                    [Page 3]
+RFC 4242              RType Communication Protocol         November 2016
+
+
+3.      Message Exchange
+
+  RCP messages are initiated by the server, in the form of RCP commands.
+  A RCP client MUST NOT respond to RCP commands.  A RCP client MUST only
+  send <Input> commands, thus sending the keyboard input to the server.
+
+  RCP server MUST limit the number of UDP connections to four, RCP
+  messages will be broadcast to all RCP clients currently connected to
+  the RCP server.  Each RCP messages MUST be binary data, send with the
+  RCP Header containing the RCP command id, the size of the data
+  followed by the data itself.  Commands MUST be handled independently
+  and in the same order as sent from the server.
+
+  A server SHOULD impose a limit on the amount of time the RCP client as
+  to issue a well‐formed RCP command.  A server SHOULD end the UDP
+  session and close the connection if a well‐formed RCP command is not
+  received within the time limit.
+
+                      Client                  Server
+                        |        Connect        |
+                        |>>‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐>>|
+                        |                       |
+                        |        Logged         |
+                        |<<‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐<<|
+                        |                       |
+                        |      Choose Room      |
+                        |<<‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐<<|
+                        |                       |
+                        |   Create/Join Room    |
+                        |>>‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐>>|
+                        |                       |
+                        |       Start Game      |
+                        |<<‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐<<|
+                        |                       |
+                        |         Input         |
+                        |>>‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐>>|
+                        |                       |
+                        |       Positions       |
+                        |<<‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐<<|
+                        |                       |
+                        |      Game Ended       |
+                        |<<‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐<<|
+                        |                       |
+                        |        Logout         |
+                        |>>‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐>>|
+
+              Figure 1: RCP Client‐Server Exchange over UDP
+
+
+
+
+
+
+
+Billot_t                     Standard Tracks                    [Page 4]
+RFC 4242              RType Communication Protocol         November 2016
+
+
+4.      Data Unit Format
+
+     The RCP data unit format contains two fields: a 6‐bit header that
+     describes the total length of the data unit, followed by an
+     operation code corresponding to the operation to execute.  the RCP
+     client MUST successfully read that many bytes to ensure the message
+     has being fully received, before processing the RCP command.
+
+                      0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6
+                      +.+.+.+.+.+.+.+.+.+.+.+.+.+.+.+.+
+                      + OP/LENGTH |      RCP DATA     +
+                      +.+.+.+.+.+.+.+.+.+.+.+.+.+.+.+.+
+
+     Figure 2: Exemple of Formatted RCP command sent over UDP (One tick
+                           mark represents a bit)
+
+     RCP Header (6 bit): Contains the Operation code as an short
+     integer, and the total length of the RCP data unit in network (big
+     endian) byte order.  The octets contained in this field MUST NOT be
+                        included in the total length.
+
+
+
+     RCP Data (variable size): The RCP command carried by the data unit.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Billot_t                     Standard Tracks                    [Page 5]
+RFC 4242              RType Communication Protocol         November 2016
+
+5.      Binary Structur Format
+
+
+     struct          Header {
+      int            size;
+     }
+
+
+     struct          Data {
+      int            opCode;
+      void*          data;
+     }
+
+     struct          Entity {
+      int            pos_x;
+      int            pos_y;
+      string         name;
+     }
+
+     struct          Entitys {
+      int            nb;
+      struct Entity* Entitys;
+     }
+
+     struct          Room {
+      string         name;
+      vector<string> Players;
+     }
+
+     struct          ListRoom {
+      int            nb;
+      struct Room*   Rooms;
+     }
+
+     Figure 3: List of the structs for the binary protocol between
+     SErver and Client
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Billot_t                     Standard Tracks                    [Page 6]
+RFC 4242              RType Communication Protocol         November 2016
+
+6.      Listing of RCP commands
+
+                      _________________________________
+                      |                               |
+                      |       Commands sending        |
+                      |_______________________________|
+                      |                               |
+                      |       Server | Client         |
+                      |             ‐‐>               |
+                      |             <‐‐               |
+                      |             <‐>               |
+                      |_______________________________|
+                      |                               |
+                      |     Operation Code listing    |
+                      |_______________________________|
+                      |                               |
+                      |   001‐099 | Server to Client  |
+                      |   100‐199 | Client to Server  |
+                      |   200‐299 | Error Codes       |
+                      |_______________________________|
+                      |                               |
+                      |          Operators            |
+                      |_______________________________|
+                      |                               |
+                      |       && | AND Operator       |
+                      |       || | OR Operator        |
+                      |_______________________________|
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Billot_t                     Standard Tracks                    [Page 7]
+RFC 4242              RType Communication Protocol         November 2016
+
+6.1     Authentification
+
+       [101]  <‐‐ | Login
+
+       [001]  ‐‐> | LoggedIn
+
+       [002]  ‐‐> | ListOfRoom
+        struct ListOfRoom
+
+       [102]  <‐‐ | CreateRoom : nameRoom
+
+       [103]  <‐‐ | JoinRoom : nameRoom
+
+       [003]  ‐‐> | Sucessfully Created a Room
+
+       [004]  ‐‐> | Sucessfully Joined a Room
+        struct Room : Ip+Port
+
+       [201]  ‐‐> | Cannot join that Room, Room doesn’t exist
+
+       [202]  ‐‐> | Cannot join that Room, number of player will execed
+       the limit
+
+       [203]  ‐‐> | Cannot create a Room, number of Room will execed the
+       limit
+
+       [204]  ‐‐> | Cannot create that Room, illegale id
+
+       [205]  ‐‐> | Cannot create that Room, id already in use
+
+       [010]  ‐‐> | (Broadcast) UserLoggedIn :
+        [PlayerInfo Structure]
+
+       [005]  ‐‐> | (Broadcast) GameStarted ||
+       [006]  ‐‐> | (Broadcast) WaitingForPlayers ||
+
+
+6.2     Game Loop
+
+       [104]  <‐‐ | Input : [PlayerInput Structure]
+       [007]  ‐‐> | Players : [Vector of PlayerPositon Structure] &&
+       [008]  ‐‐> | Ennemies : [Vector of Ennemies Structure]
+
+6.3     End of Game
+
+       [009]  ‐‐> | (Broadcast) GameEnded
+
+6.4     Disconnection
+
+       [105]  <‐‐ | Disconnect
+
+       [007]  <‐‐ | (Broadcast) UserLoggedOff :
+        [PlayerInfo Structure]
+
+
