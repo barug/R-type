@@ -17,12 +17,14 @@ Room::Room(const std::string & name) :
 # endif
   _commandHandler(std::make_shared< CommandHandlerGame>()),
   _locker(),
-  _thread(std::thread(&Room::run, this))
+  _thread(std::thread(&Room::run, this)),
+  _run(true)
 {}
 
 Room::~Room()
 {
-  _thread.join();
+  if (_thread.joinable())
+    _thread.join();
 }
 
 const std::string  & Room::getName() const
@@ -84,6 +86,20 @@ bool	Room::removePlayer(const Client& clicli)
   return true;
 }
 
+const bool	Room::getRun() const
+{
+  bool		tmp = _run;
+
+  return tmp;
+}
+
+void	Room::setRun(const bool state)
+{
+  _locker.lock();
+  _run = state;
+  _locker.unlock();
+}
+
 bool	Room::gameStep()
 {
   // shall we do a new object ?
@@ -93,12 +109,15 @@ bool	Room::gameStep()
 
 bool	Room::run()
 {
-  bool	run = true;;
+  bool	run = true;
 
   while (run)
     {
+      _locker.lock();
+      run = _run;
+      _locker.unlock();
 
-      if (_socket->somethingToRead())
+      if (_socket->somethingToRead() != -1)
 	{
 
 	  const std::shared_ptr<ISocket::Datagram>	data = _socket->readSocket();
@@ -109,7 +128,7 @@ bool	Room::run()
 	  // _commandHandler->execFuncByOperationCode(this, *clicli, message.get());
 	}
       if (_nbPlayers == 4)
-	run = this->gameStep();
+	this->gameStep();
     }
   return true;
 }

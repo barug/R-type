@@ -49,12 +49,6 @@ public :
     int		_opCode;
   };
 
-# define	SIZE_DATA (8)
-  struct	Data
-  {
-    void*	_data;
-  };
-
   struct	Entity
   {
     std::string	_name;
@@ -62,25 +56,25 @@ public :
     int		_pos_y;
   };
 
-  struct	Entitys
+  struct		Entitys
   {
-    int		_nbEntitys;
-    Entity *	_Entitys;
+    int			_nbEntitys;
+    std::vector<Entity>	_Entitys;
   };
 
-  struct	Room
+  struct		Room
   {
-    std::string	_ip;
-    int		_port;
-    std::string	_name;
-    int		_nbPlayer;
-    Entity	_players[4];
+    std::string		_ip;
+    int			_port;
+    std::string		_name;
+    int			_nbPlayer;
+    std::vector<Entity>	_players;
   };
 
-  struct	ListOfRoom
+  struct		ListOfRoom
   {
-    int		_nbRoom;
-    Room*	_listOfRoom;
+    int			_nbRoom;
+    std::vector<Room>	_listOfRoom;
   };
 # pragma pack(pop)
 

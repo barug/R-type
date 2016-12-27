@@ -57,9 +57,12 @@ void		RTypeServer::run()
   _networkHandler->getSocket().addFdSelect(STDIN_FILENO);
 
   while (_run)
-    if ( ( fd = _networkHandler->getSocket().somethingToRead() ) == STDIN_FILENO )
-      this->checkInput();
-    else if (fd != -1)
-      this->checkSocket();
+    {
+      if ( ( fd = _networkHandler->getSocket().somethingToRead() ) == STDIN_FILENO )
+	this->checkInput();
+      else if (fd != -1)
+	this->checkSocket();
+      _roomManager->checkRoom();
+    }
   std::cout << "Bye" << std::endl;
 }

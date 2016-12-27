@@ -59,37 +59,40 @@ bool			CommandHandler::listOfRoom(RTypeServer *server,
 {
   std::cout << " \033[1;32m[+] Action 102 is managed\033[0m" << std::endl;
 
-  Message::ListOfRoom *	listOfRoom = new Message::ListOfRoom();
+  std::shared_ptr<Message::ListOfRoom>	listOfRoom
+    = std::make_shared<Message::ListOfRoom>();
+  std::stringstream ss;
+
   listOfRoom->_nbRoom = 0;
-  listOfRoom->_listOfRoom = NULL; // init anotherway
 
-  // std::stringstream ss;
-  // std::shared_ptr<Message::Room> roomData = std::make_shared<Message::Room>();
+  for (auto it : server->getRoomManager()->getGameRooms())
+    {
 
-  // room->addPlayer(client);
-  // ss.clear();
-  // roomData->_name = room->getName();
-  // roomData->_ip = room->getSocket()->getIp();
-  // roomData->_port = room->getSocket()->getPort();
-  // roomData->_nbPlayer = 0;
+      std::shared_ptr<Message::Room> roomData = std::make_shared<Message::Room>();
 
-  // for (auto it : room->getPlayers())
-  //   {
-  //     std::shared_ptr<Message::Entity> Entity = std::make_shared<Message::Entity>();
-  //     Entity->_name = it.second->getIp() + ":" + std::to_string(it.second->getPort());
-  //     // Entity->_pos_x = ;
-  //     // Entity->_pos_y = ;
-  //     roomData->_players[roomData->_nbPlayer++];
-  //   }
-  // ss.write((char *) roomData.get(), sizeof(roomData.get()));
-  // this->sendMessage(server, 4, client.getIp(), client.getPort(),
-  //		    (void *)ss.str().c_str(), ss.str().size());
-  // return true;
+      roomData->_name = it.second->getName();
+      roomData->_ip = it.second->getSocket()->getIp();
+      roomData->_port = it.second->getSocket()->getPort();
+      roomData->_nbPlayer = 0;
 
+      for (auto it2 : it.second->getPlayers())
+	{
+	  std::shared_ptr<Message::Entity> Entity = std::make_shared<Message::Entity>();
+	  Entity->_name = it2.second->getIp() + ":" + std::to_string(it2.second->getPort());
+	  // Entity->_pos_x = ;
+	  // Entity->_pos_y = ;
+	  roomData->_players.push_back( *(Entity.get() ) );
+	  roomData->_nbPlayer++;
+	}
 
-  // fill ListOfRoom
+      listOfRoom->_listOfRoom.push_back( *(roomData.get() ) );
+      listOfRoom->_nbRoom++;
 
-  this->sendMessage(server, 2, client.getIp(), client.getPort(), listOfRoom);
+    }
+  ss.write((char *) listOfRoom.get(), sizeof( *(listOfRoom.get()) ) ); // define size
+
+  this->sendMessage(server, 2, client.getIp(), client.getPort(),
+		    (void *)ss.str().c_str(), ss.str().size());
 
   return true;
 }
@@ -164,9 +167,10 @@ bool		CommandHandler::joinRoom(RTypeServer *server,
 	      Entity->_name = it.second->getIp() + ":" + std::to_string(it.second->getPort());
 	      // Entity->_pos_x = ;
 	      // Entity->_pos_y = ;
-	      roomData->_players[roomData->_nbPlayer++];
+	      roomData->_players.push_back( *(Entity.get() ) );
+	      roomData->_nbPlayer++;
 	    }
-	  ss.write((char *) roomData.get(), sizeof(roomData.get()));
+	  ss.write((char *) roomData.get(), sizeof(*(roomData.get())));
 	  this->sendMessage(server, 4, client.getIp(), client.getPort(),
 			    (void *)ss.str().c_str(), ss.str().size());
 	  return true;
