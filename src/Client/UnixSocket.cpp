@@ -57,6 +57,14 @@ const std::shared_ptr<ISocket::Datagram>	UnixSocket::readSocket()
   struct sockaddr_in				s_addr =  { 0, 0, 0, 0 };
   socklen_t					s_len = sizeof s_addr;
 
+
+  char buff[6];
+  if ((recvfrom(_fd,  buff,  5 ,
+		0, (struct sockaddr *)&s_addr, &s_len)) < 0)
+    return datagram;
+  buff[5] = 0;
+  std::cout << buff << std::endl;
+
   bzero(datagram->_data, BUFFLEN);
   if ((datagram->_lenght = recvfrom(_fd,  datagram->_data,  sizeof datagram->_data - 1 ,
 				    0, (struct sockaddr *)&s_addr, &s_len)) < 0)
@@ -64,7 +72,8 @@ const std::shared_ptr<ISocket::Datagram>	UnixSocket::readSocket()
 
   // DEBUG
   std::cout << " [+] Received packet from " << inet_ntoa(s_addr.sin_addr)
-	    << ":" <<  ntohs(s_addr.sin_port) << std::endl;
+	    << ":" <<  ntohs(s_addr.sin_port)
+	    << "(" << datagram->_lenght << ")" << std::endl;
 
   datagram->_ip = inet_ntoa(s_addr.sin_addr);
   datagram->_port = ntohs(s_addr.sin_port);

@@ -6,7 +6,8 @@
 RTypeServer::RTypeServer(const int port) :
   _networkHandler(std::make_shared<NetworkHandler>(port)),
   _roomManager(std::make_shared<RoomManager>(_networkHandler)),
-  _commandHandler(std::make_unique<CommandHandler>())
+  _commandHandler(std::make_unique<CommandHandler>()),
+  _run(true)
 {}
 
 RTypeServer::~RTypeServer()
@@ -24,9 +25,7 @@ const std::shared_ptr<RoomManager>  RTypeServer::getRoomManager() const
 
 void							RTypeServer::run()
 {
-  bool							run = true;
-
-  while (run)
+  while (_run)
     {
       if (_networkHandler->getSocket().somethingToRead())
 	{
@@ -42,4 +41,5 @@ void							RTypeServer::run()
 	  _commandHandler->execFuncByOperationCode(this, *clicli, message.get());
 	}
     }
+  std::cout << "Bye" << std::endl;
 }

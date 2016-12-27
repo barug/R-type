@@ -49,35 +49,11 @@ bool						CommandHandler::logInUser(RTypeServer *server,
   this->sendMessage(server, 1, client.getIp(), client.getPort(), salut, (5 * sizeof(char)));
   //  this->sendMessage(server, 1, client.getIp(), client.getPort());
 
-  // found a way to conc=struct the RoomMessage; make a new func ?
   Message::ListOfRoom *	listOfRoom
     = new Message::ListOfRoom();
-
+  // fill ListOfRoom
   listOfRoom->_nbRoom = 0;
   listOfRoom->_listOfRoom = NULL; // init anotherway
-
-  for ( auto it : server->getRoomManager()->getGameRooms() )
-    {
-      Message::Room *	room
-	= new Message::Room();
-
-      room->_name = it.second->getName();
-      room->_nbPlayer = 0;
-      for ( auto it2 : it.second->getPlayers())
-	{
-	  room->_players[room->_nbPlayer]._name = it2.second->getIp() + ":" + std::to_string(it2.second->getPort());
-	  // room->_players[room->_nbPlayer]._posx = it2.second->getPosX();
-	  // room->_players[room->_nbPlayer]._posy = it2.second->getPosY();
-	  room->_nbPlayer++;
-	}
-      std::cout << room->_nbPlayer << " Players" << std::endl;
-      listOfRoom->_listOfRoom[listOfRoom->_nbRoom++] = *room;
-    }
-
-  std::cout << listOfRoom->_nbRoom << " Rooms" << std::endl;
-  std::stringstream			binaryStream;
-
-  // binaryStream.write((char)(listOfRoom), sizeof(listOfRoom));
 
   this->sendMessage(server, 2, client.getIp(), client.getPort(), listOfRoom);
 

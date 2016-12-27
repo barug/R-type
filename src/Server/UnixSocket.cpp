@@ -69,6 +69,10 @@ bool			UnixSocket::writeSocket(const ISocket::Datagram& datagram)
   s_addr.sin_addr.s_addr = inet_addr(datagram._ip.c_str());
   s_addr.sin_port = htons(datagram._port);
   s_len = sizeof(s_addr);
+
+  if (sendto(_fd, "salut", 5,
+	     0, (struct sockaddr *)&s_addr, s_len) == -1)
+    return false;
   if (sendto(_fd, datagram._data, datagram._lenght,
 	     0, (struct sockaddr *)&s_addr, s_len) == -1)
     return false;

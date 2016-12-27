@@ -40,7 +40,7 @@ Message::Message(const ISocket::Datagram& data) :
   std::cout << size2 << std::endl;
   std::memset(&data2, 0, size2 + 1);
   std::memcpy(&data2, data._data + 8, size2);
-  _data = data2;
+  _data = (char*)data._data + 8;
   _operationCode = opCode2;
 
   std::cout << "Datagram : [" << data._ip
@@ -51,9 +51,18 @@ Message::Message(const ISocket::Datagram& data) :
 	    << "]" << std::endl;
   std::cout << "Data = [ ";
   if (size2)
-    for (int i = 0; i < size2; i++)
-      printf("[%c][%c][%c]", _data[i], data2[i], data._data[8 + i]);
-  std::cout << " ]\n]" << std::endl;
+    {
+      std::cout << "\nData Message.cpp (serialized)";
+      for (int i = 0; i < size2; i++)
+	printf("[%c]", _data[i]);
+      std::cout << "\nData Deserialized ";
+      for (int i = 0; i < size2; i++)
+	printf("[%c]", data2[i]);
+    }
+  std::cout << "\nData Serialized ";
+  for (unsigned int i = 0; i < data._lenght; i++)
+    printf("[%c]", data._data[i]);
+  std::cout << "\n] ]" << std::endl;
 }
 
 Message::~Message()
@@ -123,7 +132,6 @@ std::shared_ptr<ISocket::Datagram>	Message::createDatagram()
   std::memcpy(&size2, size, 4);
   std::memcpy(&opCode2, opCode, 4);
   std::memset(&data2, 0, _size + 1);
-  std::cout << _size << std::endl;
   std::memcpy(&data2, datagram->_data + 8, _size);
 
   std::cout << "Header = [" << size2
@@ -131,9 +139,19 @@ std::shared_ptr<ISocket::Datagram>	Message::createDatagram()
 	    << "]" << std::endl;
   std::cout << "Data = [ ";
   if (header._size)
-    for (int i = 0; i < header._size; i++)
-      printf("[%c][%c][%c]", _data[i], data2[i], datagram->_data[8 + i]);
-  std::cout <<  " ]\n]" << std::endl;
+    {
+      std::cout << "\nData Mssage.cpp ";
+      for (int i = 0; i < header._size; i++)
+	printf("[%c]", _data[i]);
+      std::cout << "\nData Deserialized ";
+      for (int i = 0; i < header._size; i++)
+	printf("[%c]", data2[i]);
+    }
+  std::cout << "\nData Serialized ";
+  for (unsigned int i = 0; i < datagram->_lenght; i++)
+    printf("[%c]", datagram->_data[i]);
+
+  std::cout <<  "\n] ]" << std::endl;
 
   return datagram;
 }
