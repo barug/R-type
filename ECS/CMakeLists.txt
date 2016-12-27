@@ -5,7 +5,6 @@ set(CMAKE_BUILD_TYPE Release)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/dynamicLibs)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/includes)
-add_library(myMonster SHARED srcs/MyMonster.cpp)
 set(SOURCES_ECS
   ./srcs/main.cpp
   ./srcs/GameEngine.cpp

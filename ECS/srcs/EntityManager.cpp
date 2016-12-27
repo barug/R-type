@@ -73,7 +73,7 @@ int				EntityManager::getComponentMask(const std::string &name)
   return -1;
 }
 
-std::unique_ptr<IComponent>	&EntityManager::getComponent(int id,
+IComponent			*EntityManager::getComponent(int id,
 							    const std::string &componentType)
 {
   return (_components[componentType]->at(id)).get();

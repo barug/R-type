@@ -64,7 +64,7 @@ void		MessageBus::subscribeToMessage(const std::string &system,
 	  _subscribedList.emplace(message, system);
 	}
     }
-  if (!isSystemValid)
+  if (!isSystemValid || !isValid)
     throw std::runtime_error("Error: MessageBus::subscribeToMessage: couldn't add " + system);
 }
 
