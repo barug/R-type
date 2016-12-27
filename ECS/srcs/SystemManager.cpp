@@ -5,7 +5,7 @@
 // Login   <mikaz3@epitech.net>
 // 
 // Started on  Tue Dec 13 13:18:17 2016 Thomas Billot
-// Last update Thu Dec 22 01:07:54 2016 Thomas Billot
+// Last update Tue Dec 27 10:36:00 2016 Thomas Billot
 //
 
 #include	<iostream>
@@ -13,28 +13,36 @@
 #include	"SystemManager.hpp"
 
 SystemManager::SystemManager(EntityManager &entityManager, MessageBus &messageBus)
-  :_entityManager(entityManager),
-   _messageBus(messageBus),
-   _systems() {}
+  : _systems()
+{
+  std::shared_ptr<EntityManager>	pEM(&entityManager);
+  std::shared_ptr<MessageBus>		pMB(&messageBus);
+
+  _entityManager = std::move(pEM);
+  _messageBus = std::move(pMB);
+}
 
 SystemManager::~SystemManager() {}
 
-bool		SystemManager::addSystem(std::shared_ptr<ASystem> systemToAdd,
-					 std::string name,
-					 std::vector<std::string> affectedComponents,
-					 std::vector<int> suscribedToMessages)
+bool		SystemManager::addSystem(const std::shared_ptr<ASystem> &systemToAdd,
+					 const std::string &name,
+					 const std::vector<std::string> &affectedComponents,
+					 const std::vector<int> &subscribedToMessages)
 {
   if (systemToAdd && !name.empty() && !affectedComponents.empty())
     {
-      systemToAdd->addEntityManager(&_entityManager);
+      systemToAdd->addEntityManager(_entityManager);
       systemToAdd->addName(name);
       systemToAdd->addAffectedComponents(affectedComponents);
-      systemToAdd->addMessageBus(&_messageBus);
-      _messageBus.registerSystem(systemToAdd);
-      // for (int messageId: MessagesSuscribedTo)
-      // 	{
-      // 	  _messageBus.subscribeToMessage(name, messageId);
-      // 	}
+      systemToAdd->addMessageBus(_messageBus);
+      _messageBus->registerSystem(systemToAdd);
+      _messageBus->subscribeToMessage(name, MessageBus::ENTITY_CREATED);
+      _messageBus->subscribeToMessage(name, MessageBus::ENTITY_DESTROYED);
+      _messageBus->subscribeToMessage(name, MessageBus::ENTITY_COMPOSITION_CHANGED);
+      for (int messageId: subscribedToMessages)
+      	{
+      	  _messageBus->subscribeToMessage(name, messageId);
+      	}
       _systems.emplace(systemToAdd->name(), std::move(systemToAdd));
       return true;
     }
@@ -59,6 +67,7 @@ void		SystemManager::updateSystems()
        it != _systems.end();
        ++it)
     {
+      std::cout << "SystemManager::updating " << it->second->name() << std::endl;
       it->second->update();
     }
 }

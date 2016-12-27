@@ -5,23 +5,26 @@
 // Login   <mikaz3@epitech.net>
 // 
 // Started on  Tue Dec 13 13:07:06 2016 Thomas Billot
-// Last update Thu Dec 22 18:29:58 2016 Thomas Billot
+// Last update Tue Dec 27 10:11:25 2016 Thomas Billot
 //
 
 #include	<iostream>
-#include	"PhysicSystem.hpp"
+#include	"Systems.hpp"
+#include	"Components.hpp"
 
 PhysicSystem::PhysicSystem()
   : ASystem()
 {
-  // std::shared_ptr<MessageBus> tmp(&bus);
-
-  // _messageBus = std::move(tmp);
 }
 
 PhysicSystem::~PhysicSystem() {}
 
-void				PhysicSystem::update()
+void				PhysicSystem::updateEntity(int entityId)
 {
-  _messageBus->post(1, NULL);
+  std::cout << "Called update on PhysicSystem with entityId= " << entityId << std::endl;
+  PositionComponent *posComponent = static_cast<PositionComponent*>(_entityManager->getComponent(entityId, "PositionComponent"));
+  if (posComponent)
+    {
+  std::cout << posComponent->_x << " " << posComponent->_y << std::endl;
+    }
 }

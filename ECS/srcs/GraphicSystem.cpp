@@ -5,23 +5,21 @@
 // Login   <mikaz3@epitech.net>
 //
 // Started on  Tue Dec 13 14:40:43 2016 Thomas Billot
-// Last update Thu Dec 22 18:30:06 2016 Thomas Billot
+// Last update Tue Dec 27 10:12:22 2016 Thomas Billot
 //
 
 #include	<iostream>
-#include	"GraphicSystem.hpp"
+#include	"Systems.hpp"
+#include	"Components.hpp"
 
 GraphicSystem::GraphicSystem()
   : ASystem()
 {
-  // std::shared_ptr<MessageBus> tmp(&bus);
-
-  // _messageBus = tmp;
 }
 
 GraphicSystem::~GraphicSystem() {}
 
-void		GraphicSystem::update()
+void		GraphicSystem::updateEntity(int entityId)
 {
-  _messageBus->post(2, NULL);
+  std::cout << "GraphicSystem::updateEntity with id =" << entityId << std::endl; 
 }

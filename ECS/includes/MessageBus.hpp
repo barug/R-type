@@ -5,7 +5,7 @@
 // Login   <mikaz3@epitech.net>
 // 
 // Started on  Wed Dec 21 18:24:17 2016 Thomas Billot
-// Last update Thu Dec 22 01:38:46 2016 Thomas Billot
+// Last update Tue Dec 27 11:00:06 2016 Thomas Billot
 //
 
 #pragma once
@@ -33,7 +33,7 @@ class					MessageBus
 
   std::vector<int>			_validMessages;
   std::multimap<int, std::string>	_subscribedList;
-  std::deque<Message>			_messages;
+  std::vector<Message>			_messages;
   std::vector<std::shared_ptr<ASystem>>	_systems;
   
 public:
@@ -46,7 +46,7 @@ public:
       END_OF_STANDARD_MESSAGES		= 10
     };
   
-  MessageBus();
+  explicit MessageBus();
   ~MessageBus();
 
   void					registerSystem(std::shared_ptr<ASystem> systemToManage);

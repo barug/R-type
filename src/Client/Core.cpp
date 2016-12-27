@@ -12,25 +12,25 @@ Core::Core(int ac, char **av)
     _ip(),
     _port(0),
     _contextHandler({{RTypeUI::Context::Introduction,            &Core::_handleIntroduction},
-                     {RTypeUI::Context::Authentification,        &Core::_handleAuthentification},
-                     {RTypeUI::Context::WaitingRoom,             &Core::_handleWaitingRoom},
-                     {RTypeUI::Context::Game,                    &Core::_handleGame},
-                     {RTypeUI::Context::Loading,                 &Core::_handleLoading}})
+		     {RTypeUI::Context::Authentification,        &Core::_handleAuthentification},
+		     {RTypeUI::Context::WaitingRoom,             &Core::_handleWaitingRoom},
+		     {RTypeUI::Context::Game,                    &Core::_handleGame},
+		     {RTypeUI::Context::Loading,                 &Core::_handleLoading}})
 {
   if (ac == 3)
     {
       if (!_checkArgs(ac, av))
-        {
-          std::cerr << "Usage:\n\t./" << av[0] << " ip_server port_server" << std::endl;
-          std::exit(1);
-        }
+	{
+	  std::cerr << "Usage:\n\t./" << av[0] << " ip_server port_server" << std::endl;
+	  std::exit(1);
+	}
       else
-        {
-          _ip = std::string(av[1]);
-          _port = std::atoi(av[2]);
-          _client->connectToServer(_ip, _port);
-          _rtypeUI.setContext(RTypeUI::Context::WaitingRoom);
-        }
+	{
+	  _ip = std::string(av[1]);
+	  _port = std::atoi(av[2]);
+	  _client->connectToServer(_ip, _port);
+	  _rtypeUI.setContext(RTypeUI::Context::WaitingRoom);
+	}
     }
 }
 
@@ -41,7 +41,7 @@ void            Core::gameLoop()
 {
   while (_gui->isAlive())
     {
-      // client->run();
+      _client->run();
       _gui->clear();
       _gui->handleEvents();
       ((*this).*(_contextHandler[_rtypeUI.getContext()]))();
@@ -91,8 +91,8 @@ bool		Core::_checkArgs(int ac, char **av)
       return false;
   for (i = 0, d = 0, dd = 0; av[1][i]; i++)
     if ((av[1][i] < '0' || av[1][i] > '9' )  &&
-        ((av[1][i] == '.' && (dd || ++d == 4)) ||
-         (av[1][i] == ':' && (d || ++dd == 8))))
+	((av[1][i] == '.' && (dd || ++d == 4)) ||
+	 (av[1][i] == ':' && (d || ++dd == 8))))
       return false;
   return (dd == 7 || d == 3 || (av[1][0] == '0' && av[1][1] == 0)) ? true : false;
 }

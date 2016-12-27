@@ -33,11 +33,10 @@ public:
   virtual ptrToF                load(const std::string &libName, const std::string &symName)
   {
     f                           fPtr;
-    std::string			newLibName = libName + ".so";
+    std::string			newLibName = libName;
     void			*handler = dlopen(newLibName.c_str(), RTLD_LAZY);
 
     _hashHandler[symName] = handler;
-
     if (!(fPtr = reinterpret_cast<f>(dlsym(handler, symName.c_str()))))
       {
 	std::cerr << "[DynamicLoader::Load] failure : " << dlerror() << std::endl;

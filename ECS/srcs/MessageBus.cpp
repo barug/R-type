@@ -5,7 +5,7 @@
 // Login   <mikaz3@epitech.net>
 // 
 // Started on  Wed Dec 21 18:25:12 2016 Thomas Billot
-// Last update Thu Dec 22 01:39:04 2016 Thomas Billot
+// Last update Tue Dec 27 11:04:46 2016 Thomas Billot
 //
 
 #include	<iostream>
@@ -29,7 +29,10 @@ void		*MessageBus::Message::getData()
 MessageBus::MessageBus()
   : _validMessages{ENTITY_CREATED,
 		   ENTITY_DESTROYED,
-		   ENTITY_COMPOSITION_CHANGED}
+			ENTITY_COMPOSITION_CHANGED},
+    _subscribedList(),
+    _messages(),
+    _systems()
 {}
 
 MessageBus::~MessageBus()
@@ -68,7 +71,8 @@ void		MessageBus::subscribeToMessage(const std::string &system,
 void		MessageBus::post(const int messageTypeId,
 				 void *messageData)
 {
-  _messages.insert(_messages.begin(), Message(messageTypeId, messageData));
+  std::cout << _messages.empty() << std::endl;
+  _messages.push_back(Message(messageTypeId, messageData));
 }
 
 bool		MessageBus::isSubscribed(const std::string &name,

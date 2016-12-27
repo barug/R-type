@@ -13,8 +13,6 @@ CommandHandler::~CommandHandler()
 
 bool	CommandHandler::execFuncByOperationCode(RTypeClient * client, Message * message)
 {
-  // std::cout << message->getOperationCode() << std::endl;
-
   auto it = _fptr.find(message->getOperationCode());
 
   if (it == _fptr.end())
@@ -22,7 +20,7 @@ bool	CommandHandler::execFuncByOperationCode(RTypeClient * client, Message * mes
   return appelDeFonctionMembre(*this, it->second)(client, message);
 }
 
-bool	CommandHandler::userLoggedIn(RTypeClient *, Message *)
+bool	CommandHandler::userLoggedIn(RTypeClient *, Message *message)
 {
   std::cout << " \033[1;31m[+] Action 001 is managed\033[0m" << std::endl;
   return true;

@@ -4,7 +4,7 @@
 // Login   <mikaz3@epitech.net>
 // 
 // Started on  Fri Nov 25 14:48:49 2016 Thomas Billot
-// Last update Tue Nov 29 10:32:43 2016 Thomas Billot
+// Last update Tue Dec 27 09:55:18 2016 Thomas Billot
 //
 
 #include        <iostream>
@@ -12,12 +12,14 @@
 
 int			main()
 {
-	try {
-		GameEngine		g;
-		g.run();
-	}
-	catch (const std::exception &e){
-		std::cout << e.what() << std::endl;
-	}
+  try
+    {
+      GameEngine		g("./mods/");
+      g.run();
+    }
+  catch (const std::exception &e)
+    {
+      std::cout << e.what() << std::endl;
+    }
   return 0;
 }

@@ -5,7 +5,7 @@
 // Login   <mikaz3@epitech.net>
 //
 // Started on  Fri Nov 25 17:20:05 2016 Thomas Billot
-// Last update Thu Dec 22 20:58:27 2016 Thomas Billot
+// Last update Tue Dec 27 10:53:11 2016 Thomas Billot
 //
 
 #include <iostream>
@@ -19,59 +19,61 @@
 #include "GraphicComponent.hpp"
 #include "PhysicSystem.hpp"
 #include "GraphicSystem.hpp"
-#include "IDynamicLoader.hpp"
 #include "IMonster.hpp"
 
-GameEngine::GameEngine(std::string libsDir)
+GameEngine::GameEngine(const std::string &libsDir)
   : _messageBus(),
     _entityManager(_messageBus),
     _systemManager(_entityManager, _messageBus)
 {
-  //if (!libsDir.empty())
-  //  {
-  //     DIR	*dir;
-  //     struct dirent *ent;
-  //     
-  //     if ((dir = opendir(libsDir.c_str())) != NULL)
-  //{
-	//  while ((ent = readdir (dir)) != NULL)
-	//    {
-	//      loadLib(ent->d_name);
-	//    }
-	//  closedir (dir);
-	//}
-    //}
+# if		defined(_WIN32) || defined(WIN32)
+  std::unique_ptr<IDynamicLoader> libLoader(new windowsDynamicLoader);
+#elif defined(__GNUC__)
+  std::unique_ptr<IDynamicLoader> libLoader(new unixDynamicLoader);
+#endif
+
+  _libLoader = std::move(libLoader);
+  if (!libsDir.empty())
+    {
+      DIR	*dir;
+      struct dirent *ent;
+      
+      if ((dir = opendir(libsDir.c_str())) != NULL)
+	{
+	  while ((ent = readdir (dir)) != NULL)
+	    {
+	      std::string s(libsDir.c_str());
+
+	      s += ent->d_name;
+	      loadLib(s);
+	    }
+	  closedir (dir);
+	}
+    }
 }
 
-void			GameEngine::loadLib(std::string libPath)
+void			GameEngine::loadLib(const std::string &libPath)
 {
-  
+  std::size_t found = libPath.find_last_of(".");
+  if (libPath.substr(found + 1) == "so")
+    {
+      int (*fPtr)(EntityManager &, SystemManager &) = _libLoader->load(libPath, "returnLoader");
+
+      fPtr(_entityManager, _systemManager);
+    }
 }
 
 GameEngine::~GameEngine()
 {}
 
-//std::vector<IComponent*>	createPlayer()
-//{}
-
 int			GameEngine::run(void)
 {
-  // std::unique_ptr<IDynamicLoader<ASystem> > _systemLoader(new unixDynamicLoader<ASystem>);
-  // std::unique_ptr<IDynamicLoader<IMonster> > _monsterLoader(new unixDynamicLoader<IMonster>);
+  std::shared_ptr<ASystem>	sysPhysic = std::make_shared<PhysicSystem>();
+  std::shared_ptr<ASystem>	sysGraphic = std::make_shared<GraphicSystem>();
+  _systemManager.addSystem(sysPhysic, "PhysicSystem", { "MassComponent", "PositionComponent" }, { 3, 4 });
+  _systemManager.addSystem(sysGraphic, "GraphicSystem", { "MeshComponent" }, {});
 
-# if		defined(_WIN32) || defined(WIN32)
-	std::unique_ptr<IDynamicLoader> _libLoader(new windowsDynamicLoader);
-#elif defined(__GNUC__)
-	std::unique_ptr<IDynamicLoader> _libLoader(new unixDynamicLoader);
-#endif
-	int(*fptr)(EntityManager &, SystemManager &) = _libLoader->load("./dynamicLibs/lib-MyMonster", "returnLoader");
-
-	fptr(_entityManager, _systemManager);
-	std::shared_ptr<ASystem>	sysPhysic = std::make_shared<PhysicSystem>();
-	std::shared_ptr<ASystem>	sysGraphic = std::make_shared<GraphicSystem>();
-	_systemManager.addSystem(sysPhysic, "PhysicSystem", { "placeholder" }, { 1, 2, 4 });
-	_systemManager.addSystem(sysGraphic, "GraphicSystem", { "placeholder" }, { 1 });
-
+  _entityManager.createEntity("MyMonster");
   /*		       ^
   ** REMOVE THIS AFTER | RESERVED FOR UNIT TESTS
   */
@@ -80,6 +82,7 @@ int			GameEngine::run(void)
   std::chrono::time_point<std::chrono::system_clock> now, then;
   then = std::chrono::system_clock::now();
   
+  int i = 0;
   while (run)
     {
       now = std::chrono::system_clock::now();

@@ -5,15 +5,12 @@
 // Login   <mikaz3@epitech.net>
 // 
 // Started on  Tue Dec 13 13:07:06 2016 Thomas Billot
-// Last update Thu Dec 22 00:59:42 2016 Thomas Billot
+// Last update Tue Dec 27 10:12:54 2016 Thomas Billot
 //
 
 #pragma once
 
-# include <memory>
-# include <string>
 # include "ASystem.hpp"
-# include "MessageBus.hpp"
 
 class			PhysicSystem : public ASystem
 {
@@ -23,5 +20,5 @@ public:
   PhysicSystem();
   virtual ~PhysicSystem();
 
-  virtual void		update();
+  virtual void		updateEntity(int entityId);
 };

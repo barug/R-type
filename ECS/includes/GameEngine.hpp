@@ -5,7 +5,7 @@
 // Login   <mikaz3@epitech.net>
 // 
 // Started on  Fri Nov 25 15:08:25 2016 Thomas Billot
-// Last update Wed Dec 21 18:48:34 2016 Thomas Billot
+// Last update Tue Dec 27 09:59:52 2016 Thomas Billot
 //
 
 #ifndef			_GAMEENGINE_HPP_
@@ -17,25 +17,26 @@
 # include		"SystemManager.hpp"
 # include		"ASystem.hpp"
 # include		"MessageBus.hpp"
+# include		"IDynamicLoader.hpp"
 
-class			GameEngine
+class					GameEngine
 {
 
 public:
 
-  GameEngine(std::string libsDir = "");
+  GameEngine(const std::string &libsDir = "");
   ~GameEngine();
 
-  void			loadLib(std::string libPath);
-  int			run(void);
-  void			update(void);
+  void					loadLib(const std::string &libPath);
+  int					run(void);
+  void					update(void);
   
 private:
 
-  MessageBus		_messageBus;  
-  EntityManager		_entityManager;
-  SystemManager		_systemManager;
-  
+  MessageBus				_messageBus;  
+  EntityManager				_entityManager;
+  SystemManager				_systemManager;
+  std::unique_ptr<IDynamicLoader>	_libLoader;  
 };
 
 #endif			/* _GAMEENGINE_HPP_ */

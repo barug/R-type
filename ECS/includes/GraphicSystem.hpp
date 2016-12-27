@@ -5,14 +5,12 @@
 // Login   <mikaz3@epitech.net>
 //
 // Started on  Tue Dec 13 14:21:56 2016 Thomas Billot
-// Last update Thu Dec 22 01:19:47 2016 Thomas Billot
+// Last update Tue Dec 27 10:13:13 2016 Thomas Billot
 //
 
 #pragma once
 
-#include <string>
 #include "ASystem.hpp"
-#include "MessageBus.hpp"
 
 class			GraphicSystem : public ASystem
 {
@@ -22,11 +20,5 @@ public:
   GraphicSystem();
   virtual ~GraphicSystem();
 
-  virtual void update();
+  virtual void updateEntity(int entityId);
 };
-
-extern "C"
-{
-  
-  ASystem* createGraphicSystem();
-}

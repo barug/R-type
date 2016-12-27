@@ -5,7 +5,7 @@
 // Login   <mikaz3@epitech.net>
 // 
 // Started on  Fri Nov 25 14:42:17 2016 Thomas Billot
-// Last update Mon Dec 19 15:02:59 2016 Thomas Billot
+// Last update Tue Dec 27 10:28:20 2016 Thomas Billot
 //
 
 #ifndef			_ASYSTEM_HPP_
@@ -25,8 +25,8 @@ protected:
   
   int					_mask;
   std::string				_name;
-  EntityManager				*_entityManager;
-  MessageBus				*_messageBus;
+  std::shared_ptr<EntityManager>	_entityManager;
+  std::shared_ptr<MessageBus>		_messageBus;
   std::vector<int>			_affectedEntities;
   std::map<int, message_handler>	_messageHandlers;
   
@@ -35,18 +35,19 @@ public:
   ASystem();
   virtual		~ASystem() {}
 
-  void			addEntityManager(EntityManager *entityManager);
-  void			addMessageBus(MessageBus *messageBus);
-  void			addName(std::string &name);
-  void			addAffectedComponents(std::vector<std::string> &affectedComponents);
+  void			addEntityManager(const std::shared_ptr<EntityManager> &entityManager);
+  void			addMessageBus(const std::shared_ptr<MessageBus> &messageBus);
+  void			addName(const std::string &name);
+  void			addAffectedComponents(const std::vector<std::string> &affectedComponents);
   void			loadMessageHandler(int messageTypeId,
 					   message_handler handler);
   void			handleMessage(int messageTypeId,
 				      void *messageData);
   void			handleEntityCreated(void *messageData);
-  virtual void			update() = 0;
+  void			handleEntityDeleted(void *messageData);
+  void			update();
   const std::string	&name() const;
-  
+  virtual void		updateEntity(int entityId) = 0;
 };
 
 

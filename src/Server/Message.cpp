@@ -1,6 +1,7 @@
 # include	<iostream>
 # include	<stdio.h>
 # include	<cstring>
+# include	<sstream>
 
 # include	"Message.hpp"
 
@@ -36,12 +37,11 @@ Message::Message(const ISocket::Datagram& data) :
 
   std::memcpy(&size2, size, 4);
   std::memcpy(&opCode2, opCode, 4);
-
+  std::cout << size2 << std::endl;
   std::memset(&data2, 0, size2 + 1);
-  std::memcpy(&data2, &(data._data[8]), size2);
-  _data = data2;    
-  // _data = (char*)data._data;
-  // _data += SIZE_HEADER;
+  std::memcpy(&data2, data._data + 8, size2);
+  _data = (char*)data._data + 8;
+  _operationCode = opCode2;
 
   std::cout << "Datagram : [" << data._ip
 	    << "]:[" << data._port
@@ -51,9 +51,9 @@ Message::Message(const ISocket::Datagram& data) :
 	    << "]" << std::endl;
   std::cout << "Data = [ ";
   if (size2)
-    std::cout << _data;
+    for (int i = 0; i < size2; i++)
+      printf("[%c][%c][%c]", _data[i], data2[i], data._data[8 + i]);
   std::cout << " ]\n]" << std::endl;
-  _operationCode = opCode2;
 }
 
 Message::~Message()
@@ -84,9 +84,7 @@ int	Message::getPort() const
   return _port;
 }
 
-  #include <sstream>
-
-std::shared_ptr<ISocket::Datagram>	Message::createDatagram() 
+std::shared_ptr<ISocket::Datagram>	Message::createDatagram()
 {
   if (_ip.empty())
     return nullptr;
@@ -100,12 +98,12 @@ std::shared_ptr<ISocket::Datagram>	Message::createDatagram()
   header._size = _size;
   header._opCode = _operationCode;
 
-  std::stringstream		        ss;
+  std::stringstream			ss;
 
   ss.clear();
   ss.write((char*)(&header), sizeof(header));
   ss.write((char*)(&_data), _size);
-  
+
   char	c;
   int	j = 0;
   while (ss >> c)
@@ -115,26 +113,26 @@ std::shared_ptr<ISocket::Datagram>	Message::createDatagram()
   std::cout << " [+] New Datagram is create from a Message Entity" << std::endl;
   std::cout << "Datagram : [" << datagram->_ip
 	    << "]:[" << datagram->_port
-	    << "] => [\n";  
+	    << "] => [\n";
   char		size[4] = {datagram->_data[0], datagram->_data[1], datagram->_data[2], datagram->_data[3]};
   char		opCode[4] = {datagram->_data[4], datagram->_data[5], datagram->_data[6], datagram->_data[7]};
   int		size2;
   int		opCode2;
   char		*data2;
 
-  std::memset(&data2, 0, _size + 1);
-  std::memcpy(&data2, &(datagram->_data[8]), _size);
-  // _data = datagram->_data;
-  // _data += SIZE_HEADER;
   std::memcpy(&size2, size, 4);
   std::memcpy(&opCode2, opCode, 4);
+  std::memset(&data2, 0, _size + 1);
+  std::cout << _size << std::endl;
+  std::memcpy(&data2, datagram->_data + 8, _size);
+
   std::cout << "Header = [" << size2
 	    << "] [" << opCode2
 	    << "]" << std::endl;
   std::cout << "Data = [ ";
   if (header._size)
-    std::cout << data2;
-    // std::cout << _data;
+    for (int i = 0; i < header._size; i++)
+      printf("[%c][%c][%c]", _data[i], data2[i], datagram->_data[8 + i]);
   std::cout <<  " ]\n]" << std::endl;
 
   return datagram;

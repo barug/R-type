@@ -5,7 +5,7 @@
 // Login   <mikaz3@epitech.net>
 // 
 // Started on  Fri Nov 25 17:06:52 2016 Thomas Billot
-// Last update Thu Dec 22 21:25:21 2016 Thomas Billot
+// Last update Tue Dec 27 11:08:40 2016 Thomas Billot
 //
 
 #include <iostream>
@@ -14,11 +14,13 @@
 #include "EntityManager.hpp"
 
 EntityManager::EntityManager(MessageBus &messageBus)
-  : _messageBus(messageBus),
-    _entities(),
+  : _entities(),
     _componentMasks(),
     _components()
 {
+  std::shared_ptr<MessageBus>	pMB(&messageBus);
+
+  _messageBus = std::move(pMB);
   for (unsigned int id = 0; id < EntityManager::_maxEntities; id++)
     _entities[id] = eState::NONE;
 }
@@ -26,12 +28,12 @@ EntityManager::EntityManager(MessageBus &messageBus)
 EntityManager::~EntityManager()
 {}
 
-void		EntityManager::addEntityType(std::string typeName, int mask)
+void		EntityManager::addEntityType(const std::string &typeName, int mask)
 {
   _entityTypes[typeName] = mask;
 }
 
-int				EntityManager::createEntity(std::string typeName)
+int				EntityManager::createEntity(const std::string &typeName)
 {
   int typeMask = _entityTypes.at(typeName);
   
@@ -41,7 +43,7 @@ int				EntityManager::createEntity(std::string typeName)
 	{
 	  _entities[id] = eState::USED;
 	  _typeOfEntities[id] = typeMask;
-	  _messageBus.post(MessageBus::ENTITY_CREATED, new int(id));
+	  _messageBus->post(MessageBus::ENTITY_CREATED, new int(id));
 	  return id;
 	}
     }
@@ -51,6 +53,7 @@ int				EntityManager::createEntity(std::string typeName)
 void				EntityManager::deleteEntity(int id)
 {
   _entities[id] = eState::NONE;
+  _messageBus->post(MessageBus::ENTITY_DESTROYED, new int(id));
 }
 
 int				EntityManager::createComponentMask(const std::string &name)
@@ -70,10 +73,9 @@ int				EntityManager::getComponentMask(const std::string &name)
   return -1;
 }
 
-std::unique_ptr<IComponent>	&EntityManager::getComponent(int id,
-							     std::string componentType)
+IComponent	*EntityManager::getComponent(int id, const std::string &componentType)
 {
-  return _components[componentType]->at(id);
+  return (_components[componentType]->at(id)).get();
 }
 
 std::shared_ptr<EntityManager::component_pool> EntityManager::getArrayByName(const std::string &name)

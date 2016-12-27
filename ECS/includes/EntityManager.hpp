@@ -5,7 +5,7 @@
 // Login   <mikaz3@epitech.net>
 // 
 // Started on  Fri Nov 25 16:51:37 2016 Thomas Billot
-// Last update Thu Dec 22 22:55:59 2016 Thomas Billot
+// Last update Tue Dec 27 10:33:44 2016 Thomas Billot
 //
 
 #ifndef					_ENTITYMANAGER_HPP_
@@ -24,14 +24,16 @@ class MessageBus;
 
 class					EntityManager
 { 
+
 public:  
+
   typedef enum
     {
       NONE = 0,
       USED = 1
     }					eState;
   
-  const static int			_maxEntities = 1000;
+  const static int			_maxEntities = 500;
 
   typedef std::array<std::unique_ptr<IComponent>, _maxEntities> component_pool;
   
@@ -53,13 +55,14 @@ public:
       }
     _components[name] = componentPool;
   }
+  
   int					createComponentMask(const std::string &name);
   int					getComponentMask(const std::string &name);
-  std::unique_ptr<IComponent>		&getComponent(int entityId,
-						      std::string componentType);
+  IComponent				*getComponent(int entityId,
+						      const std::string &componentType);
   
-  void					addEntityType(std::string typeName, int mask);
-  int					createEntity(std::string typeName);
+  void					addEntityType(const std::string &typeName, int mask);
+  int					createEntity(const std::string &typeName);
   void					deleteEntity(int id);
 
   std::shared_ptr<std::vector<IComponent*> > getComponentsById(int entity) const;
@@ -67,7 +70,8 @@ public:
   const std::array<int, EntityManager::_maxEntities> &getEntities() const;
   
 private:
-  MessageBus				&_messageBus;
+  
+  std::shared_ptr<MessageBus>		_messageBus;
   std::array<int, _maxEntities>		_entities;
   std::array<int, _maxEntities>		_typeOfEntities;
   std::map<std::string, int>		_entityTypes;
