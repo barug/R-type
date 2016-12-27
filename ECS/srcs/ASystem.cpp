@@ -59,12 +59,14 @@ void			ASystem::handleMessage(int messageTypeId,
 
 void			ASystem::update()
 {
+  preRoutine();
   for (std::vector<int>::const_iterator it = _affectedEntities.begin();
        it != _affectedEntities.end();
        ++it)
     {
       updateEntity(*it);
     }
+  postRoutine();
 }
 
 void			ASystem::handleEntityCreated(void *messageData)

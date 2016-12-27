@@ -47,7 +47,9 @@ public:
   void			handleEntityDeleted(void *messageData);
   void			update();
   const std::string	&name() const;
+  virtual void		preRoutine() = 0;
   virtual void		updateEntity(int entityId) = 0;
+  virtual void		postRoutine() = 0;
 };
 
 
