@@ -24,6 +24,11 @@ public:
 
   bool			userLoggedIn(RTypeClient * client, Message * message);
   bool			listOfRoom(RTypeClient * client, Message * message);
+  bool			roomCreated(RTypeClient * client, Message * message);
+
+  bool			maxRoom(RTypeClient * client, Message * message);
+  bool			illegaleId(RTypeClient * client, Message * message);
+  bool			roomExist(RTypeClient * client, Message * message);
 
 private:
 

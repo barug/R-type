@@ -7,8 +7,9 @@
 
 CommandHandler::CommandHandler() :
   _fptr{ {101, &CommandHandler::logInUser },
-	 {102, &CommandHandler::createRoom },
-	 {103, &CommandHandler::joinRoom } }
+	 {102, &CommandHandler::listOfRoom },
+	 {103, &CommandHandler::createRoom },
+	 {104, &CommandHandler::joinRoom } }
 {}
 
 CommandHandler::~CommandHandler()
@@ -39,21 +40,30 @@ void				CommandHandler::sendMessage(RTypeServer * server,
   server->getNetworkHandler()->getSocket().writeSocket(*(message->createDatagram()));
 }
 
-bool						CommandHandler::logInUser(RTypeServer *server,
-									  Client &client,
-									  Message *)
+bool		CommandHandler::logInUser(RTypeServer *server,
+					  Client &client,
+					  Message *message)
 {
   std::cout << " \033[1;32m[+] Action 101 is managed\033[0m" << std::endl;
 
-  char *	salut = "salut";
-  this->sendMessage(server, 1, client.getIp(), client.getPort(), salut, (5 * sizeof(char)));
-  //  this->sendMessage(server, 1, client.getIp(), client.getPort());
+  this->sendMessage(server, 1, client.getIp(), client.getPort());
+  this->listOfRoom(server, client, message);
 
-  Message::ListOfRoom *	listOfRoom
-    = new Message::ListOfRoom();
-  // fill ListOfRoom
+  return true;
+}
+
+bool			CommandHandler::listOfRoom(RTypeServer *server,
+						   Client &client,
+						   Message *message)
+
+{
+  std::cout << " \033[1;32m[+] Action 102 is managed\033[0m" << std::endl;
+
+  Message::ListOfRoom *	listOfRoom = new Message::ListOfRoom();
   listOfRoom->_nbRoom = 0;
   listOfRoom->_listOfRoom = NULL; // init anotherway
+
+  // fill ListOfRoom
 
   this->sendMessage(server, 2, client.getIp(), client.getPort(), listOfRoom);
 
@@ -70,16 +80,16 @@ bool	CommandHandler::checkId(const std::string & id)
   return true;
 }
 
-bool					CommandHandler::createRoom(RTypeServer *server,
-								   Client &client,
-								   Message *message)
+bool		CommandHandler::createRoom(RTypeServer *server,
+					   Client &client,
+					   Message *message)
 {
-  std::cout << " \033[1;32m[+] Action 102 is managed\033[0m" << std::endl;
+  std::cout << " \033[1;32m[+] Action 103 is managed\033[0m" << std::endl;
 
-  // Review the way to convert data
-  char					*id;
-  memcpy(&id, message->getData(), message->getSize());
-  std::string				str(id);
+  char	*	id;
+  memcpy(&id, (char *)message->getData(), message->getSize());
+
+  std::string	str(id);
   std::cout << id << std::endl;
 
   if (!this->checkId(str))
@@ -89,7 +99,7 @@ bool					CommandHandler::createRoom(RTypeServer *server,
       if (server->getRoomManager()->getRoomNumber() == MAX_ROOM)
 	this->sendMessage(server, 203, client.getIp(), client.getPort());
       server->getRoomManager()->createRoom(str);
-      this->sendMessage(server, 2, client.getIp(), client.getPort());
+      this->sendMessage(server, 3, client.getIp(), client.getPort());
       this->joinRoom(server, client, message);
     }
   else
@@ -98,17 +108,17 @@ bool					CommandHandler::createRoom(RTypeServer *server,
   return false;
 }
 
-bool					CommandHandler::joinRoom(RTypeServer *server,
-								 Client &client,
-								 Message *message)
+bool		CommandHandler::joinRoom(RTypeServer *server,
+					 Client &client,
+					 Message *message)
 {
-  std::cout << " \033[1;32m[+] Action 103 is managed\033[0m" << std::endl;
+  std::cout << " \033[1;32m[+] Action 104 is managed\033[0m" << std::endl;
 
   // Review the way to convert data
-  char *				id;
+  char *	id;
   memcpy(&id, message->getData(), message->getSize());
-  std::string				str(id);
-  Room *				room = server->getRoomManager()->getRoomById(str);
+  std::string	str(id);
+  Room *	room = server->getRoomManager()->getRoomById(str);
 
   if (room)
     {

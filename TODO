@@ -14,8 +14,8 @@ __________SERVER_____________
  - [X] Implementer ThreadPool
  - [WIP][Need Test] make Room threadSafe (mutex lock/unlock)
  - [X] Implementer commandeHandler
-     - [WIP] Log Command :
-	   - [WIP] LogIn
+     - [X] Log Command :
+	   - [X] LogIn
      - [WIP] Room Command :
 	   - [WIP] listRoom
 	   - [WIP] joinRoom

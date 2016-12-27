@@ -5,7 +5,7 @@
 // Login   <mikaz3@epitech.net>
 //
 // Started on  Fri Nov 25 17:20:05 2016 Thomas Billot
-// Last update Tue Dec 27 10:53:11 2016 Thomas Billot
+// Last update Tue Dec 27 17:06:02 2016 master
 //
 
 #include <iostream>
@@ -15,11 +15,6 @@
 #elif defined(_WIN32)
 #endif
 #include "GameEngine.hpp"
-#include "PhysicComponent.hpp"
-#include "GraphicComponent.hpp"
-#include "PhysicSystem.hpp"
-#include "GraphicSystem.hpp"
-#include "IMonster.hpp"
 
 GameEngine::GameEngine(const std::string &libsDir)
   : _messageBus(),
@@ -37,7 +32,7 @@ GameEngine::GameEngine(const std::string &libsDir)
     {
       DIR	*dir;
       struct dirent *ent;
-      
+
       if ((dir = opendir(libsDir.c_str())) != NULL)
 	{
 	  while ((ent = readdir (dir)) != NULL)
@@ -71,7 +66,7 @@ int			GameEngine::run(void)
   bool			run = true;
   std::chrono::time_point<std::chrono::system_clock> now, then;
   then = std::chrono::system_clock::now();
-  
+
   int i = 0;
   while (run)
     {

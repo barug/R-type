@@ -12,7 +12,9 @@ WinSocket::WinSocket(const std::string& ip, int port) :
   _port(port),
   _fd(),
   _tv(),
-  _readFd()
+  _readFd(),
+  _fds(),
+  _nbFds(0)
 {
   SOCKADDR_IN		s_in = { 0, 0, 0, 0, 0, 0, 0, 0 };
   WSADATA		wsa;
@@ -39,6 +41,9 @@ WinSocket::WinSocket(const std::string& ip, int port) :
 
   _ip = inet_ntoa(s_in.sin_addr);
   _port = ntohs(s_in.sin_port);
+
+  _fds[0] =_fd;
+  _nbFds = 1;
 }
 
 WinSocket::~WinSocket()
@@ -101,21 +106,45 @@ int WinSocket::getFd() const
   return _fd;
 }
 
-void	WinSocket::setFds()
+
+bool	UnixSocket::addFdSelect(int fd)
 {
-  FD_ZERO(&_readFd);
-  FD_SET(_fd, &_readFd);
-  if (!_tv.tv_usec)
-    _tv.tv_usec = 500;
+  if (_nbFds >= 2)
+    return false;
+  _fds[_nbFds++] = fd;
+  return true;
 }
 
-bool	WinSocket::somethingToRead()
+void	UnixSocket::setFds()
+{
+  FD_ZERO(&_readFd);
+  _fdMax = 0;
+  for (int i = 0; i < _nbFds; i++)
+    {
+      if (_fds[i] > _fdMax)
+	_fdMax = _fds[i];
+      FD_SET(_fds[i], &_readFd);
+    }
+  if (!_tv.tv_usec)
+    _tv.tv_usec = 500;
+  _fdMax++;
+}
+
+int	UnixSocket::checkFds()
+{
+  for (int i = 0; i < _nbFds; i++)
+    if (FD_ISSET(_fds[i], &_readFd))
+      return _fds[i];
+  return -1;
+}
+
+int	UnixSocket::somethingToRead()
 {
   this->setFds();
-  if (select(_fd + 1, &_readFd,
+  if (select(_fdMax, &_readFd,
 	     NULL, NULL, &_tv) == -1 )
     { /* maybe some clean of code there */ }
-  return (FD_ISSET(_fd, &_readFd)) ? true : false;
+  return this->checkFds();
 }
 
 # endif
