@@ -23,9 +23,8 @@ GameEngine::GameEngine(const std::string &libsDir)
 {
 # if		defined(_WIN32) || defined(WIN32)
   std::unique_ptr<IDynamicLoader> libLoader(new windowsDynamicLoader);
-#elif defined(__GNUC__)
+#elif           defined(__GNUC__)
   std::unique_ptr<IDynamicLoader> libLoader(new unixDynamicLoader);
-#endif
 
   _libLoader = std::move(libLoader);
   if (!libsDir.empty())
@@ -45,6 +44,7 @@ GameEngine::GameEngine(const std::string &libsDir)
 	  closedir (dir);
 	}
     }
+#endif
 }
 
 void			GameEngine::loadLib(const std::string &libPath)

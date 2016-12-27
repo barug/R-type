@@ -1,9 +1,9 @@
 //
 // MessageBus.hpp for ECS in /home/mikaz3/Tek3/B5/AdvancedCpp/cpp_rtype/ECS
-// 
+//
 // Made by Thomas Billot
 // Login   <mikaz3@epitech.net>
-// 
+//
 // Started on  Wed Dec 21 18:24:17 2016 Thomas Billot
 // Last update Tue Dec 27 11:00:06 2016 Thomas Billot
 //
@@ -26,7 +26,7 @@ class					MessageBus
     void				*_data;
 
   public:
-    Message(int typeId, void *data);    
+    Message(int typeId, void *data);
     int					getTypeId();
     void				*getData();
   };
@@ -35,7 +35,7 @@ class					MessageBus
   std::multimap<int, std::string>	_subscribedList;
   std::vector<Message>			_messages;
   std::vector<std::shared_ptr<ASystem>>	_systems;
-  
+
 public:
 
   enum					standardMessages
@@ -43,9 +43,10 @@ public:
       ENTITY_CREATED			= 0,
       ENTITY_DESTROYED			= 1,
       ENTITY_COMPOSITION_CHANGED	= 2,
-      END_OF_STANDARD_MESSAGES		= 10
+      END_OF_STANDARD_MESSAGES		= 10,
+      KEY_INPUT_DATA                    = 11
     };
-  
+
   explicit MessageBus();
   ~MessageBus();
 
@@ -58,7 +59,7 @@ public:
 								   const int message);
   bool					isSubscribed(const std::string &name,
 						     const int message);
-  
+
 private:
 
   MessageBus(const MessageBus &lhs);
