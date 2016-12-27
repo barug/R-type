@@ -12,23 +12,22 @@ ___________BOTH______________
 __________SERVER_____________
 
  - [X] Implementer ThreadPool
- - [WIP][Need Test] make Room threadSafe (mutex lock/unlock)
+ - [] make Room threadSafe (mutex lock/unlock)
  - [X] Implementer commandeHandler
      - [X] Log Command :
 	   - [X] LogIn
      - [WIP] Room Command :
 	   - [WIP] listRoom
-	   - [WIP] joinRoom
-	   - [X] createRoom
+	   - [X][NeedTest] joinRoom
+	   - [X][NeedTest] createRoom
 	   - [] LeaveRoom
-     - [] Game Command :
-	    - [] up
-	    - [] down
-	    - [] fire
  - [WIP] Implementer commandeHandlerGame
+     - [] up
+     - [] down
+     - [] fire
      - [] ?
  - [] Implementer ECS for GameRule
- - [X] UML UpToDate
+ - [] UML UpToDate
 
 __________CLIENT_____________
 
@@ -37,8 +36,8 @@ __________CLIENT_____________
      - [X] LogIn
  - [] Room Command :
      - [] listRoom
-     - [] joinRoom
-     - [] createRoom
+     - [WIP] joinRoom
+     - [WIP] createRoom
      - [] LeaveRoom
  - [] Game Command :
      - [] up
