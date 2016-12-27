@@ -11,8 +11,6 @@ set(SOURCES_ECS
   ./srcs/GameEngine.cpp
   ./srcs/EntityManager.cpp
   ./srcs/SystemManager.cpp
-  ./srcs/PhysicSystem.cpp
-  ./srcs/GraphicSystem.cpp
   ./srcs/MessageBus.cpp
   ./srcs/ASystem.cpp)
 add_executable(ecs ${SOURCES_ECS})
