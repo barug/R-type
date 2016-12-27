@@ -1,5 +1,7 @@
 # include	<thread>
 # include	<iostream>
+# include	<unistd.h>
+# include	<cstring>
 
 # include	"RTypeServer.hpp"
 
@@ -25,9 +27,22 @@ const std::shared_ptr<RoomManager>  RTypeServer::getRoomManager() const
 
 void							RTypeServer::run()
 {
+  _networkHandler->getSocket().addFdSelect(STDIN_FILENO);
+
   while (_run)
     {
-      if (_networkHandler->getSocket().somethingToRead())
+      int						fd = _networkHandler->getSocket().somethingToRead();
+
+      if ( fd == STDIN_FILENO)
+	{
+	  char buff[5];
+	  std::memset(&buff, 0, 5);
+	  read(fd, buff, 4);
+	  std::string quit(buff);
+	  if (quit == "quit")
+	    _run = false;
+	}
+      else if (fd != -1)
 	{
 	  const std::shared_ptr<ISocket::Datagram>	data = _networkHandler->getSocket().readSocket();
 	  std::string					ipPort(data->_ip + ":" + std::to_string(data->_port));

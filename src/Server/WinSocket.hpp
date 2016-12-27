@@ -25,18 +25,22 @@ public :
   virtual bool						writeSocket(const ISocket::Datagram & datagram);
   virtual const std::string&				getIp() const;
   virtual int						getPort() const;
-  virtual int					getFd() const;
-  virtual bool						somethingToRead();
+  virtual int						getFd() const;
+  virtual bool						addFdSelect(int fd);
+  virtual int						somethingToRead();
 
 private :
 
   virtual void		setFds();
+  virtual int		checkFds();
 
   std::string		_ip;
   int			_port;
-  int		_fd;
+  int			_fd;
   struct timeval	_tv;
   fd_set		_readFd;
+  int			_nbFds;
+  int			_fdMax;
 
 };
 

@@ -19,13 +19,16 @@ public :
   const std::shared_ptr< RoomManager >	getRoomManager() const;
 
   void					run();
+  void runFalse();
+
+  static   void sigint(RTypeServer *, int);
 
 private :
 
   std::shared_ptr<NetworkHandler>	_networkHandler;
   std::shared_ptr<RoomManager>		_roomManager;
   std::unique_ptr< CommandHandler >	_commandHandler;
-  bool					_run;
+  volatile bool					_run;
 };
 
 # endif		// !__RTYPESERVER_HPP__

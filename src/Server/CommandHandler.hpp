@@ -24,6 +24,7 @@ public:
   bool		execFuncByOperationCode(RTypeServer * server, Client & client, Message * message);
 
   bool		logInUser(RTypeServer * server, Client & client, Message * message);
+  bool		listOfRoom(RTypeServer * server, Client & client, Message * message);
   bool		createRoom(RTypeServer * server, Client & client, Message * message);
   bool		joinRoom(RTypeServer * server, Client & client, Message * message);
 

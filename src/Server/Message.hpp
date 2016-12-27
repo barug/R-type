@@ -49,6 +49,12 @@ public :
     int		_opCode;
   };
 
+# define	SIZE_DATA (8)
+  struct	Data
+  {
+    void*	_data;
+  };
+
   struct	Entity
   {
     std::string	_name;
