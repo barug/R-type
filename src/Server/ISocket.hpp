@@ -26,12 +26,14 @@ public :
   virtual bool						writeSocket(const ISocket::Datagram & datagram) = 0;
   virtual const std::string&				getIp() const = 0;
   virtual int						getPort() const = 0;
-  virtual int					getFd() const = 0;
-  virtual bool						somethingToRead() = 0;
+  virtual int						getFd() const = 0;
+  virtual bool						addFdSelect(int fd) = 0;
+  virtual int						somethingToRead() = 0;
 
 private :
 
   virtual void		setFds() = 0;
+  virtual int		checkFds() = 0;
 
 };
 

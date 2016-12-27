@@ -39,10 +39,7 @@ set(SOURCES_ECS
 ./ECS/srcs/GameEngine.cpp
 ./ECS/srcs/EntityManager.cpp
 ./ECS/srcs/MessageBus.cpp
-./ECS/srcs/GraphicSystem.cpp
-./ECS/srcs/PhysicComponent.cpp
 ./ECS/srcs/ASystem.cpp
-./ECS/srcs/PhysicSystem.cpp
 ./ECS/srcs/SystemManager.cpp
 )
 
