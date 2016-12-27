@@ -238,12 +238,7 @@ RFC 4242              RType Communication Protocol         November 2016
 
      struct          Header {
       int            size;
-     }
-
-
-     struct          Data {
       int            opCode;
-      void*          data;
      }
 
      struct          Entity {
@@ -269,6 +264,11 @@ RFC 4242              RType Communication Protocol         November 2016
 
      Figure 3: List of the structs for the binary protocol between
      SErver and Client
+
+
+
+
+
 
 
 
@@ -358,9 +358,9 @@ RFC 4242              RType Communication Protocol         November 2016
        [002]  ‐‐> | ListOfRoom
         struct ListOfRoom
 
-       [102]  <‐‐ | CreateRoom : nameRoom
+       [103]  <‐‐ | CreateRoom : nameRoom
 
-       [103]  <‐‐ | JoinRoom : nameRoom
+       [104]  <‐‐ | JoinRoom : nameRoom
 
        [003]  ‐‐> | Sucessfully Created a Room
 
@@ -402,5 +402,63 @@ RFC 4242              RType Communication Protocol         November 2016
 
        [007]  <‐‐ | (Broadcast) UserLoggedOff :
         [PlayerInfo Structure]
+
+        001 Logged In 002 List Of Room 003 Succefully Create Room 004
+        Succefully Joim Room 005 006 007 008 009
+
+        101 Login 102 GetRoom 103 CreateRoom 104 JoinRoom 105 106 107
+        108 109
+
+        201 room dosen’t exist 202 number Player Max 203 nimber room Max
+        204 illegage RoomId 205 id already in use 206 207 208 209
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 

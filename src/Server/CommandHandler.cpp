@@ -63,6 +63,30 @@ bool			CommandHandler::listOfRoom(RTypeServer *server,
   listOfRoom->_nbRoom = 0;
   listOfRoom->_listOfRoom = NULL; // init anotherway
 
+  // std::stringstream ss;
+  // std::shared_ptr<Message::Room> roomData = std::make_shared<Message::Room>();
+
+  // room->addPlayer(client);
+  // ss.clear();
+  // roomData->_name = room->getName();
+  // roomData->_ip = room->getSocket()->getIp();
+  // roomData->_port = room->getSocket()->getPort();
+  // roomData->_nbPlayer = 0;
+
+  // for (auto it : room->getPlayers())
+  //   {
+  //     std::shared_ptr<Message::Entity> Entity = std::make_shared<Message::Entity>();
+  //     Entity->_name = it.second->getIp() + ":" + std::to_string(it.second->getPort());
+  //     // Entity->_pos_x = ;
+  //     // Entity->_pos_y = ;
+  //     roomData->_players[roomData->_nbPlayer++];
+  //   }
+  // ss.write((char *) roomData.get(), sizeof(roomData.get()));
+  // this->sendMessage(server, 4, client.getIp(), client.getPort(),
+  //		    (void *)ss.str().c_str(), ss.str().size());
+  // return true;
+
+
   // fill ListOfRoom
 
   this->sendMessage(server, 2, client.getIp(), client.getPort(), listOfRoom);
@@ -114,9 +138,9 @@ bool		CommandHandler::joinRoom(RTypeServer *server,
 {
   std::cout << " \033[1;32m[+] Action 104 is managed\033[0m" << std::endl;
 
-  // Review the way to convert data
   char *	id;
   memcpy(&id, message->getData(), message->getSize());
+
   std::string	str(id);
   Room *	room = server->getRoomManager()->getRoomById(str);
 
@@ -124,14 +148,27 @@ bool		CommandHandler::joinRoom(RTypeServer *server,
     {
       if (room->getNbPlayers() < 4)
 	{
+	  std::stringstream ss;
+	  std::shared_ptr<Message::Room> roomData = std::make_shared<Message::Room>();
+
 	  room->addPlayer(client);
+	  ss.clear();
+	  roomData->_name = room->getName();
+	  roomData->_ip = room->getSocket()->getIp();
+	  roomData->_port = room->getSocket()->getPort();
+	  roomData->_nbPlayer = 0;
 
-	  // create Message::Room
-	  // append IpRoom:PortRoom
-	  // sendToTheClient so he co on the new socket
-	  // this->sendMessage(server, 4, client.getIp(), client.getPort(), data);
-	  // data = Struct Room + room->getIp() + room->getPort()
-
+	  for (auto it : room->getPlayers())
+	    {
+	      std::shared_ptr<Message::Entity> Entity = std::make_shared<Message::Entity>();
+	      Entity->_name = it.second->getIp() + ":" + std::to_string(it.second->getPort());
+	      // Entity->_pos_x = ;
+	      // Entity->_pos_y = ;
+	      roomData->_players[roomData->_nbPlayer++];
+	    }
+	  ss.write((char *) roomData.get(), sizeof(roomData.get()));
+	  this->sendMessage(server, 4, client.getIp(), client.getPort(),
+			    (void *)ss.str().c_str(), ss.str().size());
 	  return true;
 	}
       else

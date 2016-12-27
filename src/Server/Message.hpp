@@ -70,6 +70,8 @@ public :
 
   struct	Room
   {
+    std::string	_ip;
+    int		_port;
     std::string	_name;
     int		_nbPlayer;
     Entity	_players[4];
