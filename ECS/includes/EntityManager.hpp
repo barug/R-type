@@ -61,7 +61,8 @@ public:
   IComponent				*getComponent(int entityId,
 						      const std::string &componentType);
   
-  void					addEntityType(const std::string &typeName, int mask);
+  void					addEntityType(const std::string &typeName,
+						      int mask);
   int					createEntity(const std::string &typeName);
   void					deleteEntity(int id);
 
