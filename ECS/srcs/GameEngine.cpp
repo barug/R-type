@@ -68,16 +68,6 @@ GameEngine::~GameEngine()
 
 int			GameEngine::run(void)
 {
-  std::shared_ptr<ASystem>	sysPhysic = std::make_shared<PhysicSystem>();
-  std::shared_ptr<ASystem>	sysGraphic = std::make_shared<GraphicSystem>();
-  _systemManager.addSystem(sysPhysic, "PhysicSystem", { "MassComponent", "PositionComponent" }, { 3, 4 });
-  _systemManager.addSystem(sysGraphic, "GraphicSystem", { "MeshComponent" }, {});
-
-  _entityManager.createEntity("MyMonster");
-  /*		       ^
-  ** REMOVE THIS AFTER | RESERVED FOR UNIT TESTS
-  */
-  
   bool			run = true;
   std::chrono::time_point<std::chrono::system_clock> now, then;
   then = std::chrono::system_clock::now();
