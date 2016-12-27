@@ -28,6 +28,9 @@ public :
   bool									addPlayer(const Client & clicli);
   bool									removePlayer(const Client & clicli);
 
+  const bool								getRun() const;
+  void									setRun(const bool state);
+
   bool									run();
 
 private :
@@ -43,6 +46,8 @@ private :
 
   std::mutex							_locker;
   std::thread							_thread;
+
+  bool								_run;
 
   // ESC
 };

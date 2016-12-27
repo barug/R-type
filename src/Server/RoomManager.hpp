@@ -28,6 +28,8 @@ class			RoomManager
   Room *							getRoomById(const std::string id) const;
   Room *							createRoom(const std::string name);
 
+  void								checkRoom();
+
 private :
 
   std::shared_ptr< NetworkHandler >				_networkHandler;
