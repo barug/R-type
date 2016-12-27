@@ -44,7 +44,6 @@ public:
       ENTITY_DESTROYED			= 1,
       ENTITY_COMPOSITION_CHANGED	= 2,
       END_OF_STANDARD_MESSAGES		= 10,
-      KEY_INPUT_DATA                    = 11
     };
 
   explicit MessageBus();

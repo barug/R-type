@@ -1,7 +1,8 @@
 
-#ifndef _POSITION_COMPONENT_HPP_
-# define _POSITION_COMPONENT_HPP_
+#ifndef _PHYSIC_SYSTEM_HPP_
+# define _PHYSIC_SYSTEM_HPP_
 
+# include "ASystem.hpp"
 # include "PositionComponent.hpp"
 # include "PhysicComponent.hpp"
 
@@ -12,6 +13,6 @@ public:
   virtual void		preRoutine() {};
   virtual void		updateEntity(int entityId);
   virtual void		postRoutine() {};
-}
+};
 
-#endif /* !_POSITION_COMPONENT_HPP_ */
+#endif /* !_PHYSIC_SYSTEM_HPP_ */

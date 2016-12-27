@@ -8,12 +8,12 @@ ASystem::ASystem() : _affectedEntities()
   loadMessageHandler(MessageBus::ENTITY_DESTROYED, &ASystem::handleEntityDeleted);
 }
 
-void			ASystem::addEntityManager(const std::shared_ptr<EntityManager> &entityManager)
+void			ASystem::addEntityManager(EntityManager &entityManager)
 {
   _entityManager = entityManager;
 }
 
-void			ASystem::addMessageBus(const std::shared_ptr<MessageBus> &messageBus)
+void			ASystem::addMessageBus(MessageBus &messageBus)
 {
   _messageBus = messageBus;
 }

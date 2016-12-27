@@ -11,6 +11,8 @@
 #ifndef			_ICOMPONENT_HPP_
 # define		_ICOMPONENT_HPP_
 
+#include <string>
+
 class				IComponent
 {
 

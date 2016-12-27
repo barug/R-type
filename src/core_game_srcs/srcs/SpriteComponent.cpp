@@ -11,7 +11,7 @@ const std::string               SpriteComponent::name()
   return "SpriteComponent";
 }
 
-const std::string&              SpriteComponent::getPath()
+const std::string&              SpriteComponent::getPath() const
 {
   return _path;
 }

@@ -7,7 +7,7 @@
 
 class           GuiSystem : public ASystem
 {
-  IGui          &_gui;
+  IGui          *_gui;
   RTypeUI       _rtypeUI;
   std::string   _ip;
   unsigned int  _port;
@@ -21,7 +21,13 @@ class           GuiSystem : public ASystem
   void          _handleLoading(void);
 
 public:
-  explicit      GuiSystem(IGui &gui);
+
+  enum		Messages
+    {
+      KEY_INPUT_DATA
+    };
+  
+  explicit      GuiSystem();
   virtual       ~GuiSystem();
   virtual void  preRoutine(void);
   virtual void  updateEntity(int entityId);

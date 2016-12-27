@@ -1,14 +1,12 @@
 
 #include "PositionComponent.hpp"
 
-PositionComponent::PositionComponent(int x, int y)
-  : _x(x),
-    _y(y)
+PositionComponent::PositionComponent()
 {}
 
-virtual const std::string	PositionComponent::name()
+const std::string	PositionComponent::name()
 {
-  return "PositionComponent"
+  return "PositionComponent";
 }
 
 void				PositionComponent::setX(int x)

@@ -1,6 +1,8 @@
 
-#ifndef _PHYSIC_COMPOENT_HPP_
-# define _PHYSIC_COMPOENT_HPP_
+#ifndef _PHYSIC_COMPONENT_HPP_
+# define _PHYSIC_COMPONENT_HPP_
+
+#include "IComponent.hpp"
 
 class			PhysicComponent : public IComponent
 {
@@ -10,7 +12,8 @@ class			PhysicComponent : public IComponent
   int			_accelerationY;
 
 public:
-  PhysicComponent(int speed, int mass, int acceleration);
+  PhysicComponent();
+  virtual const std::string name();
   void			setSpeedX(int speedX);
   void			setSpeedY(int speedY);
   void			setAccelerationX(int accelerationX);
@@ -19,6 +22,6 @@ public:
   int			getSpeedY() const;
   int			getAccelerationX() const;
   int			getAccelerationY() const;
-}
+};
 
-#endif /* !_PHYSIC_COMPOENT_HPP_ */
+#endif /* !_PHYSIC_COMPONENT_HPP_ */

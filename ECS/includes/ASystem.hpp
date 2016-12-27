@@ -25,8 +25,8 @@ protected:
   
   int					_mask;
   std::string				_name;
-  std::shared_ptr<EntityManager>	_entityManager;
-  std::shared_ptr<MessageBus>		_messageBus;
+  EntityManager				&_entityManager;
+  MessageBus				&_messageBus;
   std::vector<int>			_affectedEntities;
   std::map<int, message_handler>	_messageHandlers;
   
@@ -35,8 +35,8 @@ public:
   ASystem();
   virtual		~ASystem() {}
 
-  void			addEntityManager(const std::shared_ptr<EntityManager> &entityManager);
-  void			addMessageBus(const std::shared_ptr<MessageBus> &messageBus);
+  void			addEntityManager(EntityManager &entityManager);
+  void			addMessageBus(MessageBus &messageBus);
   void			addName(const std::string &name);
   void			addAffectedComponents(const std::vector<std::string> &affectedComponents);
   void			loadMessageHandler(int messageTypeId,

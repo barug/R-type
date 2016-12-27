@@ -1,10 +1,11 @@
 # include "GuiSystem.hpp"
 # include "SpriteComponent.hpp"
 # include "PositionComponent.hpp"
+# include "Window.hpp"
 
-GuiSystem::GuiSystem(IGui &gui)
-  : _gui(gui),
-    _rtypeUI(gui),
+GuiSystem::GuiSystem()
+  : _gui(new Window()),
+    _rtypeUI(*_gui),
     _ip(),
     _port(),
     _contextHandler({{RTypeUI::Context::Introduction,            &GuiSystem::_handleIntroduction},
@@ -20,26 +21,31 @@ GuiSystem::~GuiSystem()
 
 void            GuiSystem::preRoutine(void)
 {
-  _gui.clear();
-  _gui.handleEvents();
-  if (_gui.getKey() != IGui::Key::NONE)
-    _messageBus.post(MessageBus::standardMessages::KEY_INPUT_DATA, _gui.getKey());
+  _gui->clear();
+  _gui->handleEvents();
+  if (_gui->getKey() != IGui::Key::NONE)
+    _messageBus.post(GuiSystem::Messages::KEY_INPUT_DATA,
+		      new unsigned int (_gui->getKey()));
   ((*this).*(_contextHandler[_rtypeUI.getContext()]))();
 }
 
 void            GuiSystem::updateEntity(int entityId)
 {
   SpriteComponent *spriteComponent =
-    static_cast<SpriteComponent*>(getComponent(entityId, "SpriteComponent"));
-  PosistionComponent *positionComponent =
-    static_cast<PositionComponent*>(getComponent(entityId, "PositionComponent"));
-  _gui.setTextureAt(spriteComponent->getPath(), positionComponent.getX(), positionComponent.getY());
+    static_cast<SpriteComponent*>(_entityManager.getComponent(entityId,
+							      "SpriteComponent"));
+  PositionComponent *positionComponent =
+    static_cast<PositionComponent*>(_entityManager.getComponent(entityId,
+								"PositionComponent"));
+  _gui->setTextureAt(spriteComponent->getPath(),
+		     positionComponent->getX(),
+		     positionComponent->getY());
 
 }
 
 void            GuiSystem::postRoutine(void)
 {
-  _gui.display();
+  _gui->display();
 }
 
 void            GuiSystem::_handleIntroduction(void)

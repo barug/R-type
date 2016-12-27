@@ -1,11 +1,13 @@
 
 #include "PhysicComponent.hpp"
 
-PhysicComponent::PhysicComponent(int speed, int mass, int acceleration)
-  : _speed(speed),
-    _mass(mass),
-    _acceleration(acceleration)
+PhysicComponent::PhysicComponent()
 {}
+
+const std::string	PhysicComponent::name()
+{
+  return "PhysicComponent";
+}
 
 void			PhysicComponent::setSpeedX(int speedX)
 {

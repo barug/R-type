@@ -10,7 +10,7 @@ class				PositionComponent : public IComponent
   int				_y;
 
 public:
-  PositionComponent(int x, int y);
+  PositionComponent();
   virtual const std::string	name();
   void				setX(int x);
   void				setY(int y);
