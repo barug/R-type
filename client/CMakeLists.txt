@@ -1,15 +1,17 @@
 cmake_minimum_required(VERSION 3.5)
-project (ClientRType)
-set(CMAKE_CXX_FLAGS "-Wall -std=c++14 -g3 -O0")
-set(CMAKE_BUILD_TYPE Release)
+function (client)
+  project (client_rtype)
+  set(CMAKE_CXX_FLAGS "-Wall -std=c++14 -g3 -O0")
+  set(CMAKE_BUILD_TYPE Release)
 
-set(ECS_DIRECTORY ../ECS)
-set(SFML_DIRECTORY ../mSFML)
-set(CORE_GAME_LIB_DIRECTORY ../core_game_srcs)
+  set(CMAKE_CURRENT_SOURCE_DIR ./)
+  set(ECS_DIRECTORY ./ECS)
+  set(SFML_DIRECTORY ./mSFML)
+  set(CORE_GAME_LIB_DIRECTORY ./core_game_srcs)
 
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/gameLibs)
 
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/includes
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/client/includes
 		${ECS_DIRECTORY}/includes
 		${SFML_DIRECTORY}
 		${CORE_GAME_LIB_DIRECTORY}/includes)
@@ -32,10 +34,11 @@ set(SOURCES_CLIENT
   ${CORE_GAME_LIB_DIRECTORY}/srcs/PhysicComponent.cpp
   ${CORE_GAME_LIB_DIRECTORY}/srcs/PositionComponent.cpp
   ${CORE_GAME_LIB_DIRECTORY}/srcs/coreGameLib.cpp
-  ${CMAKE_CURRENT_SOURCE_DIR}/srcs/GuiSystem.cpp
-  ${CMAKE_CURRENT_SOURCE_DIR}/srcs/SpriteComponent.cpp
-  ${CMAKE_CURRENT_SOURCE_DIR}/srcs/RTypeUI.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/client/srcs/GuiSystem.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/client/srcs/SpriteComponent.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/client/srcs/RTypeUI.cpp
   )
-  
+
 add_library(client_rtype MODULE ${SOURCES_CLIENT})
 target_link_libraries(client_rtype Threads::Threads sfml-window sfml-system sfml-audio sfml-graphics dl)
+endfunction()
