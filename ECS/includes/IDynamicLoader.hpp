@@ -8,6 +8,7 @@
 
 # include			<map>
 # include			<string>
+# include			<iostream>
 
 class				IDynamicLoader
 {
@@ -37,6 +38,7 @@ public:
     void			*handler = dlopen(newLibName.c_str(), RTLD_LAZY);
 
     _hashHandler[symName] = handler;
+    std::cout << newLibName << std::endl;
     if (!(fPtr = reinterpret_cast<f>(dlsym(handler, symName.c_str()))))
       {
 	std::cerr << "[DynamicLoader::Load] failure : " << dlerror() << std::endl;

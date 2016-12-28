@@ -9,6 +9,7 @@
 # include               <memory>
 # include               "RTypeUI.hpp"
 # include               "RTypeClient.hpp"
+# include		"GameEngine.hpp"
 
 class                   Core
 {
@@ -28,12 +29,14 @@ private:
   bool                  _checkArgs(int ac, char **av);
 
 private:
+
   std::shared_ptr<IGui> _gui;
   std::unique_ptr<RTypeClient> _client;
   RTypeUI               _rtypeUI;
   std::string           _ip;
   unsigned int          _port;
   std::map<RTypeUI::Context, void (Core::* )(void)> _contextHandler;
+  GameEngine		_gameEngine;
 };
 
 #endif                  // !__CORE_HPP__

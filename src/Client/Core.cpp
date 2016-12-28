@@ -15,7 +15,8 @@ Core::Core(int ac, char **av)
 		     {RTypeUI::Context::Authentification,        &Core::_handleAuthentification},
 		     {RTypeUI::Context::WaitingRoom,             &Core::_handleWaitingRoom},
 		     {RTypeUI::Context::Game,                    &Core::_handleGame},
-		     {RTypeUI::Context::Loading,                 &Core::_handleLoading}})
+		     {RTypeUI::Context::Loading,                 &Core::_handleLoading}}),
+    _gameEngine("./ECS/mods/")
 {
   if (ac == 3)
     {
@@ -77,7 +78,7 @@ void            Core::_handleWaitingRoom(void)
 
 void            Core::_handleGame(void)
 {
-  _rtypeUI.displayGame();
+  _gameEngine.run();
 }
 
 bool		Core::_checkArgs(int ac, char **av)

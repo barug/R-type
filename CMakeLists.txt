@@ -44,6 +44,7 @@ set(SOURCES_ECS
 ./ECS/srcs/ASystem.cpp
 ./ECS/srcs/PhysicSystem.cpp
 ./ECS/srcs/SystemManager.cpp
+./ECS/srcs/InputSystem.cpp
 )
 
 set(SOURCES_CLIENT

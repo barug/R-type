@@ -5,7 +5,7 @@
 // Login   <mikaz3@epitech.net>
 //
 // Started on  Fri Nov 25 17:20:05 2016 Thomas Billot
-// Last update Tue Dec 27 10:53:11 2016 Thomas Billot
+// Last update Tue Dec 27 18:27:07 2016 Thomas Billot
 //
 
 #include <iostream>
@@ -17,9 +17,7 @@
 #include "GameEngine.hpp"
 #include "PhysicComponent.hpp"
 #include "GraphicComponent.hpp"
-#include "PhysicSystem.hpp"
-#include "GraphicSystem.hpp"
-#include "IMonster.hpp"
+#include "Systems.hpp"
 
 GameEngine::GameEngine(const std::string &libsDir)
   : _messageBus(),
@@ -70,9 +68,11 @@ int			GameEngine::run(void)
 {
   std::shared_ptr<ASystem>	sysPhysic = std::make_shared<PhysicSystem>();
   std::shared_ptr<ASystem>	sysGraphic = std::make_shared<GraphicSystem>();
-  _systemManager.addSystem(sysPhysic, "PhysicSystem", { "MassComponent", "PositionComponent" }, { 3, 4 });
+  std::shared_ptr<ASystem>	sysInput = std::make_shared<InputSystem>();
+  
+  _systemManager.addSystem(sysPhysic, "PhysicSystem", { "MassComponent", "PositionComponent" }, {});
   _systemManager.addSystem(sysGraphic, "GraphicSystem", { "MeshComponent" }, {});
-
+  _systemManager.addSystem(sysInput, "InputSystem", {"PositionComponent"}, {});
   _entityManager.createEntity("MyMonster");
   /*		       ^
   ** REMOVE THIS AFTER | RESERVED FOR UNIT TESTS
@@ -82,7 +82,6 @@ int			GameEngine::run(void)
   std::chrono::time_point<std::chrono::system_clock> now, then;
   then = std::chrono::system_clock::now();
   
-  int i = 0;
   while (run)
     {
       now = std::chrono::system_clock::now();

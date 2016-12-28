@@ -5,7 +5,7 @@
 // Login   <mikaz3@epitech.net>
 // 
 // Started on  Wed Dec 21 18:25:12 2016 Thomas Billot
-// Last update Tue Dec 27 11:04:46 2016 Thomas Billot
+// Last update Tue Dec 27 17:03:17 2016 Thomas Billot
 //
 
 #include	<iostream>
@@ -64,7 +64,7 @@ void		MessageBus::subscribeToMessage(const std::string &system,
 	  _subscribedList.emplace(message, system);
 	}
     }
-  if (!isSystemValid)
+  if (!isSystemValid || !isValid)
     throw std::runtime_error("Error: MessageBus::subscribeToMessage: couldn't add " + system);
 }
 
