@@ -24,9 +24,9 @@ public:
 
   enum		Messages
     {
-      KEY_INPUT_DATA
+      KEY_INPUT_DATA = 11
     };
-  
+
   explicit      GuiSystem(EntityManager &entityManager, MessageBus &messageBus);
   virtual       ~GuiSystem();
   virtual void  preRoutine(void);

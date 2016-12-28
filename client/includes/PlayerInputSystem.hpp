@@ -6,7 +6,7 @@
 # include "IGui.hpp"
 # include "GuiSystem.hpp"
 
-class		playerInputSystem : public ASystem
+class		PlayerInputSystem : public ASystem
 {
   IGui::Key	_lastKey;
   

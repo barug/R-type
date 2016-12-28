@@ -1,43 +1,39 @@
 cmake_minimum_required(VERSION 3.5)
-project (ClientRType)
-set(CMAKE_CXX_FLAGS "-Wall -std=c++14 -g3 -O0")
-set(CMAKE_BUILD_TYPE Release)
+function (client)
+  project (client_rtype)
+  set(CMAKE_CXX_FLAGS "-Wall -std=c++14 -g3 -O0")
+  set(CMAKE_BUILD_TYPE Release)
+  set(CMAKE_CURRENT_SOURCE_DIR ./)
+  set(ECS_DIRECTORY ./ECS)
+  set(SFML_DIRECTORY ./mSFML)
+  set(CORE_GAME_LIB_DIRECTORY ./core_game_srcs)
+  set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/gameLibs)
+  include_directories(${CMAKE_CURRENT_SOURCE_DIR}/client/includes
+    ${ECS_DIRECTORY}/includes
+    ${SFML_DIRECTORY}
+    ${CORE_GAME_LIB_DIRECTORY}/includes)
+  set(THREADS_PREFER_PTHREAD_FLAG ON)
+  find_package(Threads REQUIRED)
+  set(SOURCES_CLIENT
+    ${ECS_DIRECTORY}/srcs/EntityManager.cpp
+    ${ECS_DIRECTORY}/srcs/SystemManager.cpp
+    ${ECS_DIRECTORY}/srcs/MessageBus.cpp
+    ${ECS_DIRECTORY}/srcs/ASystem.cpp
+    ${SFML_DIRECTORY}/Window.cpp
+    ${SFML_DIRECTORY}/Timer.cpp
+    ${SFML_DIRECTORY}/TextureManager.cpp
+    ${SFML_DIRECTORY}/Animation.cpp
+    ${SFML_DIRECTORY}/Audio.cpp
+    ${SFML_DIRECTORY}/AnimatedSprite.cpp
+    ${CORE_GAME_LIB_DIRECTORY}/srcs/PhysicSystem.cpp
+    ${CORE_GAME_LIB_DIRECTORY}/srcs/PhysicComponent.cpp
+    ${CORE_GAME_LIB_DIRECTORY}/srcs/PositionComponent.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/client/srcs/coreGameLib.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/client/srcs/GuiSystem.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/client/srcs/SpriteComponent.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/client/srcs/RTypeUI.cpp
+    )
 
-set(ECS_DIRECTORY ../ECS)
-set(SFML_DIRECTORY ../mSFML)
-set(CORE_GAME_LIB_DIRECTORY ../core_game_srcs)
-
-set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/gameLibs)
-
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/includes
-		${ECS_DIRECTORY}/includes
-		${SFML_DIRECTORY}
-		${CORE_GAME_LIB_DIRECTORY}/includes)
-
-set(THREADS_PREFER_PTHREAD_FLAG ON)
-find_package(Threads REQUIRED)
-
-set(SOURCES_CLIENT
-  ${ECS_DIRECTORY}/srcs/EntityManager.cpp
-  ${ECS_DIRECTORY}/srcs/SystemManager.cpp
-  ${ECS_DIRECTORY}/srcs/MessageBus.cpp
-  ${ECS_DIRECTORY}/srcs/ASystem.cpp
-  ${SFML_DIRECTORY}/Window.cpp
-  ${SFML_DIRECTORY}/Timer.cpp
-  ${SFML_DIRECTORY}/TextureManager.cpp
-  ${SFML_DIRECTORY}/Animation.cpp
-  ${SFML_DIRECTORY}/Audio.cpp
-  ${SFML_DIRECTORY}/AnimatedSprite.cpp
-  ${CORE_GAME_LIB_DIRECTORY}/srcs/PhysicSystem.cpp
-  ${CORE_GAME_LIB_DIRECTORY}/srcs/PhysicComponent.cpp
-  ${CORE_GAME_LIB_DIRECTORY}/srcs/PositionComponent.cpp
-  ${CMAKE_CURRENT_SOURCE_DIR}/srcs/coreGameLib.cpp
-  ${CMAKE_CURRENT_SOURCE_DIR}/srcs/GuiSystem.cpp
-  ${CMAKE_CURRENT_SOURCE_DIR}/srcs/SpriteComponent.cpp
-  ${CMAKE_CURRENT_SOURCE_DIR}/srcs/RTypeUI.cpp
-  ${CMAKE_CURRENT_SOURCE_DIR}/srcs/PlayerInputComponent.cpp
-  ${CMAKE_CURRENT_SOURCE_DIR}/srcs/PlayerInputSystem.cpp
-  )
-  
-add_library(client_rtype MODULE ${SOURCES_CLIENT})
-target_link_libraries(client_rtype Threads::Threads sfml-window sfml-system sfml-audio sfml-graphics dl)
+  add_library(client_rtype MODULE ${SOURCES_CLIENT})
+  target_link_libraries(client_rtype Threads::Threads sfml-window sfml-system sfml-audio sfml-graphics dl)
+endfunction()

@@ -23,7 +23,7 @@ PlayerInputSystem::PlayerInputSystem(EntityManager &entityManager,
   physComp.setSpeedY(0);
   physComp.setAccelerationX(0);
   physComp.setAccelerationY(0);
-
+  spriteComp.setPath("../assets/sprites/r-typesheet1.gif");
 }
 
 void		PlayerInputSystem::updateEntity(int entityId)

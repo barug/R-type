@@ -24,23 +24,20 @@ void            GuiSystem::preRoutine(void)
   _gui->clear();
   _gui->handleEvents();
   if (_gui->getKey() != IGui::Key::NONE)
-    _messageBus.post(GuiSystem::Messages::KEY_INPUT_DATA,
-		      new unsigned int (_gui->getKey()));
+    _messageBus.post(GuiSystem::Messages::KEY_INPUT_DATA, new IGui::Key(_gui->getKey()));
   ((*this).*(_contextHandler[_rtypeUI.getContext()]))();
 }
 
 void            GuiSystem::updateEntity(int entityId)
 {
+  std::cout << "updating entity: " << entityId << std::endl;
   SpriteComponent *spriteComponent =
-    static_cast<SpriteComponent*>(_entityManager.getComponent(entityId,
-							      "SpriteComponent"));
+    static_cast<SpriteComponent*>(_entityManager.getComponent(entityId, "SpriteComponent"));
   PositionComponent *positionComponent =
-    static_cast<PositionComponent*>(_entityManager.getComponent(entityId,
-								"PositionComponent"));
-  _gui->setTextureAt(spriteComponent->getPath(),
-		     positionComponent->getX(),
-		     positionComponent->getY());
-
+    static_cast<PositionComponent*>(_entityManager.getComponent(entityId, "PositionComponent"));
+  // AnimationComponent *animationComponent =
+  //   static_cast<AnimationComponent*>(_entityManager.getComponent(entityId, "AnimationComponent"));
+  _gui->setTextureAt(spriteComponent->getPath(), positionComponent->getX(), positionComponent->getY());
 }
 
 void            GuiSystem::postRoutine(void)
@@ -58,9 +55,6 @@ void            GuiSystem::_handleAuthentification(void)
   _rtypeUI.displayAuthentification(&_ip, &_port);
   if (!_ip.empty() && _rtypeUI.getContext() != RTypeUI::Context::Authentification)
     {
-      // message bus ip et port
-      //     _client->connectToServer(_ip, _port);
-      // _messageBus.post(MessageBus::standardMessages::IP, std::pair<std::string ip, unsigned int port>);
       std::cout << "ip == > " << _ip << " et " << _port << std::endl;
     }
 }
