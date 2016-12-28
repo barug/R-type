@@ -4,7 +4,7 @@
 # include "Window.hpp"
 
 GuiSystem::GuiSystem()
-  : _gui(new Window()),
+  : _gui(new Window("RType", 800, 600, "./assets/font/digital.otf")),
     _rtypeUI(*_gui),
     _ip(),
     _port(),
@@ -13,7 +13,6 @@ GuiSystem::GuiSystem()
                      {RTypeUI::Context::WaitingRoom,             &GuiSystem::_handleWaitingRoom},
                      {RTypeUI::Context::Game,                    &GuiSystem::_handleGame},
                      {RTypeUI::Context::Loading,                 &GuiSystem::_handleLoading}})
-
 {}
 
 GuiSystem::~GuiSystem()
