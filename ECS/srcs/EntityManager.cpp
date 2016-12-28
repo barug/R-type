@@ -5,7 +5,7 @@
 // Login   <mikaz3@epitech.net>
 // 
 // Started on  Fri Nov 25 17:06:52 2016 Thomas Billot
-// Last update Wed Dec 28 20:01:02 2016 Thomas Billot
+// Last update Wed Dec 28 21:48:55 2016 Thomas Billot
 //
 
 #include <iostream>
@@ -42,13 +42,13 @@ void		EntityManager::addEntityType(const std::string &typeName, const std::vecto
 int				EntityManager::createEntity(const std::string &typeName)
 {
   int typeMask = _entityTypes.at(typeName);
-  
+
   for (unsigned int id = 0; id < EntityManager::_maxEntities; id++)
     {
       if (_entities[id] == eState::NONE)
 	{
 	  _entities[id] = eState::USED;
-	  _typeOfEntities[id] = typeMask;
+	  _typeofentities[id] = typeMask;
 	  _messageBus.post(MessageBus::ENTITY_CREATED, new int(id));
 	  return id;
 	}
