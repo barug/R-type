@@ -5,7 +5,7 @@ cmake_minimum_required(VERSION 3.5)
 function (client)
   project (client_rtype)
 
-  set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/gameLibs)
+  set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/client/gameLibs)
 
   include_directories(
     ${CMAKE_CURRENT_SOURCE_DIR}/client/includes
@@ -32,6 +32,8 @@ function (client)
     ${CMAKE_CURRENT_SOURCE_DIR}/client/srcs/coreGameLib.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/client/srcs/GuiSystem.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/client/srcs/SpriteComponent.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/client/srcs/PlayerInputSystem.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/client/srcs/PlayerInputComponent.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/client/srcs/RTypeUI.cpp
   )
 

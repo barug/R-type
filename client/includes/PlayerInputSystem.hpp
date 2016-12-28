@@ -3,6 +3,8 @@
 # define _PLAYER_INPUT_SYSTEM_HPP_
 
 # include "ASystem.hpp"
+# include "PlayerInputComponent.hpp"
+# include "PhysicComponent.hpp"
 # include "IGui.hpp"
 # include "GuiSystem.hpp"
 

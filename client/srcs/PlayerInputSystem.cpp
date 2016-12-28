@@ -3,34 +3,35 @@
 
 PlayerInputSystem::PlayerInputSystem(EntityManager &entityManager,
 				     MessageBus &MessageBus)
-  : _ASystem(entityManager, MessageBus),
+  : ASystem(entityManager, MessageBus),
     _lastKey(IGui::Key::NONE)
 {
-  loadMessageHandler(GuiSystem::Messages::KEY_INPUT_DATA, handleNewKeyInput);
-  int playerShipId = _entityManager.createEntity("PlayerShip");
-  PhysicComponent *physComp =
-    static_cast<PhysicComponent*>(_entityManager.getComponent(playerShipId,
-							      "PhysicComponent"));
-  SpriteComponent *spriteComp =
-    static_cast<SpriteComponent*>(_entityManager.getComponent(entityId,
-							      "SpriteComponent"));
-  PositionComponent *positionComp =
-    static_cast<PositionComponent*>(_entityManager.getComponent(entityId,
-							      "PositionComponent"));
-  positionComp.setX(10);
-  positionComp.setY(10);
-  physComp.setSpeedX(0);
-  physComp.setSpeedY(0);
-  physComp.setAccelerationX(0);
-  physComp.setAccelerationY(0);
-  spriteComp.setPath("../assets/sprites/r-typesheet1.gif");
+  // loadMessageHandler(GuiSystem::Messages::KEY_INPUT_DATA,
+  // 		     &PlayerInputSystem::handleNewKeyInput);
+  // int playerShipId = _entityManager.createEntity("PlayerShip");
+  // PhysicComponent *physComp =
+  //   static_cast<PhysicComponent*>(_entityManager.getComponent(playerShipId,
+  // 							      "PhysicComponent"));
+  // SpriteComponent *spriteComp =
+  //   static_cast<SpriteComponent*>(_entityManager.getComponent(entityId,
+  // 							      "SpriteComponent"));
+  // PositionComponent *positionComp =
+  //   static_cast<PositionComponent*>(_entityManager.getComponent(entityId,
+  // 							      "PositionComponent"));
+  // positionComp.setX(10);
+  // positionComp.setY(10);
+  // physComp.setSpeedX(0);
+  // physComp.setSpeedY(0);
+  // physComp.setAccelerationX(0);
+  // physComp.setAccelerationY(0);
+  // spriteComp.setPath("../assets/sprites/r-typesheet1.gif");
 }
 
 void		PlayerInputSystem::updateEntity(int entityId)
 {
-  PlayerInputComponent *inputComp =
-    static_cast<PlayerInputComponent*>(_entityManager.getComponent(entityId,
-								   "PlayerInputComponent"));
+  // PlayerInputComponent *inputComp =
+  //   static_cast<PlayerInputComponent*>(_entityManager.getComponent(entityId,
+  // 								   "PlayerInputComponent"));
   PhysicComponent *physComp =
     static_cast<PhysicComponent*>(_entityManager.getComponent(entityId,
 							      "PhysicComponent"));
