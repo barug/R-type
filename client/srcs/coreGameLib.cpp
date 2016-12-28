@@ -28,10 +28,7 @@ void	loadGameLibData(EntityManager &e, SystemManager &s, MessageBus &m)
   	      {"PhysicComponent", "PlayerInputComponent"},
   	      {});
   e.addEntityType("PlayerShip",
-		  e.getComponentMask("PositionComponent")
-		  | e.getComponentMask("PhysicComponent")
-		  | e.getComponentMask("PlayerInputComponent")
-		  | e.getComponentMask("SpriteComponent"));
+		  {"PositionComponent", "PhysicComponent", "PlayerInputComponent", "SpriteComponent"});
 }
 
 typedef void (*loaderPtr)(EntityManager &, SystemManager &, MessageBus &);
