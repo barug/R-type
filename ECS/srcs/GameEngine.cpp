@@ -5,7 +5,7 @@
 // Login   <mikaz3@epitech.net>
 //
 // Started on  Fri Nov 25 17:20:05 2016 Thomas Billot
-// Last update Wed Dec 28 18:52:29 2016 Thomas Billot
+// Last update Wed Dec 28 18:56:29 2016 Thomas Billot
 //
 
 #include <iostream>
@@ -15,9 +15,6 @@
 #elif defined(_WIN32)
 #endif
 #include "GameEngine.hpp"
-#include "PhysicComponent.hpp"
-#include "GraphicComponent.hpp"
-#include "Systems.hpp"
 
 GameEngine::GameEngine(const std::string &libsDir)
   : _messageBus(),
