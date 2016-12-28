@@ -1,7 +1,5 @@
-# include	<thread>
 # include	<iostream>
 # include	<unistd.h>
-# include	<cstring>
 
 # include	"RTypeServer.hpp"
 
@@ -28,9 +26,10 @@ const std::shared_ptr<RoomManager>  RTypeServer::getRoomManager() const
 void		RTypeServer::checkInput()
 {
   char		buff[5];
+  int		r;
 
-  std::memset(&buff, 0, 5);
-  read(STDIN_FILENO, buff, 4);
+  r = read(STDIN_FILENO, buff, 4);
+  buff[r] = 0;
 
   std::string	quit(buff);
   if (quit == "quit")

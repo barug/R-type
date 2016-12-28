@@ -1,20 +1,11 @@
 ## SERVER RTYPE ASKIP
 
+cmake_minimum_required(VERSION 3.5)
+
 function (server)
-  cmake_minimum_required(VERSION 3.5)
   project (server_rtype)
 
-  set (SERVER_RTYPE_VERSION_MAJOR 1)
-  set (SERVER_RTYPE_VERSION_MINOR 0)
-
-  set(CMAKE_CXX_FLAGS "-Wall -std=c++14 -g3 -O0")
-  set(CMAKE_CXX_STANDARD 14)
   set(CMAKE_INCLUDE_CURRENT_DIR ON)
-
-## Thread Flag
-
-  set(THREADS_PREFER_PTHREAD_FLAG ON)
-  find_package(Threads REQUIRED)
 
 ## Includes & Sources
 
@@ -78,5 +69,7 @@ function (server)
       ${INCLUDES_SERVER_RTYPE_UNIX}
     )
   ENDIF()
+
   target_link_libraries(server_rtype Threads::Threads)
+
 endfunction()
