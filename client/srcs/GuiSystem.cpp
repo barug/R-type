@@ -21,6 +21,7 @@ GuiSystem::~GuiSystem()
 
 void            GuiSystem::preRoutine(void)
 {
+  std::cout << "calling gui preroutine" << std::endl;
   _gui->clear();
   _gui->handleEvents();
   if (_gui->getKey() != IGui::Key::NONE)
