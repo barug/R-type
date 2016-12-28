@@ -49,9 +49,10 @@ GameEngine::GameEngine(const std::string &libsDir)
 
 void			GameEngine::loadLib(const std::string &libPath)
 {
-# if		defined(_WIN32) || defined(WIN32)
-#elif           defined(__GNUC__)
   std::size_t found = libPath.find_last_of(".");
+# if		defined(_WIN32) || defined(WIN32)
+  if (libPath.substr(found + 1) == "dll")
+#elif           defined(__GNUC__)
   if (libPath.substr(found + 1) == "so")
     {
       void (*fPtr)(EntityManager &,

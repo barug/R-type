@@ -5,6 +5,7 @@
 #include "PhysicComponent.hpp"
 #include "PhysicSystem.hpp"
 #include "GuiSystem.hpp"
+#include "coreGameLib.hpp"
 
 void	loadGameLibData(EntityManager &e, SystemManager &s, MessageBus &m)
 {
@@ -19,8 +20,6 @@ void	loadGameLibData(EntityManager &e, SystemManager &s, MessageBus &m)
 	      {"PhysicComponent", "PositionComponent"},
 	      {});
 }
-
-typedef void (*loaderPtr)(EntityManager &, SystemManager &, MessageBus &);
 
 extern "C"
 {

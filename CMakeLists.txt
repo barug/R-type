@@ -44,8 +44,8 @@ set(SOURCES_ECS
 )
 
 set(SOURCES_CLIENT
-  # ./src/Client/Main.cpp
-  # ./src/Client/Core.cpp
+  ./src/Client/Main.cpp
+  ./src/Client/Core.cpp
   ./src/Client/RTypeUI.cpp
   ./src/Client/RTypeClient.cpp
   ./src/Client/NetworkHandler.cpp

@@ -4,8 +4,11 @@
 #include "PhysicComponent.hpp"
 #include "PhysicSystem.hpp"
 
+typedef void (*loaderPtr)(EntityManager &, SystemManager &, MessageBus &);
 
-void	loadGameLibData(EntityManager &e, SystemManager &s)
+void	loadGameLibData(EntityManager &e, SystemManager &s, MessageBus &m);
+
+extern "C"
 {
-  
+  loaderPtr returnLoader();
 }
