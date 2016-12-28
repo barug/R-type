@@ -32,11 +32,9 @@ protected:
   
 public:
 
-  ASystem();
+  ASystem(EntityManager &entityManager, MessageBus &messageBus);
   virtual		~ASystem() {}
 
-  void			addEntityManager(EntityManager &entityManager);
-  void			addMessageBus(MessageBus &messageBus);
   void			addName(const std::string &name);
   void			addAffectedComponents(const std::vector<std::string> &affectedComponents);
   void			loadMessageHandler(int messageTypeId,

@@ -2,7 +2,8 @@
 
 #include "PhysicSystem.hpp"
 
-PhysicSystem::PhysicSystem()
+PhysicSystem::PhysicSystem(EntityManager &entityManager, MessageBus &messageBus)
+  : ASystem(entityManager, messageBus)
 {}
 
 void		PhysicSystem::updateEntity(int entityId)

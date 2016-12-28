@@ -20,8 +20,8 @@ class			EntityManager;
 class			SystemManager
 {
 
-  std::shared_ptr<EntityManager>	        _entityManager;
-  std::shared_ptr<MessageBus>			_messageBus;
+  EntityManager						&_entityManager;
+  MessageBus						&_messageBus;
   std::map<std::string, std::shared_ptr<ASystem> >	_systems;
   
 public:

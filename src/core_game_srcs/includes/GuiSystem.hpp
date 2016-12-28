@@ -27,7 +27,7 @@ public:
       KEY_INPUT_DATA
     };
   
-  explicit      GuiSystem();
+  explicit      GuiSystem(EntityManager &entityManager, MessageBus &messageBus);
   virtual       ~GuiSystem();
   virtual void  preRoutine(void);
   virtual void  updateEntity(int entityId);

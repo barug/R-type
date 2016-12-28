@@ -3,8 +3,9 @@
 # include "PositionComponent.hpp"
 # include "Window.hpp"
 
-GuiSystem::GuiSystem()
-  : _gui(new Window()),
+GuiSystem::GuiSystem(EntityManager &entityManager, MessageBus &messageBus)
+  : ASystem(entityManager, messageBus),
+    _gui(new Window()),
     _rtypeUI(*_gui),
     _ip(),
     _port(),
