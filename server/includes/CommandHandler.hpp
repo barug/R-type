@@ -36,7 +36,6 @@ private:
 				    int port,
 				    void * data = NULL,
 				    int size = 0);
-
   bool			checkId(const std::string & id);
 
   std::map< int, f >	_fptr;

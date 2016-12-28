@@ -1,12 +1,12 @@
 # ifdef		__unix__
-#ifndef			__UNIXSOCKET_HPP__
-# define		__UNIXSOCKET_HPP__
+#ifndef		__UNIXSOCKET_HPP__
+# define	__UNIXSOCKET_HPP__
 
-# include		<memory>
+# include	<memory>
 
-# include		"ISocket.hpp"
+# include	"ISocket.hpp"
 
-class			UnixSocket : public ISocket
+class		UnixSocket : public ISocket
 {
 
 public :
@@ -37,5 +37,5 @@ private :
 
 };
 
-# endif			// !__UNIXSOCKET_HPP__
+# endif		// !__UNIXSOCKET_HPP__
 # endif

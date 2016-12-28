@@ -1,5 +1,6 @@
 # include	<iostream>
 # include	<cstring>
+# include	<sstream>
 
 # include	"CommandHandler.hpp"
 
@@ -21,32 +22,30 @@ CommandHandler::~CommandHandler()
 
 bool	CommandHandler::execFuncByOperationCode(RTypeClient * client, Message * message)
 {
-  auto it = _fptr.find(message->getOperationCode());
+  auto	it = _fptr.find(message->getOperationCode());
 
   if (it == _fptr.end())
     return false;
   return appelDeFonctionMembre(*this, it->second)(client, message);
 }
 
-bool		CommandHandler::userLoggedIn(RTypeClient *, Message *message)
+bool	CommandHandler::userLoggedIn(RTypeClient *, Message *message)
 {
   std::cout << " \033[1;32m[+] Action 001 is managed\033[0m" << std::endl;
 
   return true;
 }
 
-bool	CommandHandler::listOfRoom(RTypeClient *client, Message *message)
+bool			CommandHandler::listOfRoom(RTypeClient *client, Message *message)
 {
   std::cout << " \033[1;32m[+] Action 002 is managed\033[0m" << std::endl;
 
-  // Message::ListOfRoom rooms;
-  // std::memcpy(&rooms, message->getData(), message->getSize());
+  std::stringstream	*ss = new std::stringstream (message->getData());
+  Message::ListOfRoom	rooms;
 
-  // std::cout << "Their is " << rooms._nbRoom << " rooms" << std::endl;
-  // for (auto it : rooms._listOfRoom)
-  //   std::cout << "Room : " << it._name
-  //	      << "With " << it._nbPlayer
-  //	      << " players" << std::endl;
+  std::memcpy(&rooms, ss->str().c_str(), ss->str().size());
+  std::cout << "Their is " << rooms._nbRoom << " rooms" << std::endl;
+
   return true;
 }
 
@@ -59,15 +58,14 @@ bool	CommandHandler::roomCreated(RTypeClient *client, Message *message)
   return true;
 }
 
-bool	CommandHandler::roomJoined(RTypeClient *client, Message *message)
+bool		CommandHandler::roomJoined(RTypeClient *client, Message *message)
 {
   std::cout << " \033[1;32m[+] Action 004 is managed\033[0m" << std::endl;
 
-  Message::Room room;
+  Message::Room	room;
   std::memcpy(&room, (void *)message->getData(), message->getSize());
 
-  std::cout << "Please connect on the new ip:port :\n\t"
-	    << room._ip
+  std::cout << "Please connect on the new port :\n\t"
 	    << room._port << std::endl;
 
   return true;
@@ -121,7 +119,7 @@ bool	CommandHandler::roomExist(RTypeClient *client, Message *message)
 {
   std::cout << " \033[1;31m[+] Action 203 is managed\033[0m" << std::endl;
 
-  std::cout << "Cannot creqte a room with this id;"
+  std::cout << "Cannot create a room with this id;"
 	    << " id already in use"
 	    << std::endl;
 

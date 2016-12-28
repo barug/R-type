@@ -1,20 +1,15 @@
-#ifndef			__WINSOCKET_HPP__
-# define		__WINSOCKET_HPP__
-
-# include		<memory>
-
 # ifdef		__unix__
 # elif		defined(_WIN32) || defined(WIN32)
+#ifndef		__WINSOCKET_HPP__
+# define	__WINSOCKET_HPP__
 
-# include	<iostream>
+# include	<memory>
 # include	<winsock2.h>
-
 # pragma	comment(lib,"ws2_32.lib") //Winsock Library
-# endif
 
-# include		"ISocket.hpp"
+# include	"ISocket.hpp"
 
-class			WinSocket : public ISocket
+class		WinSocket : public ISocket
 {
 
 public :
@@ -44,4 +39,5 @@ private :
 
 };
 
-# endif			// !__SOCKETWIN_HPP__
+# endif		// !__SOCKETWIN_HPP__
+# endif

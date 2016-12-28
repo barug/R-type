@@ -4,13 +4,13 @@
 
 # include	"RTypeServer.hpp"
 
-int		Usage(char *name)
+int	Usage(char *name)
 {
   std::cerr << "Usage:\n\t./" << name << " port " << std::endl;
   return 1;
 }
 
-bool		checkArgs(int ac, char **av)
+bool	checkArgs(int ac, char **av)
 {
   if (ac == 2)
     {
@@ -22,21 +22,19 @@ bool		checkArgs(int ac, char **av)
   return false;
 }
 
-int	       main(int ac, char **av)
+int					main(int ac, char **av)
 {
   if (checkArgs(ac, av))
-    {
-      try
-	{
-	  std::unique_ptr<RTypeServer> server = std::make_unique<RTypeServer> (atoi(av[1]));
-	  server->run();
-	  return 0;
-	}
-      catch (const std::string & e)
-	{
-	  std::cerr << e << std::endl;
-	  return -1;
-	}
-    }
+    try
+      {
+	std::unique_ptr<RTypeServer>	server = std::make_unique<RTypeServer> (atoi(av[1]));
+	server->run();
+	return 0;
+      }
+    catch (const std::string & e)
+      {
+	std::cerr << e << std::endl;
+	return -1;
+      }
   return Usage(av[0]);
 }

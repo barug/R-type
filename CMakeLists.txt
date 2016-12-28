@@ -9,31 +9,39 @@ set(CMAKE_CXX_FLAGS "-Wall -std=c++14 -g3 -O0")
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
-set(THREADS_PREFER_PTHREAD_FLAG ON)
-find_package(Threads REQUIRED)
-
-include_directories({CURRENT})
-include_directories(ECS/includes)
-
 set(SOURCES_SERVER
-  ./src/Server/Main.cpp
-  ./src/Server/RTypeServer.cpp
-  ./src/Server/Client.cpp
-  ./src/Server/Message.cpp
-  ./src/Server/UnixSocket.cpp
-  ./src/Server/WinSocket.cpp
-  ./src/Server/NetworkHandler.cpp
-  ./src/Server/Room.cpp
-  ./src/Server/RoomManager.cpp
-  ./src/Server/CommandHandler.cpp
-  ./src/Server/CommandHandlerGame.cpp
+  ./server/srcs/Main.cpp
+  ./server/srcs/RTypeServer.cpp
+  ./server/srcs/Client.cpp
+  ./server/srcs/Message.cpp
+  ./server/srcs/UnixSocket.cpp
+  ./server/srcs/WinSocket.cpp
+  ./server/srcs/NetworkHandler.cpp
+  ./server/srcs/Room.cpp
+  ./server/srcs/RoomManager.cpp
+  ./server/srcs/CommandHandler.cpp
+  ./server/srcs/CommandHandlerGame.cpp
+)
+
+set(INCLUDE_SERVER
+  ./server/includes/ISocket.hpp
+  ./server/includes/RTypeServer.hpp
+  ./server/includes/Client.hpp
+  ./server/includes/Message.hpp
+  ./server/includes/UnixSocket.hpp
+  ./server/includes/WinSocket.hpp
+  ./server/includes/NetworkHandler.hpp
+  ./server/includes/Room.hpp
+  ./server/includes/RoomManager.hpp
+  ./server/includes/CommandHandler.hpp
+  ./server/includes/CommandHandlerGame.hpp
 )
 
 set(SOURCES_CLIENT_WIN32
-  ./src/Client/WinSocket.cpp)
+  ./client/srcs/WinSocket.cpp)
 
 set(SOURCES_CLIENT_UNIX
-  ./src/Client/UnixSocket.cpp)
+  ./client/srcs/UnixSocket.cpp)
 
 set(SOURCES_ECS
 ./ECS/srcs/GameEngine.cpp
@@ -44,13 +52,13 @@ set(SOURCES_ECS
 )
 
 set(SOURCES_CLIENT
-  ./src/Client/Main.cpp
-  ./src/Client/Core.cpp
-  ./src/Client/RTypeUI.cpp
-  ./src/Client/RTypeClient.cpp
-  ./src/Client/NetworkHandler.cpp
-  ./src/Client/Message.cpp
-  ./src/Client/CommandHandler.cpp
+  ./client/srcs/Main.cpp
+  ./client/srcs/Core.cpp
+  ./client/srcs/RTypeUI.cpp
+  ./client/srcs/RTypeClient.cpp
+  ./client/srcs/NetworkHandler.cpp
+  ./client/srcs/Message.cpp
+  ./client/srcs/CommandHandler.cpp
 )
 
 set(SOURCES_MSFML
@@ -62,10 +70,13 @@ set(SOURCES_MSFML
   ./mSFML/Window.cpp
 )
 
+set(THREADS_PREFER_PTHREAD_FLAG ON)
+find_package(Threads REQUIRED)
+include_directories(${INCLUDE_SERVER})
 add_executable(RType_server WIN32 ${SOURCES_SERVER})
 target_link_libraries(RType_server Threads::Threads)
 
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/mSFML)
+include_directories("client/includes" "ECS/includes" ${CMAKE_CURRENT_SOURCE_DIR}/mSFML)
 IF (WIN32)
   add_executable(RType_client WIN32 ${SOURCES_CLIENT} ${SOURCES_MSFML} ${SOURCES_CLIENT_WIN32} ${SOURCES_ECS})
 ELSEIF (UNIX AND NOT MINGW)
