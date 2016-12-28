@@ -58,7 +58,8 @@ Copyright (c) 2016 8k Corporation and the persons identified as document authors
 6.3 End of Game .............................................7
 .in 1i
 6.4 Disconnection ...........................................7
-
+.in 1i
+6.5 Resume ..................................................8
 
 .tl '1.	Introduction'
 
@@ -184,18 +185,7 @@ struct		Header {
  int		size;
 .fi
 .in 0.50i
-}
-
-
-.fi
-.in 0.50i
-struct		Data {
-.fi
-.in 0.50i
  int		opCode;
-.fi
-.in 0.50i
- void*		data;
 .fi
 .in 0.50i
 }
@@ -205,15 +195,13 @@ struct		Data {
 struct		Entity {
 .fi
 .in 0.50i
+ string		name;
 .fi
 .in 0.50i
  int		pos_x;
 .fi
 .in 0.50i
  int		pos_y;
-.fi
-.in 0.50i
- string		name;
 .fi
 .in 0.50i
 }
@@ -226,7 +214,7 @@ struct		Entitys {
  int		nb;
 .fi
 .in 0.50i
- struct Entity*	Entitys;
+ vector<Entity>	Entitys;
 .fi
 .in 0.50i
 }
@@ -236,10 +224,19 @@ struct		Entitys {
 struct		Room {
 .fi
 .in 0.50i
+ string		ip;
+.fi
+.in 0.50i
+ int		port;
+.fi
+.in 0.50i
  string		name;
 .fi
 .in 0.50i
- vector<string>	Players;
+ int		nbPlayer;
+.fi
+.in 0.50i
+ vector<Entity>	Players;
 .fi
 .in 0.50i
 }
@@ -252,7 +249,7 @@ struct		ListRoom {
  int		nb;
 .fi
 .in 0.50i
- struct Room*	Rooms;
+ vector<Room>	Rooms;
 .fi
 .in 0.50i
 }
@@ -318,11 +315,11 @@ struct ListOfRoom
 
 .fi
 .in 0.75i
-[102]  <-- | CreateRoom : nameRoom
+[103]  <-- | CreateRoom : nameRoom
 
 .fi
 .in 0.75i
-[103]  <-- | JoinRoom : nameRoom
+[104]  <-- | JoinRoom : nameRoom
 
 .fi
 .in 0.75i
@@ -402,3 +399,74 @@ struct Room : Ip+Port
 .fi
 .in 0.85i
 [PlayerInfo Structure]
+
+.tl 'Billot_t'Standard Tracks'[Page 8]'
+.tl 'RFC 4242'RType Communication Protocol'November 2016'
+
+.tl '6.5	Resum
+
+.fi
+.in 0.75i
+Server Command
+.fi
+001 Logged In
+.fi
+002 List Of Room
+.fi
+003 Succefully Create Room
+.fi
+004 Succefully Joim Room
+.fi
+005
+.fi
+006
+.fi
+007
+.fi
+008
+.fi
+009
+
+.fi
+.in 0.75i
+User Command
+.fi
+101 Login
+.fi
+102 GetRoom
+.fi
+103 CreateRoom
+.fi
+104 JoinRoom
+.fi
+105
+.fi
+106
+.fi
+107
+.fi
+108
+.fi
+109
+
+.fi
+.in 0.75i
+Error Command
+.fi
+201 room dosen't exist
+.fi
+202 number Player Max
+.fi
+203 nimber room Max
+.fi
+204 illegage RoomId
+.fi
+205 id already in use
+.fi
+206
+.fi
+207
+.fi
+208
+.fi
+209

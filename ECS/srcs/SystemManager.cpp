@@ -13,14 +13,10 @@
 #include	"SystemManager.hpp"
 
 SystemManager::SystemManager(EntityManager &entityManager, MessageBus &messageBus)
-  : _systems()
-{
-  std::shared_ptr<EntityManager>	pEM(&entityManager);
-  std::shared_ptr<MessageBus>		pMB(&messageBus);
-
-  _entityManager = std::move(pEM);
-  _messageBus = std::move(pMB);
-}
+  : _entityManager(entityManager),
+    _messageBus(messageBus),
+    _systems()
+{}
 
 SystemManager::~SystemManager() {}
 
@@ -31,17 +27,15 @@ bool		SystemManager::addSystem(const std::shared_ptr<ASystem> &systemToAdd,
 {
   if (systemToAdd && !name.empty() && !affectedComponents.empty())
     {
-      systemToAdd->addEntityManager(_entityManager);
       systemToAdd->addName(name);
       systemToAdd->addAffectedComponents(affectedComponents);
-      systemToAdd->addMessageBus(_messageBus);
-      _messageBus->registerSystem(systemToAdd);
-      _messageBus->subscribeToMessage(name, MessageBus::ENTITY_CREATED);
-      _messageBus->subscribeToMessage(name, MessageBus::ENTITY_DESTROYED);
-      _messageBus->subscribeToMessage(name, MessageBus::ENTITY_COMPOSITION_CHANGED);
+      _messageBus.registerSystem(systemToAdd);
+      _messageBus.subscribeToMessage(name, MessageBus::ENTITY_CREATED);
+      _messageBus.subscribeToMessage(name, MessageBus::ENTITY_DESTROYED);
+      _messageBus.subscribeToMessage(name, MessageBus::ENTITY_COMPOSITION_CHANGED);
       for (int messageId: subscribedToMessages)
       	{
-      	  _messageBus->subscribeToMessage(name, messageId);
+      	  _messageBus.subscribeToMessage(name, messageId);
       	}
       _systems.emplace(systemToAdd->name(), std::move(systemToAdd));
       return true;
@@ -67,7 +61,7 @@ void		SystemManager::updateSystems()
        it != _systems.end();
        ++it)
     {
-      std::cout << "SystemManager::updating " << it->second->name() << std::endl;
+      // std::cout << "SystemManager::updating " << it->second->name() << std::endl;
       it->second->update();
     }
 }

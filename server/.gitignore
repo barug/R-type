@@ -3,5 +3,3 @@ CMakeCache.txt
 cmake_install.cmake
 Makefile
 server_rtype
-RType_client
-ECS/dynamicLibs/

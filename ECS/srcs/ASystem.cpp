@@ -2,20 +2,13 @@
 #include <iostream>
 #include "ASystem.hpp"
 
-ASystem::ASystem() : _affectedEntities()
+ASystem::ASystem(EntityManager &entityManager, MessageBus &messageBus)
+  : _entityManager(entityManager),
+    _messageBus(messageBus),
+    _affectedEntities()
 {
   loadMessageHandler(MessageBus::ENTITY_CREATED, &ASystem::handleEntityCreated);
   loadMessageHandler(MessageBus::ENTITY_DESTROYED, &ASystem::handleEntityDeleted);
-}
-
-void			ASystem::addEntityManager(const std::shared_ptr<EntityManager> &entityManager)
-{
-  _entityManager = entityManager;
-}
-
-void			ASystem::addMessageBus(const std::shared_ptr<MessageBus> &messageBus)
-{
-  _messageBus = messageBus;
 }
 
 void			ASystem::addName(const std::string &name)
@@ -27,7 +20,7 @@ void			ASystem::addAffectedComponents(const std::vector<std::string> &affectedCo
 {
   for(std::string affectedComponent: affectedComponents)
     {
-      _mask |= _entityManager->getComponentMask(affectedComponent);
+      _mask |= _entityManager.getComponentMask(affectedComponent);
     }
 }							
 
@@ -59,12 +52,14 @@ void			ASystem::handleMessage(int messageTypeId,
 
 void			ASystem::update()
 {
+  preRoutine();
   for (std::vector<int>::const_iterator it = _affectedEntities.begin();
        it != _affectedEntities.end();
        ++it)
     {
       updateEntity(*it);
     }
+  postRoutine();
 }
 
 void			ASystem::handleEntityCreated(void *messageData)

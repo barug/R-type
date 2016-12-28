@@ -13,10 +13,11 @@
 class				IDynamicLoader
 {
 public:
-  typedef int (*ptrToF)(EntityManager &, SystemManager&);
+  typedef void (*ptrToF)(EntityManager &, SystemManager&, MessageBus &);
   typedef ptrToF	(*f)();
+
   virtual ~IDynamicLoader() {}
-  virtual ptrToF load(const std::string &libName, const std::string &symName) = 0;
+  virtual ptrToF                load(const std::string &libName, const std::string &symName) = 0;
   virtual void			close(const std::string &symName) = 0;
 };
 
@@ -37,8 +38,16 @@ public:
     std::string			newLibName = libName;
     void			*handler = dlopen(newLibName.c_str(), RTLD_LAZY);
 
+    if (!handler)
+      {
+	std::cerr << "[DynamicLoader::Load] failure : " << dlerror() << std::endl;
+      }
     _hashHandler[symName] = handler;
-    std::cout << newLibName << std::endl;
+    std::cout << "trying to open: " << libName << std::endl;
+    std::cout << "newLibName: " << newLibName << std::endl;
+    std::cout << "symname: " << symName << std::endl;
+    std::cout << "libhandle: " << handler << std::endl;
+    std::cout << "pointer: " << dlsym(handler, symName.c_str()) << std::endl;
     if (!(fPtr = reinterpret_cast<f>(dlsym(handler, symName.c_str()))))
       {
 	std::cerr << "[DynamicLoader::Load] failure : " << dlerror() << std::endl;
@@ -76,7 +85,7 @@ public:
     _hashHandler[symName] = handler;
     if (!(fPtr = reinterpret_cast<f>(GetProcAddress((HINSTANCE)handler, symName.c_str()))))
       {
-		std::cerr << "[DynamicLoader::Load] failure : " << std::endl;
+        std::cerr << "[DynamicLoader::Load] failure : " << std::endl;
       }
     return fPtr();
   }

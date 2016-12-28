@@ -5,16 +5,13 @@ set(CMAKE_BUILD_TYPE Release)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/dynamicLibs)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/includes)
-add_library(myMonster SHARED srcs/MyMonster.cpp)
 set(SOURCES_ECS
-  ./srcs/main.cpp
-  ./srcs/GameEngine.cpp
-  ./srcs/EntityManager.cpp
-  ./srcs/SystemManager.cpp
-  ./srcs/PhysicSystem.cpp
-  ./srcs/GraphicSystem.cpp
-  ./srcs/MessageBus.cpp
-  ./srcs/ASystem.cpp)
+  ${CMAKE_CURRENT_SOURCE_DIR}/srcs/main.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/srcs/GameEngine.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/srcs/EntityManager.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/srcs/SystemManager.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/srcs/MessageBus.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/srcs/ASystem.cpp)
 add_executable(ecs ${SOURCES_ECS})
 IF (WIN32)
 ELSEIF (UNIX AND NOT MINGW)

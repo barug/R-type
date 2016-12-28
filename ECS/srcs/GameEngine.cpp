@@ -5,7 +5,7 @@
 // Login   <mikaz3@epitech.net>
 //
 // Started on  Fri Nov 25 17:20:05 2016 Thomas Billot
-// Last update Tue Dec 27 18:27:07 2016 Thomas Billot
+// Last update Wed Dec 28 18:52:29 2016 Thomas Billot
 //
 
 #include <iostream>
@@ -26,16 +26,15 @@ GameEngine::GameEngine(const std::string &libsDir)
 {
 # if		defined(_WIN32) || defined(WIN32)
   std::unique_ptr<IDynamicLoader> libLoader(new windowsDynamicLoader);
-#elif defined(__GNUC__)
+#elif           defined(__GNUC__)
   std::unique_ptr<IDynamicLoader> libLoader(new unixDynamicLoader);
-#endif
 
   _libLoader = std::move(libLoader);
   if (!libsDir.empty())
     {
-      DIR	*dir;
-      struct dirent *ent;
-      
+      DIR               *dir;
+      struct dirent     *ent;
+
       if ((dir = opendir(libsDir.c_str())) != NULL)
 	{
 	  while ((ent = readdir (dir)) != NULL)
@@ -48,17 +47,24 @@ GameEngine::GameEngine(const std::string &libsDir)
 	  closedir (dir);
 	}
     }
+#endif
 }
 
 void			GameEngine::loadLib(const std::string &libPath)
 {
   std::size_t found = libPath.find_last_of(".");
+# if		defined(_WIN32) || defined(WIN32)
+  if (libPath.substr(found + 1) == "dll")
+#elif           defined(__GNUC__)
   if (libPath.substr(found + 1) == "so")
     {
-      int (*fPtr)(EntityManager &, SystemManager &) = _libLoader->load(libPath, "returnLoader");
+      void (*fPtr)(EntityManager &,
+		   SystemManager &,
+		   MessageBus &) = _libLoader->load(libPath, "returnLoader");
 
-      fPtr(_entityManager, _systemManager);
+      fPtr(_entityManager, _systemManager, _messageBus);
     }
+#endif
 }
 
 GameEngine::~GameEngine()
@@ -66,22 +72,10 @@ GameEngine::~GameEngine()
 
 int			GameEngine::run(void)
 {
-  std::shared_ptr<ASystem>	sysPhysic = std::make_shared<PhysicSystem>();
-  std::shared_ptr<ASystem>	sysGraphic = std::make_shared<GraphicSystem>();
-  std::shared_ptr<ASystem>	sysInput = std::make_shared<InputSystem>();
-  
-  _systemManager.addSystem(sysPhysic, "PhysicSystem", { "MassComponent", "PositionComponent" }, {});
-  _systemManager.addSystem(sysGraphic, "GraphicSystem", { "MeshComponent" }, {});
-  _systemManager.addSystem(sysInput, "InputSystem", {"PositionComponent"}, {});
-  _entityManager.createEntity("MyMonster");
-  /*		       ^
-  ** REMOVE THIS AFTER | RESERVED FOR UNIT TESTS
-  */
-  
   bool			run = true;
   std::chrono::time_point<std::chrono::system_clock> now, then;
   then = std::chrono::system_clock::now();
-  
+
   while (run)
     {
       now = std::chrono::system_clock::now();
