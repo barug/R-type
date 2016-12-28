@@ -43,7 +43,7 @@ public:
       ENTITY_CREATED			= 0,
       ENTITY_DESTROYED			= 1,
       ENTITY_COMPOSITION_CHANGED	= 2,
-      END_OF_STANDARD_MESSAGES		= 10,
+      END_OF_STANDARD_MESSAGES		= 10
     };
 
   explicit MessageBus();
