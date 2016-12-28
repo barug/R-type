@@ -26,7 +26,7 @@ void	loadGameLibData(EntityManager &e, SystemManager &s, MessageBus &m)
   s.addSystem(std::make_shared<PlayerInputSystem>(e, m),
   	      "PlayerInputSystem",
   	      {"PhysicComponent", "PlayerInputComponent"},
-  	      {});
+  	      {GuiSystem::Messages::KEY_INPUT_DATA});
   e.addEntityType("PlayerShip",
 		  e.getComponentMask("PositionComponent")
 		  | e.getComponentMask("PhysicComponent")

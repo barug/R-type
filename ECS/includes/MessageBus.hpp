@@ -38,7 +38,7 @@ class					MessageBus
 
 public:
 
-  enum					standardMessages
+  enum					standardMessages : int
     {
       ENTITY_CREATED			= 0,
       ENTITY_DESTROYED			= 1,
@@ -50,6 +50,7 @@ public:
   ~MessageBus();
 
   void					registerSystem(std::shared_ptr<ASystem> systemToManage);
+  void					registerValidMessageId(int messageId);
   void					removeSystem(const std::string &name);
   void					post(const int messageTypeId,
 					     void *messageData);
