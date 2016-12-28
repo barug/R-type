@@ -1,12 +1,14 @@
 
 #include "PhysicComponent.hpp"
 
+const std::string PhysicComponent::name = "PhysicComponent";
+
 PhysicComponent::PhysicComponent()
 {}
 
-const std::string	PhysicComponent::name()
+const std::string	PhysicComponent::getName()
 {
-  return "PhysicComponent";
+  return PhysicComponent::name;
 }
 
 void			PhysicComponent::setSpeedX(int speedX)

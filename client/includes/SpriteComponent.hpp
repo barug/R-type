@@ -5,13 +5,15 @@
 
 class           SpriteComponent : public IComponent
 {
-  // static const std::string	name = ;
   std::string			_path;
   
 public:
+
+  static const std::string	name;
+  
   SpriteComponent();
   virtual ~SpriteComponent();
-  virtual const std::string     name();
+  virtual const std::string     getName();
   const std::string&            getPath() const;
   void				setPath(const std::string &path);
 };

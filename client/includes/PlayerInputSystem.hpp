@@ -13,6 +13,9 @@ class		PlayerInputSystem : public ASystem
   IGui::Key	_lastKey;
   
 public:
+
+  static const std::string	name;
+  
   PlayerInputSystem(EntityManager &entityManager, MessageBus &MessageBus);
   virtual void		preRoutine() {}
   virtual void		updateEntity(int entityId);

@@ -2,6 +2,8 @@
 
 #include "PhysicSystem.hpp"
 
+const std::string PhysicSystem::name = "PhysicSystem";
+
 PhysicSystem::PhysicSystem(EntityManager &entityManager, MessageBus &messageBus)
   : ASystem(entityManager, messageBus)
 {}

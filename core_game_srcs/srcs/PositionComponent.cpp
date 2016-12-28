@@ -1,12 +1,14 @@
 
 #include "PositionComponent.hpp"
 
+const std::string PositionComponent::name = "PositionComponent";
+
 PositionComponent::PositionComponent()
 {}
 
-const std::string	PositionComponent::name()
+const std::string	PositionComponent::getName()
 {
-  return "PositionComponent";
+  return PositionComponent::name;
 }
 
 void				PositionComponent::setX(int x)

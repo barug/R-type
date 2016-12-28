@@ -1,4 +1,7 @@
-# include       "SpriteComponent.hpp"
+
+#include       "SpriteComponent.hpp"
+
+const std::string SpriteComponent::name = "SpriteComponent";
 
 SpriteComponent::SpriteComponent()
 {}
@@ -6,9 +9,9 @@ SpriteComponent::SpriteComponent()
 SpriteComponent::~SpriteComponent()
 {}
 
-const std::string               SpriteComponent::name()
+const std::string               SpriteComponent::getName()
 {
-  return "SpriteComponent";
+  return SpriteComponent::name;
 }
 
 const std::string&              SpriteComponent::getPath() const

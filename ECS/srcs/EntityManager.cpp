@@ -8,6 +8,7 @@
 // Last update Wed Dec 28 20:01:02 2016 Thomas Billot
 //
 
+#include <exception>
 #include <iostream>
 #include <type_traits>
 #include <stdexcept>
@@ -36,12 +37,22 @@ void		EntityManager::addEntityType(const std::string &typeName, const std::vecto
     {
       mask |= getComponentMask(it);
     }
+  std::cout << "new entity type mask" << mask << std::endl;
   _entityTypes[typeName] = mask;
 }
 
 int				EntityManager::createEntity(const std::string &typeName)
 {
-  int typeMask = _entityTypes.at(typeName);
+  int typeMask;
+  std::cout << "map size: " << _entityTypes.size() << std::endl;
+  try {
+    typeMask = _entityTypes.at(typeName);
+  } catch (std::exception &e) {
+    
+    std::cout << "exception: " << e.what() << std::endl;
+  }
+
+  std::cout << "entity mask: " << typeMask << std::endl;
   
   for (unsigned int id = 0; id < EntityManager::_maxEntities; id++)
     {

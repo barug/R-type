@@ -11,24 +11,28 @@
 
 void	loadGameLibData(EntityManager &e, SystemManager &s, MessageBus &m)
 {
-  e.addComponentType<PositionComponent>("PositionComponent");
-  e.addComponentType<PhysicComponent>("PhysicComponent");
-  e.addComponentType<PlayerInputComponent>("PlayerInputComponent");
-  e.addComponentType<SpriteComponent>("SpriteComponent");
+  e.addComponentType<PositionComponent>(PositionComponent::name);
+  e.addComponentType<PhysicComponent>(PhysicComponent::name);
+  e.addComponentType<PlayerInputComponent>(PlayerInputComponent::name);
+  e.addComponentType<SpriteComponent>(SpriteComponent::name);
+  m.registerValidMessageId(GuiSystem::Messages::KEY_INPUT_DATA);
+  e.addEntityType("PlayerShip",
+		  {PositionComponent::name,
+		      PhysicComponent::name,
+		      PlayerInputComponent::name,
+		      SpriteComponent::name});
   s.addSystem(std::make_shared<GuiSystem>(e, m),
-	      "GuiSystem",
-	      {"SpriteComponent", "PositionComponent"},
+	      GuiSystem::name,
+	      {SpriteComponent::name, PositionComponent::name},
 	      {});
   s.addSystem(std::make_shared<PhysicSystem>(e, m),
-	      "PhysicSystem",
-	      {"PhysicComponent", "PositionComponent"},
+	      PhysicSystem::name,
+	      {PhysicComponent::name, PositionComponent::name},
 	      {});
   s.addSystem(std::make_shared<PlayerInputSystem>(e, m),
-  	      "PlayerInputSystem",
-  	      {"PhysicComponent", "PlayerInputComponent"},
+  	      PlayerInputSystem::name,
+  	      {PhysicComponent::name, PlayerInputComponent::name},
   	      {GuiSystem::Messages::KEY_INPUT_DATA});
-  e.addEntityType("PlayerShip",
-		  {"PositionComponent", "PhysicComponent", "PlayerInputComponent", "SpriteComponent"});
 }
 
 typedef void (*loaderPtr)(EntityManager &, SystemManager &, MessageBus &);

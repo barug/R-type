@@ -4,14 +4,16 @@
 #include "SpriteComponent.hpp"
 #include <iostream>
 
+const std::string PlayerInputSystem::name = "PlayerInputSystem";
+
 PlayerInputSystem::PlayerInputSystem(EntityManager &entityManager,
 				     MessageBus &MessageBus)
   : ASystem(entityManager, MessageBus),
     _lastKey(IGui::Key::NONE)
 {
-  // loadMessageHandler(GuiSystem::Messages::KEY_INPUT_DATA,
-  // 		     static_cast<message_handler>(&PlayerInputSystem::handleNewKeyInput));
-  // int playerShipId = _entityManager.createEntity("PlayerShip");
+  loadMessageHandler(GuiSystem::Messages::KEY_INPUT_DATA,
+  		     static_cast<message_handler>(&PlayerInputSystem::handleNewKeyInput));
+  int playerShipId = _entityManager.createEntity("PlayerShip");
   // std::cout << "created ship with id: " << playerShipId << std::endl;
   // PhysicComponent *physComp =
   //   static_cast<PhysicComponent*>(_entityManager.getComponent(playerShipId,
