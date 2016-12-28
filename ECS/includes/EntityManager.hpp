@@ -53,6 +53,7 @@ public:
       {
 	*it = std::unique_ptr<IComponent>(new ComponentType);
       }
+    createComponentMask(name);
     _components[name] = componentPool;
   }
   
