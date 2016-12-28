@@ -5,7 +5,7 @@ cmake_minimum_required(VERSION 3.5)
 function (client)
   project (client_rtype)
 
-  set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/gameLibs)
+  set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/client/gameLibs)
 
   include_directories(
     ${CMAKE_CURRENT_SOURCE_DIR}/client/includes
@@ -29,9 +29,11 @@ function (client)
     ${CORE_GAME_LIB_DIRECTORY}/srcs/PhysicSystem.cpp
     ${CORE_GAME_LIB_DIRECTORY}/srcs/PhysicComponent.cpp
     ${CORE_GAME_LIB_DIRECTORY}/srcs/PositionComponent.cpp
-    ${CORE_GAME_LIB_DIRECTORY}/srcs/coreGameLib.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/client/srcs/coreGameLib.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/client/srcs/GuiSystem.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/client/srcs/SpriteComponent.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/client/srcs/PlayerInputSystem.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/client/srcs/PlayerInputComponent.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/client/srcs/RTypeUI.cpp
   )
 

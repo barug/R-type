@@ -7,10 +7,8 @@
 class			PlayerInputComponent : public IComponent
 {
 public:
+  PlayerInputComponent();
   virtual const std::string		name();
-}
+};
 
 #endif /* !_PLAYER_INPUT_COMPONENT_HPP_ */
-
-
-

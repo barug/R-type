@@ -30,6 +30,7 @@ void            GuiSystem::preRoutine(void)
 
 void            GuiSystem::updateEntity(int entityId)
 {
+  std::cout << "updating entity: " << entityId << std::endl;
   SpriteComponent *spriteComponent =
     static_cast<SpriteComponent*>(_entityManager.getComponent(entityId, "SpriteComponent"));
   PositionComponent *positionComponent =
