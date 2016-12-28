@@ -14,14 +14,15 @@ GuiSystem::GuiSystem(EntityManager &entityManager, MessageBus &messageBus)
                      {RTypeUI::Context::WaitingRoom,             &GuiSystem::_handleWaitingRoom},
                      {RTypeUI::Context::Game,                    &GuiSystem::_handleGame},
                      {RTypeUI::Context::Loading,                 &GuiSystem::_handleLoading}})
-{}
+{
+  std::cout << "construction" << std::endl;
+}
 
 GuiSystem::~GuiSystem()
 {}
 
 void            GuiSystem::preRoutine(void)
 {
-  std::cout << "calling gui preroutine" << std::endl;
   _gui->clear();
   _gui->handleEvents();
   if (_gui->getKey() != IGui::Key::NONE)
