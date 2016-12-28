@@ -22,10 +22,7 @@ void	loadGameLibData(EntityManager &e, SystemManager &s, MessageBus &m)
 
 typedef void (*loaderPtr)(EntityManager &, SystemManager &, MessageBus &);
 
-extern "C"
+extern "C" loaderPtr returnLoader()
 {
-  loaderPtr returnLoader()
-  {
-    return loadGameLibData;
-  }
+  return loadGameLibData;
 }

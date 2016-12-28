@@ -36,7 +36,16 @@ public:
     std::string			newLibName = libName;
     void			*handler = dlopen(newLibName.c_str(), RTLD_LAZY);
 
+    if (!handler)
+      {
+	std::cerr << "[DynamicLoader::Load] failure : " << dlerror() << std::endl;
+      }
     _hashHandler[symName] = handler;
+    std::cout << "trying to open: " << libName << std::endl;
+    std::cout << "newLibName: " << newLibName << std::endl;
+    std::cout << "symname: " << symName << std::endl;
+    std::cout << "libhandle: " << handler << std::endl;
+    std::cout << "pointer: " << dlsym(handler, symName.c_str()) << std::endl;
     if (!(fPtr = reinterpret_cast<f>(dlsym(handler, symName.c_str()))))
       {
 	std::cerr << "[DynamicLoader::Load] failure : " << dlerror() << std::endl;
