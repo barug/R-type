@@ -29,8 +29,8 @@ GameEngine::GameEngine(const std::string &libsDir)
   _libLoader = std::move(libLoader);
   if (!libsDir.empty())
     {
-      DIR	*dir;
-      struct dirent *ent;
+      DIR               *dir;
+      struct dirent     *ent;
 
       if ((dir = opendir(libsDir.c_str())) != NULL)
 	{
@@ -49,6 +49,8 @@ GameEngine::GameEngine(const std::string &libsDir)
 
 void			GameEngine::loadLib(const std::string &libPath)
 {
+# if		defined(_WIN32) || defined(WIN32)
+#elif           defined(__GNUC__)
   std::size_t found = libPath.find_last_of(".");
   if (libPath.substr(found + 1) == "so")
     {
@@ -58,6 +60,7 @@ void			GameEngine::loadLib(const std::string &libPath)
 
       fPtr(_entityManager, _systemManager, _messageBus);
     }
+#endif
 }
 
 GameEngine::~GameEngine()
