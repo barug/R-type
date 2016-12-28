@@ -14,9 +14,7 @@ GuiSystem::GuiSystem(EntityManager &entityManager, MessageBus &messageBus)
                      {RTypeUI::Context::WaitingRoom,             &GuiSystem::_handleWaitingRoom},
                      {RTypeUI::Context::Game,                    &GuiSystem::_handleGame},
                      {RTypeUI::Context::Loading,                 &GuiSystem::_handleLoading}})
-{
-  std::cout << "construction" << std::endl;
-}
+{}
 
 GuiSystem::~GuiSystem()
 {}
