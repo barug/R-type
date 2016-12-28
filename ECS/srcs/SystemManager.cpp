@@ -61,7 +61,7 @@ void		SystemManager::updateSystems()
        it != _systems.end();
        ++it)
     {
-      std::cout << "SystemManager::updating " << it->second->name() << std::endl;
+      // std::cout << "SystemManager::updating " << it->second->name() << std::endl;
       it->second->update();
     }
 }

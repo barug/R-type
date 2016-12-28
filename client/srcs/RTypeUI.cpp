@@ -8,7 +8,9 @@
 RTypeUI::RTypeUI(IGui &gui) : _gui(gui),
                               _timer(new Timer),
                               _context(RTypeUI::Context::Introduction)
-{}
+{
+  std::cout << "constructing rtypeUi" << std::endl;
+}
 
 RTypeUI::~RTypeUI()
 {}
