@@ -21,6 +21,7 @@ GameEngine::GameEngine(const std::string &libsDir)
     _entityManager(_messageBus),
     _systemManager(_entityManager, _messageBus)
 {
+  std::cout << "entering game engine constructor" << std::endl;
 # if		defined(_WIN32) || defined(WIN32)
   std::unique_ptr<IDynamicLoader> libLoader(new windowsDynamicLoader);
 #elif           defined(__GNUC__)
@@ -44,6 +45,7 @@ GameEngine::GameEngine(const std::string &libsDir)
 	  closedir (dir);
 	}
     }
+  std::cout << "exiting game engine constructor" << std::endl;
 #endif
 }
 
@@ -55,11 +57,13 @@ void			GameEngine::loadLib(const std::string &libPath)
 #elif           defined(__GNUC__)
   if (libPath.substr(found + 1) == "so")
     {
+      std::cout << "trying to load lib" << std::endl;
       void (*fPtr)(EntityManager &,
 		   SystemManager &,
 		   MessageBus &) = _libLoader->load(libPath, "returnLoader");
 
       fPtr(_entityManager, _systemManager, _messageBus);
+      std::cout << "succeded in loading lib" << std::endl;
     }
 #endif
 }

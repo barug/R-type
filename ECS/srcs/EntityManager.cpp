@@ -24,7 +24,9 @@ EntityManager::EntityManager(MessageBus &messageBus)
 }
 
 EntityManager::~EntityManager()
-{}
+{
+  std::cout << "really destroying entity Manager!!!!!!!!" << std::endl;
+}
 
 void		EntityManager::addEntityType(const std::string &typeName, int mask)
 {
