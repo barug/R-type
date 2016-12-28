@@ -19,7 +19,7 @@ public:
   PlayerInputSystem(EntityManager &entityManager, MessageBus &MessageBus);
   virtual void		preRoutine() {}
   virtual void		updateEntity(int entityId);
-  virtual void		postRoutine() {}
+  virtual void		postRoutine();
   void			handleNewKeyInput(void *messageData);
 };
 

@@ -44,19 +44,26 @@ void		PlayerInputSystem::updateEntity(int entityId)
 
   physComp->setAccelerationX(0);
   physComp->setAccelerationY(0);
-  if (_lastKey == IGui::Key::K_Z)
-    physComp->setAccelerationY(-10);
-  if (_lastKey == IGui::Key::K_S)
-    physComp->setAccelerationY(10);
-  if (_lastKey == IGui::Key::K_Q)
-    physComp->setAccelerationX(-10);
-  if (_lastKey == IGui::Key::K_D)
-    physComp->setAccelerationY(10);
+  if (_lastKey == IGui::Key::UP)
+    physComp->setAccelerationY(-1);
+  if (_lastKey == IGui::Key::DOWN)
+    physComp->setAccelerationY(1);
+  if (_lastKey == IGui::Key::LEFT)
+    physComp->setAccelerationX(-1);
+  if (_lastKey == IGui::Key::RIGHT)
+    physComp->setAccelerationX(1);
 }
+
+void		PlayerInputSystem::postRoutine()
+{
+  _lastKey = IGui::Key::NONE;
+}
+
 
 void		PlayerInputSystem::handleNewKeyInput(void *messageData)
 {
   IGui::Key	*key = static_cast<IGui::Key*>(messageData);
 
+  std::cout << "getting new input message" << std::endl;
   _lastKey = *key;
 }
