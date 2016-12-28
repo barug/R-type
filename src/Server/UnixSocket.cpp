@@ -11,30 +11,31 @@ UnixSocket::UnixSocket(const std::string& ip, int port) :
   _ip(ip),
   _port(port),
   _fd(),
-  _tv(),
+  _tv({1, 0}),
   _readFd(),
   _fds(),
   _nbFds(0)
 {
   struct sockaddr_in	s_in = { 0, 0, 0, 0, 0, 0, 0, 0 };
+  socklen_t		addressLength = sizeof(s_in);
 
   s_in.sin_family = AF_INET;
   s_in.sin_addr.s_addr = inet_addr(_ip.c_str());
   s_in.sin_port = htons(_port);
-  if ( (_fd = socket(s_in.sin_family, SOCK_DGRAM, 0)) == -1 ||
-       (bind(_fd, (struct sockaddr *)&s_in, sizeof(s_in)) == -1) )
-    {
-      if (_fd != -1)
-	close(_fd); //cannot create socket; throw ?
-      // cannot bind socket; throw ?
-    }
-  _tv.tv_usec = 500;
-  _tv.tv_sec = 0;
 
-  _ip = inet_ntoa(s_in.sin_addr);
-  _port = ntohs(s_in.sin_port);
+  if ( (_fd = socket(s_in.sin_family, SOCK_DGRAM, 0)) == -1 )
+    throw std::string("Error ! Cannot creat the socket.");
+  else if (bind(_fd, (struct sockaddr *)&s_in, sizeof(s_in)) == -1)
+    {
+      close(_fd);
+      throw std::string("Error ! Cannot bind the socket.");
+    }
+
+  getsockname(_fd, (struct sockaddr*)&s_in, &addressLength);
 
   _fds[_nbFds++] =_fd;
+  _ip = inet_ntoa(s_in.sin_addr); //review ip
+  _port = ntohs(s_in.sin_port);
 }
 
 UnixSocket::~UnixSocket()

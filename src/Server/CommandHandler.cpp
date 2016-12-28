@@ -1,7 +1,7 @@
 # include	<iostream>
 # include	<sstream>
 
-# include	<string.h> // memcpy; but stringstream is better nah ?
+# include	<string.h>
 
 # include	"CommandHandler.hpp"
 
@@ -63,7 +63,8 @@ bool			CommandHandler::listOfRoom(RTypeServer *server,
     = std::make_shared<Message::ListOfRoom>();
   std::stringstream ss;
 
-  listOfRoom->_nbRoom = 0;
+  listOfRoom->_nbRoom = server->getRoomManager()->getRoomNumber();
+  ss.write((char *) listOfRoom.get(), sizeof( *(listOfRoom.get()) ) );
 
   for (auto it : server->getRoomManager()->getGameRooms())
     {
@@ -73,23 +74,18 @@ bool			CommandHandler::listOfRoom(RTypeServer *server,
       roomData->_name = it.second->getName();
       roomData->_ip = it.second->getSocket()->getIp();
       roomData->_port = it.second->getSocket()->getPort();
-      roomData->_nbPlayer = 0;
+      roomData->_nbPlayer = it.second->getNbPlayers();
+      ss.write((char *) roomData.get(), sizeof( *(roomData.get()) ) );
 
       for (auto it2 : it.second->getPlayers())
 	{
-	  std::shared_ptr<Message::Entity> Entity = std::make_shared<Message::Entity>();
-	  Entity->_name = it2.second->getIp() + ":" + std::to_string(it2.second->getPort());
-	  // Entity->_pos_x = ;
-	  // Entity->_pos_y = ;
-	  roomData->_players.push_back( *(Entity.get() ) );
-	  roomData->_nbPlayer++;
+	  std::shared_ptr<Message::Entity> entity = std::make_shared<Message::Entity>();
+	  entity->_name = it2.second->getIp() + ":" + std::to_string(it2.second->getPort());
+	  // entity->_pos_x = ;
+	  // entity->_pos_y = ;
+	  ss.write((char *) entity.get(), sizeof( *(entity.get()) ) );
 	}
-
-      listOfRoom->_listOfRoom.push_back( *(roomData.get() ) );
-      listOfRoom->_nbRoom++;
-
     }
-  ss.write((char *) listOfRoom.get(), sizeof( *(listOfRoom.get()) ) ); // define size
 
   this->sendMessage(server, 2, client.getIp(), client.getPort(),
 		    (void *)ss.str().c_str(), ss.str().size());
@@ -159,18 +155,18 @@ bool		CommandHandler::joinRoom(RTypeServer *server,
 	  roomData->_name = room->getName();
 	  roomData->_ip = room->getSocket()->getIp();
 	  roomData->_port = room->getSocket()->getPort();
-	  roomData->_nbPlayer = 0;
+	  roomData->_nbPlayer = room->getNbPlayers();
+	  ss.write((char *) roomData.get(), sizeof(*(roomData.get())));
 
 	  for (auto it : room->getPlayers())
 	    {
-	      std::shared_ptr<Message::Entity> Entity = std::make_shared<Message::Entity>();
-	      Entity->_name = it.second->getIp() + ":" + std::to_string(it.second->getPort());
-	      // Entity->_pos_x = ;
-	      // Entity->_pos_y = ;
-	      roomData->_players.push_back( *(Entity.get() ) );
-	      roomData->_nbPlayer++;
+	      std::shared_ptr<Message::Entity> entity = std::make_shared<Message::Entity>();
+	      entity->_name = it.second->getIp() + ":" + std::to_string(it.second->getPort());
+	      // entity->_pos_x = ;
+	      // entity->_pos_y = ;
+	      ss.write((char *) entity.get(), sizeof(*(roomData.get())));
 	    }
-	  ss.write((char *) roomData.get(), sizeof(*(roomData.get())));
+
 	  this->sendMessage(server, 4, client.getIp(), client.getPort(),
 			    (void *)ss.str().c_str(), ss.str().size());
 	  return true;

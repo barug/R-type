@@ -40,11 +40,7 @@ Message::Message(const ISocket::Datagram& data) :
   std::cout << "Header = [" << _size
 	    << "] [" << _operationCode
 	    << "]" << std::endl;
-  std::cout << "Data = [ \nData Message.cpp (serialized)";
-  if (_size)
-    for (int i = 0; i < _size; i++)
-      printf("[%c]", _data[i]);
-  std::cout << "\nData Serialized ";
+  std::cout << "Data = [\n";
   for (unsigned int i = 0; i < data._lenght; i++)
     printf("[%c]", data._data[i]);
   std::cout << "\n] ]" << std::endl;
@@ -109,20 +105,9 @@ std::shared_ptr<ISocket::Datagram>	Message::createDatagram()
   std::cout << "Header = [" << header._size
 	    << "] [" << header._opCode
 	    << "]" << std::endl;
-  std::cout << "Data = [ ";
-  if (header._size)
-    {
-      std::cout << "\nData Message.cpp ";
-      for (int i = 0; i < header._size; i++)
-	printf("[%c]", _data[i]);
-      std::cout << "\nData Serialized ";
-      for (int i = 0; i < header._size; i++)
-	printf("[%c]", datagram->_data[i + SIZE_HEADER]);
-    }
-  std::cout << "\nData Send";
+  std::cout << "Data = [\n";
   for (unsigned int i = 0; i < datagram->_lenght; i++)
     printf("[%c]", datagram->_data[i]);
-
   std::cout <<  "\n] ]" << std::endl;
 
   return datagram;

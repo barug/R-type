@@ -44,7 +44,9 @@ bool	CommandHandler::listOfRoom(RTypeClient *client, Message *message)
 
   // std::cout << "Their is " << rooms._nbRoom << " rooms" << std::endl;
   // for (auto it : rooms._listOfRoom)
-  //   std::cout << it._name << std::endl;
+  //   std::cout << "Room : " << it._name
+  //	      << "With " << it._nbPlayer
+  //	      << " players" << std::endl;
   return true;
 }
 

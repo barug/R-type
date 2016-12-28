@@ -11,19 +11,21 @@ WinSocket::WinSocket(const std::string& ip, int port) :
   _ip(ip),
   _port(port),
   _fd(),
-  _tv(),
+  _tv({1, 0}),
   _readFd(),
   _fds(),
   _nbFds(0)
 {
   SOCKADDR_IN		s_in = { 0, 0, 0, 0, 0, 0, 0, 0 };
+  SOCKLEN_T_t		addressLength = sizeof(s_in);
   WSADATA		wsa;
 
   s_in.sin_family = AF_INET;
   s_in.sin_addr.s_addr = inet_addr(_ip.c_str());
   s_in.sin_port = htons(_port);
+
   if (WSAStartup(MAKEWORD(2,2),&wsa) < 0)
-    {/* cannot Initialise winsock; throw ? */}
+    throw std::string("Error ! Cannot creat the socket.");
   else if((_fd = socket(s_in.sin_family, SOCK_DGRAM , 0 )) == INVALID_SOCKET ||
 	  (bind(_fd, (struct sockaddr*)&s_in, sizeof(s_in)) == SOCKET_ERROR) )
     {
@@ -31,19 +33,17 @@ WinSocket::WinSocket(const std::string& ip, int port) :
 	{
 	  closesocket(_fd);
 	  WSACleanup();
-	  // cannot create socket; throw ?
+	  throw std::string("Error ! Cannot bind the socket.");
 	}
       WSACleanup();
-      // cannot bind socket; throw ?
+      throw std::string("Error ! Cannot create the socket.");
     }
-  _tv.tv_usec = 500;
-  _tv.tv_sec = 0;
 
+  getsockname(_fd, (SOCKADDR *)&s_in, &addressLength);
+
+  _fds[_nbFds++] =_fd;
   _ip = inet_ntoa(s_in.sin_addr);
   _port = ntohs(s_in.sin_port);
-
-  _fds[0] =_fd;
-  _nbFds = 1;
 }
 
 WinSocket::~WinSocket()

@@ -12,8 +12,8 @@ RoomManager::RoomManager(std::shared_ptr<NetworkHandler> networkHandler) :
 {
   for (int i = 0; i < MAX_ROOM; i++)
     {
-      _gameRooms.insert( std::make_pair( std::to_string( i ),
-					 std::make_shared< Room >( std::to_string( i ) ) ) );
+      _gameRooms.insert( std::make_pair( "Room " + std::to_string( i ),
+					 std::make_shared< Room >( "Room " + std::to_string( i ) ) ) );
       _roomNumber++;
     }
 }

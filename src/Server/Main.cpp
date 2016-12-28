@@ -26,9 +26,17 @@ int	       main(int ac, char **av)
 {
   if (checkArgs(ac, av))
     {
-      std::unique_ptr<RTypeServer> server = std::make_unique<RTypeServer> (atoi(av[1]));
-      server->run();
-      return 0;
+      try
+	{
+	  std::unique_ptr<RTypeServer> server = std::make_unique<RTypeServer> (atoi(av[1]));
+	  server->run();
+	  return 0;
+	}
+      catch (const std::string & e)
+	{
+	  std::cerr << e << std::endl;
+	  return -1;
+	}
     }
   return Usage(av[0]);
 }
