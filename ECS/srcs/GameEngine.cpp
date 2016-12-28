@@ -52,9 +52,11 @@ void			GameEngine::loadLib(const std::string &libPath)
   std::size_t found = libPath.find_last_of(".");
   if (libPath.substr(found + 1) == "so")
     {
-      int (*fPtr)(EntityManager &, SystemManager &) = _libLoader->load(libPath, "returnLoader");
+      int (*fPtr)(EntityManager &,
+		  SystemManager &,
+		  MessageBus &) = _libLoader->load(libPath, "returnLoader");
 
-      fPtr(_entityManager, _systemManager);
+      fPtr(_entityManager, _systemManager, _messageBus);
     }
 }
 
@@ -67,7 +69,6 @@ int			GameEngine::run(void)
   std::chrono::time_point<std::chrono::system_clock> now, then;
   then = std::chrono::system_clock::now();
 
-  int i = 0;
   while (run)
     {
       now = std::chrono::system_clock::now();

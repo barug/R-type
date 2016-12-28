@@ -14,13 +14,11 @@
 #include "EntityManager.hpp"
 
 EntityManager::EntityManager(MessageBus &messageBus)
-  : _entities(),
+  : _messageBus(messageBus),
+    _entities(),
     _componentMasks(),
     _components()
 {
-  std::shared_ptr<MessageBus>	pMB(&messageBus);
-
-  _messageBus = std::move(pMB);
   for (unsigned int id = 0; id < EntityManager::_maxEntities; id++)
     _entities[id] = eState::NONE;
 }
@@ -43,7 +41,7 @@ int				EntityManager::createEntity(const std::string &typeName)
 	{
 	  _entities[id] = eState::USED;
 	  _typeOfEntities[id] = typeMask;
-	  _messageBus->post(MessageBus::ENTITY_CREATED, new int(id));
+	  _messageBus.post(MessageBus::ENTITY_CREATED, new int(id));
 	  return id;
 	}
     }
@@ -53,7 +51,7 @@ int				EntityManager::createEntity(const std::string &typeName)
 void				EntityManager::deleteEntity(int id)
 {
   _entities[id] = eState::NONE;
-  _messageBus->post(MessageBus::ENTITY_DESTROYED, new int(id));
+  _messageBus.post(MessageBus::ENTITY_DESTROYED, new int(id));
 }
 
 int				EntityManager::createComponentMask(const std::string &name)

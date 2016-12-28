@@ -9,7 +9,7 @@
 class			PhysicSystem : public ASystem
 {
 public:
-  PhysicSystem();
+  PhysicSystem(EntityManager &entityManager, MessageBus &messageBus);
   virtual void		preRoutine() {};
   virtual void		updateEntity(int entityId);
   virtual void		postRoutine() {};
