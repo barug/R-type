@@ -7,7 +7,7 @@ PlayerInputSystem::PlayerInputSystem(EntityManager &entityManager,
     _lastKey(IGui::Key::NONE)
 {
   // loadMessageHandler(GuiSystem::Messages::KEY_INPUT_DATA,
-  // 		     &PlayerInputSystem::handleNewKeyInput);
+  // 		     static_cast<message_handler>(&PlayerInputSystem::handleNewKeyInput));
   // int playerShipId = _entityManager.createEntity("PlayerShip");
   // PhysicComponent *physComp =
   //   static_cast<PhysicComponent*>(_entityManager.getComponent(playerShipId,
