@@ -14,7 +14,7 @@ int			main()
 {
   try
     {
-      GameEngine		g("./mods/");
+      GameEngine		g("./gameLibs/");
       g.run();
     }
   catch (const std::exception &e)
