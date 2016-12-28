@@ -13,4 +13,4 @@ set(SOURCES_CLIENT
   ./srcs/PositionComponent.cpp
   ./srcs/SpriteComponent.cpp
   ./srcs/coreGameLib.cpp)
-add_library(ecs ${SOURCES_CLIENT})
+add_library(ecs SHARED ${SOURCES_CLIENT})
