@@ -14,8 +14,9 @@ class				IDynamicLoader
 public:
   typedef void (*ptrToF)(EntityManager &, SystemManager&, MessageBus &);
   typedef ptrToF	(*f)();
+
   virtual ~IDynamicLoader() {}
-  virtual ptrToF load(const std::string &libName, const std::string &symName) = 0;
+  virtual ptrToF                load(const std::string &libName, const std::string &symName) = 0;
   virtual void			close(const std::string &symName) = 0;
 };
 
@@ -83,7 +84,7 @@ public:
     _hashHandler[symName] = handler;
     if (!(fPtr = reinterpret_cast<f>(GetProcAddress((HINSTANCE)handler, symName.c_str()))))
       {
-		std::cerr << "[DynamicLoader::Load] failure : " << std::endl;
+        std::cerr << "[DynamicLoader::Load] failure : " << std::endl;
       }
     return fPtr();
   }
