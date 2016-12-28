@@ -27,13 +27,9 @@ const std::map< std::string, std::shared_ptr< Client > >&	NetworkHandler::getCli
   return _client;
 }
 
-# include <iostream>
-
 Client*		NetworkHandler::addClient(const std::string& key, const std::string& ip, int port)
 {
   auto		it = _client.find(key);
-
-  std::cout << " [+] New player in tows " << ip << ":" << port << std::endl;
 
   if (it == _client.end())
     _client.insert(std::make_pair(key, std::make_shared<Client>(ip, port)));

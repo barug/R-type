@@ -47,11 +47,11 @@ std::shared_ptr< ISocket >	Room::getSocket() const
   return _socket;
 }
 
-bool	Room::addPlayer(const Client& clicli)
+bool		Room::addPlayer(const Client& clicli)
 {
   _locker.try_lock();
 
-  std::string id = clicli.getIp() + ":" + std::to_string(clicli.getPort());
+  std::string	id = clicli.getIp() + ":" + std::to_string(clicli.getPort());
   auto it = _players.find(id);
   if (_nbPlayers == 4 || it != _players.end())
     {
@@ -67,11 +67,11 @@ bool	Room::addPlayer(const Client& clicli)
   return true;
 }
 
-bool	Room::removePlayer(const Client& clicli)
+bool		Room::removePlayer(const Client& clicli)
 {
   _locker.try_lock();
 
-  std::string id = clicli.getIp() + ":" + std::to_string(clicli.getPort());
+  std::string	id = clicli.getIp() + ":" + std::to_string(clicli.getPort());
   auto it = _players.find(id);
   if (it == _players.end())
     {

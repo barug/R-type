@@ -1,18 +1,18 @@
-#ifndef			__ROOMMANAGER_HPP__
-# define		__ROOMMANAGER_HPP_
+#ifndef		__ROOMMANAGER_HPP__
+# define	__ROOMMANAGER_HPP_
 
-# include		<memory>
-# include		<list>
-# include		<string>
+# include	<memory>
+# include	<list>
+# include	<string>
 
-# include		"Room.hpp"
-# include		"NetworkHandler.hpp"
+# include	"Room.hpp"
+# include	"NetworkHandler.hpp"
 
-# define		MAX_ROOM (20)
+# define	MAX_ROOM (20)
 
-class			Room;
+class		Room;
 
-class			RoomManager
+class		RoomManager
 {
 
  public :
@@ -38,4 +38,4 @@ private :
 
 };
 
-# endif			// !__ROOMMANAGER_HPP_
+# endif		// !__ROOMMANAGER_HPP_

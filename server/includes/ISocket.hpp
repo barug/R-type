@@ -1,17 +1,17 @@
-#ifndef			__ISOCKET_HPP__
-# define		__ISOCKET_HPP__
+#ifndef		__ISOCKET_HPP__
+# define	__ISOCKET_HPP__
 
-# include		<string>
-# include		<memory>
+# include	<string>
+# include	<memory>
 
-# define		BUFFLEN (4096)
+# define	BUFFLEN (4096)
 
-class			ISocket
+class		ISocket
 {
 
 public :
 
-  struct		Datagram
+  struct	Datagram
   {
     char		_data[BUFFLEN];
     size_t		_lenght;
@@ -32,12 +32,12 @@ public :
 
 private :
 
-  virtual void		setFds() = 0;
-  virtual int		checkFds() = 0;
+  virtual void	setFds() = 0;
+  virtual int	checkFds() = 0;
 
 };
 
-# endif			// !__ISOCKET_HPP__
+# endif		// !__ISOCKET_HPP__
 
 // http://broux.developpez.com/articles/c/sockets/#L2-1-2-d
 // http://www.binarytides.com/udp-socket-programming-in-winsock/

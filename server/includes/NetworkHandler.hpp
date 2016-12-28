@@ -1,14 +1,14 @@
-#ifndef			__NETWORKHANDLER_HPP_
-# define		__NETWORKHANDLER_HPP_
+#ifndef		__NETWORKHANDLER_HPP_
+# define	__NETWORKHANDLER_HPP_
 
-# include		<memory>
-# include		<string>
-# include		<map>
+# include	<memory>
+# include	<string>
+# include	<map>
 
-# include		"Client.hpp"
-# include		"ISocket.hpp"
+# include	"Client.hpp"
+# include	"ISocket.hpp"
 
-class			NetworkHandler
+class		NetworkHandler
 {
 
 public :
@@ -31,4 +31,4 @@ private :
 
 };
 
-# endif			// !__NETWORKHANDLER_HPP_
+# endif		// !__NETWORKHANDLER_HPP_

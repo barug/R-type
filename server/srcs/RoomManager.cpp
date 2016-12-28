@@ -50,7 +50,7 @@ Room *	RoomManager::getRoomById(const std::string id) const
   return _gameRooms.find(id)->second.get();
 }
 
-Room *	RoomManager::createRoom(const std::string name)
+Room *		RoomManager::createRoom(const std::string name)
 {
   auto		it = _gameRooms.find(name);
 

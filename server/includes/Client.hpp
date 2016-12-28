@@ -1,11 +1,11 @@
-#ifndef			__CLIENT_HPP__
-# define		__CLIENT_HPP__
+#ifndef		__CLIENT_HPP__
+# define	__CLIENT_HPP__
 
-# include		<string>
+# include	<string>
 
-# include		"ISocket.hpp"
+# include	"ISocket.hpp"
 
-class			Client
+class		Client
 {
 
 public :
@@ -23,9 +23,9 @@ public :
 
 private :
 
-  std::string		_ip;
-  int			_port;
+  std::string	_ip;
+  int		_port;
 
 };
 
-# endif			// !__CLIENT_HPP__
+# endif		// !__CLIENT_HPP__
