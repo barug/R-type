@@ -12,7 +12,7 @@
 class				IDynamicLoader
 {
 public:
-  typedef int (*ptrToF)(EntityManager &, SystemManager&, MessageBus &);
+  typedef void (*ptrToF)(EntityManager &, SystemManager&, MessageBus &);
   typedef ptrToF	(*f)();
   virtual ~IDynamicLoader() {}
   virtual ptrToF load(const std::string &libName, const std::string &symName) = 0;

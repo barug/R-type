@@ -52,9 +52,9 @@ void			GameEngine::loadLib(const std::string &libPath)
   std::size_t found = libPath.find_last_of(".");
   if (libPath.substr(found + 1) == "so")
     {
-      int (*fPtr)(EntityManager &,
-		  SystemManager &,
-		  MessageBus &) = _libLoader->load(libPath, "returnLoader");
+      void (*fPtr)(EntityManager &,
+		   SystemManager &,
+		   MessageBus &) = _libLoader->load(libPath, "returnLoader");
 
       fPtr(_entityManager, _systemManager, _messageBus);
     }
