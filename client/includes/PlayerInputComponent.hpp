@@ -11,6 +11,3 @@ public:
 }
 
 #endif /* !_PLAYER_INPUT_COMPONENT_HPP_ */
-
-
-

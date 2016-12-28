@@ -31,10 +31,12 @@ set(SOURCES_CLIENT
   ${CORE_GAME_LIB_DIRECTORY}/srcs/PhysicSystem.cpp
   ${CORE_GAME_LIB_DIRECTORY}/srcs/PhysicComponent.cpp
   ${CORE_GAME_LIB_DIRECTORY}/srcs/PositionComponent.cpp
-  ${CORE_GAME_LIB_DIRECTORY}/srcs/coreGameLib.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/srcs/coreGameLib.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/srcs/GuiSystem.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/srcs/SpriteComponent.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/srcs/RTypeUI.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/srcs/PlayerInputComponent.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/srcs/PlayerInputSystem.cpp
   )
   
 add_library(client_rtype MODULE ${SOURCES_CLIENT})
