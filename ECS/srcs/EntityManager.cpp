@@ -5,7 +5,7 @@
 // Login   <mikaz3@epitech.net>
 // 
 // Started on  Fri Nov 25 17:06:52 2016 Thomas Billot
-// Last update Tue Dec 27 11:08:40 2016 Thomas Billot
+// Last update Wed Dec 28 20:01:02 2016 Thomas Billot
 //
 
 #include <iostream>
@@ -28,8 +28,14 @@ EntityManager::~EntityManager()
   std::cout << "really destroying entity Manager!!!!!!!!" << std::endl;
 }
 
-void		EntityManager::addEntityType(const std::string &typeName, int mask)
+void		EntityManager::addEntityType(const std::string &typeName, const std::vector<std::string> &components)
 {
+  int		mask = 0;
+  
+  for (auto it : components)
+    {
+      mask |= getComponentMask(it);
+    }
   _entityTypes[typeName] = mask;
 }
 

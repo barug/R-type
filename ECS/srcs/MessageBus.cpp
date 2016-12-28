@@ -5,7 +5,7 @@
 // Login   <mikaz3@epitech.net>
 // 
 // Started on  Wed Dec 21 18:25:12 2016 Thomas Billot
-// Last update Tue Dec 27 17:03:17 2016 Thomas Billot
+// Last update Wed Dec 28 20:06:17 2016 Thomas Billot
 //
 
 #include	<iostream>
@@ -27,9 +27,7 @@ void		*MessageBus::Message::getData()
 }
 
 MessageBus::MessageBus()
-  : _validMessages{ENTITY_CREATED,
-		   ENTITY_DESTROYED,
-			ENTITY_COMPOSITION_CHANGED},
+  : _validMessages{ENTITY_CREATED, ENTITY_DESTROYED, ENTITY_COMPOSITION_CHANGED},
     _subscribedList(),
     _messages(),
     _systems()

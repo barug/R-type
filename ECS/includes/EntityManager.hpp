@@ -5,7 +5,7 @@
 // Login   <mikaz3@epitech.net>
 // 
 // Started on  Fri Nov 25 16:51:37 2016 Thomas Billot
-// Last update Tue Dec 27 10:33:44 2016 Thomas Billot
+// Last update Wed Dec 28 20:01:37 2016 Thomas Billot
 //
 
 #ifndef					_ENTITYMANAGER_HPP_
@@ -61,8 +61,7 @@ public:
   IComponent				*getComponent(int entityId,
 						      const std::string &componentType);
   
-  void					addEntityType(const std::string &typeName,
-						      int mask);
+  void					addEntityType(const std::string &typeName, const std::vector<std::string> &components);
   int					createEntity(const std::string &typeName);
   void					deleteEntity(int id);
 
