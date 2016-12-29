@@ -8,15 +8,28 @@
 
 class           NetworkSystem : public ASystem
 {
- public:
+
+public:
+
+  enum		Messages
+    {
+      AUTHENTIFICATION_FAILED = 13,
+    }; 
+  
+  static const std::string	name;
+  
   NetworkSystem(EntityManager &entityManager, MessageBus &messageBus);
   virtual ~NetworkSystem();
   virtual void  preRoutine(void);
   virtual void  postRoutine(void);
   virtual void  updateEntity(int entityId);
 
+  void		handleAuthentification(void *MessageData);
+  
 private:
-  RTypeClient   *client;
+  
+  RTypeClient   *_client;
+  bool		_isAuthentified;
 };
 
 #endif          // !__NETWORK_SYSTEM_HPP__

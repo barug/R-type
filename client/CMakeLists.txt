@@ -37,6 +37,13 @@ function (client)
     ${CMAKE_CURRENT_SOURCE_DIR}/client/srcs/PlayerInputSystem.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/client/srcs/PlayerInputComponent.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/client/srcs/RTypeUI.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/client/srcs/NetworkSystem.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/client/srcs/RTypeClient.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/client/srcs/CommandHandler.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/client/srcs/NetworkHandler.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/client/srcs/UnixSocket.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/client/srcs/WinSocket.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/client/srcs/Message.cpp
   )
 
   add_library(

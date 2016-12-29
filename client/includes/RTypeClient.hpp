@@ -18,13 +18,14 @@ public :
   ~RTypeClient();
 
   const NetworkHandler *		getNetworkHandler() const;
-  void					connectToServer(const std::string &ip, const int port);
-  void					run();
+  bool					connectToServer(const std::string &ip, const int port);
+  bool					run();
 
 private :
   std::shared_ptr<NetworkHandler>	_networkHandler;
   std::unique_ptr<CommandHandler>	_commandHandler;
-
+  bool					_askedForAuth;
+  bool					_isAuthentified;
 };
 
 # endif			// !__RTYPECLIENT_HPP__

@@ -8,12 +8,17 @@
 
 RTypeClient::RTypeClient() :
   _networkHandler(std::make_shared<NetworkHandler>()),
-  _commandHandler(std::make_unique<CommandHandler>())
-{}
+  _commandHandler(std::make_unique<CommandHandler>()),
+  _askedForAuth(false),
+  _isAuthentified(false)
+{
+}
 
 RTypeClient::RTypeClient(const std::string ip, const int port) :
   _networkHandler(std::make_shared<NetworkHandler>(ip, port)),
-  _commandHandler(std::make_unique<CommandHandler>())
+  _commandHandler(std::make_unique<CommandHandler>()),
+  _askedForAuth(false),
+  _isAuthentified(false)
 {
   // create the co cmd
   std::unique_ptr< Message >	message =
@@ -27,12 +32,12 @@ RTypeClient::RTypeClient(const std::string ip, const int port) :
 RTypeClient::~RTypeClient()
 {}
 
-const NetworkHandler*  RTypeClient::getNetworkHandler() const
+const NetworkHandler*   RTypeClient::getNetworkHandler() const
 {
   return _networkHandler.get();
 }
 
-void    RTypeClient::connectToServer(const std::string &ip, const int port)
+bool			RTypeClient::connectToServer(const std::string &ip, const int port)
 {
   _networkHandler->getSocket().connectToServer(ip, port);
   std::unique_ptr< Message >	message =
@@ -40,16 +45,28 @@ void    RTypeClient::connectToServer(const std::string &ip, const int port)
                                 _networkHandler->getSocket().getIpServer(),
                                 _networkHandler->getSocket().getPortServer());
   _networkHandler->getSocket().writeSocket(*message->createDatagram());
+  _askedForAuth = true;
+  return true;
 }
 
-void	RTypeClient::run()
+bool	RTypeClient::run()
 {
   if (_networkHandler->getSocket().somethingToRead())
     {
+      _isAuthentified = true;      
       const std::shared_ptr<ISocket::Datagram>	data = _networkHandler->getSocket().readSocket();
 
       Message*			message = new Message(*data);
 
-      _commandHandler->execFuncByOperationCode(this, message);
+      if (_commandHandler->execFuncByOperationCode(this, message) != true)
+	return false;
+      return true;
     }
+  if (!_isAuthentified)
+    {
+      if (_askedForAuth)
+	_askedForAuth = false;
+      return false;
+    }
+  return true;
 }
