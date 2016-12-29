@@ -63,12 +63,18 @@ public:
   ** Animated Sprites
   */
   virtual Animation     loadAnimation(const std::string &path);
+  virtual Animation     addFrames(const std::string &path,
+                                  const unsigned int nbFrame,
+                                  std::vector<unsigned int> rec);
   virtual void          addFrames(Animation &animation,
                                   const unsigned int nbFrame,
                                   const unsigned int x1,
                                   const unsigned int x2,
                                   const unsigned int x3,
                                   const unsigned int x4);
+  virtual void          addFrames(Animation &animation,
+                                  const unsigned int nbFrame,
+                                  std::vector<unsigned int> rec);
   virtual void          addFrame(Animation &animation,
                                  const unsigned int x1,
                                  const unsigned int x2,
@@ -78,6 +84,8 @@ public:
                                              AnimatedSprite &animatedSprite,
                                              const float x,
                                              const float y);
+  virtual void          updateAnimatedSprite(AnimatedSprite &animatedSprite,
+                                             const float x, const float y);
   virtual void          moveAnimatedSprite(AnimatedSprite &animatedSprite,
                                            const float x, const float y);
 

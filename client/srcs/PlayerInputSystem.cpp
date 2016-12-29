@@ -15,6 +15,7 @@ PlayerInputSystem::PlayerInputSystem(EntityManager &entityManager,
   		     static_cast<message_handler>(&PlayerInputSystem::handleNewKeyInput));
   int playerShipId = _entityManager.createEntity("PlayerShip");
   std::cout << "created ship with id: " << playerShipId << std::endl;
+
   PhysicComponent *physComp =
     static_cast<PhysicComponent*>(_entityManager.getComponent(playerShipId,
   							      "PhysicComponent"));
@@ -30,7 +31,9 @@ PlayerInputSystem::PlayerInputSystem(EntityManager &entityManager,
   physComp->setSpeedY(0);
   physComp->setAccelerationX(0);
   physComp->setAccelerationY(0);
-  spriteComp->setPath("assets/sprites/r-typesheet1.gif");
+  spriteComp->setPathAnimated("./assets/sprites/r-typesheet42.gif");
+  spriteComp->setEntityName("PlayerShip");
+  spriteComp->setRec({166/5, 0, 166/5, 17}, 5);
 }
 
 void		PlayerInputSystem::updateEntity(int entityId)

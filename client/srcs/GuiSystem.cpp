@@ -36,13 +36,34 @@ void            GuiSystem::updateEntity(int entityId)
     static_cast<SpriteComponent*>(_entityManager.getComponent(entityId, "SpriteComponent"));
   PositionComponent *positionComponent =
     static_cast<PositionComponent*>(_entityManager.getComponent(entityId, "PositionComponent"));
-  // AnimationComponent *animationComponent =
-  //   static_cast<AnimationComponent*>(_entityManager.getComponent(entityId, "AnimationComponent"));
-  _gui->setTextureAt(spriteComponent->getPath(), positionComponent->getX(), positionComponent->getY());
+
+  auto it = _animationHandler.find(spriteComponent->getEntityName());
+  if (it == _animationHandler.end())
+    {
+      spriteComponent->setAnimation(_gui->addFrames(spriteComponent->getPath(),
+                                                    spriteComponent->getNbFrames(),
+                                                    spriteComponent->getRec()));
+      _animationHandler.insert(AnimationMap::value_type(spriteComponent->getEntityName(),
+                                                        std::make_pair(spriteComponent->getAnimation(),
+                                                                       spriteComponent->getAnimatedSprite())));
+    }
+
+  if (spriteComponent->isAnimated())
+    {
+      for (auto it : _animationHandler)
+        _gui->updateAnimatedSprite(it.second.first, *it.second.second,
+                                   positionComponent->getX(), positionComponent->getY());
+    }
+  else
+    {
+      _gui->setTextureAt(spriteComponent->getPath(), positionComponent->getX(), positionComponent->getY());
+    }
+
 }
 
 void            GuiSystem::postRoutine(void)
 {
+  _gui->update();
   _gui->display();
 }
 

@@ -7,12 +7,18 @@
 
 class           GuiSystem : public ASystem
 {
+  // ui
   IGui          *_gui;
   RTypeUI       _rtypeUI;
+
+  // network transition
   std::string   _ip;
   unsigned int  _port;
 
-  std::map<RTypeUI::Context, void (GuiSystem::* )(void)> _contextHandler;
+  // map type
+  typedef std::map<std::string, std::pair<Animation, AnimatedSprite *> > AnimationMap;
+  AnimationMap                                          _animationHandler;
+  std::map<RTypeUI::Context, void (GuiSystem::* )(void)>_contextHandler;
 
   void          _handleIntroduction(void);
   void          _handleAuthentification(void);
@@ -23,7 +29,7 @@ class           GuiSystem : public ASystem
 public:
 
   static const std::string	name;
-  
+
   enum		Messages
     {
       KEY_INPUT_DATA = 11
