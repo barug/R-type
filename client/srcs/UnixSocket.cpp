@@ -4,7 +4,7 @@
 # include	<arpa/inet.h>
 # include	<string.h>
 
-# include	"UnixSocket.hpp"
+# include	"../includes/UnixSocket.hpp"
 
 UnixSocket::UnixSocket() :
   _ipServer(),
@@ -14,7 +14,8 @@ UnixSocket::UnixSocket() :
   _fd(),
   _tv(),
   _readFd()
-{}
+{
+}
 
 UnixSocket::UnixSocket(const std::string& ipServer, int portServer) :
   _ipServer(ipServer),

@@ -1,4 +1,4 @@
-
+#include <iostream>
 #include "SystemManager.hpp"
 #include "EntityManager.hpp"
 #include "PositionComponent.hpp"
@@ -8,6 +8,9 @@
 #include "SpriteComponent.hpp"
 #include "PlayerInputComponent.hpp"
 #include "PlayerInputSystem.hpp"
+#include "NetworkSystem.hpp"
+#include "HitBoxComponent.hpp"
+#include "CollisionSystem.hpp"
 
 void	loadGameLibData(EntityManager &e, SystemManager &s, MessageBus &m)
 {
@@ -15,16 +18,24 @@ void	loadGameLibData(EntityManager &e, SystemManager &s, MessageBus &m)
   e.addComponentType<PhysicComponent>(PhysicComponent::name);
   e.addComponentType<PlayerInputComponent>(PlayerInputComponent::name);
   e.addComponentType<SpriteComponent>(SpriteComponent::name);
+  e.addComponentType<HitBoxComponent>(HitBoxComponent::name);
   m.registerValidMessageId(GuiSystem::Messages::KEY_INPUT_DATA);
+  m.registerValidMessageId(GuiSystem::Messages::AUTHENTIFICATION);
+  m.registerValidMessageId(NetworkSystem::Messages::AUTHENTIFICATION_FAILED);
   e.addEntityType("PlayerShip",
 		  {PositionComponent::name,
 		      PhysicComponent::name,
 		      PlayerInputComponent::name,
-		      SpriteComponent::name});
+		      SpriteComponent::name,
+		      HitBoxComponent::name});
+  e.addEntityType("BasicMonster",
+		  {PositionComponent::name,
+		      SpriteComponent::name,
+		      HitBoxComponent::name});
   s.addSystem(std::make_shared<GuiSystem>(e, m),
 	      GuiSystem::name,
 	      {SpriteComponent::name, PositionComponent::name},
-	      {});
+	      {NetworkSystem::Messages::AUTHENTIFICATION_FAILED});
   s.addSystem(std::make_shared<PhysicSystem>(e, m),
 	      PhysicSystem::name,
 	      {PhysicComponent::name, PositionComponent::name},
@@ -33,6 +44,14 @@ void	loadGameLibData(EntityManager &e, SystemManager &s, MessageBus &m)
   	      PlayerInputSystem::name,
   	      {PhysicComponent::name, PlayerInputComponent::name},
   	      {GuiSystem::Messages::KEY_INPUT_DATA});
+  s.addSystem(std::make_shared<NetworkSystem>(e, m),
+  	      NetworkSystem::name,
+  	      {PhysicComponent::name},
+  	      {GuiSystem::Messages::AUTHENTIFICATION});
+  s.addSystem(std::make_shared<CollisionSystem>(e, m),
+	      CollisionSystem::name,
+	      {PositionComponent::name, HitBoxComponent::name},
+	      {});
 }
 
 typedef void (*loaderPtr)(EntityManager &, SystemManager &, MessageBus &);

@@ -2,6 +2,7 @@
 #include "PlayerInputSystem.hpp"
 #include "PositionComponent.hpp"
 #include "SpriteComponent.hpp"
+#include "HitBoxComponent.hpp"
 #include <iostream>
 
 const std::string PlayerInputSystem::name = "PlayerInputSystem";
@@ -18,13 +19,16 @@ PlayerInputSystem::PlayerInputSystem(EntityManager &entityManager,
 
   PhysicComponent *physComp =
     static_cast<PhysicComponent*>(_entityManager.getComponent(playerShipId,
-  							      "PhysicComponent"));
+  							      PhysicComponent::name));
   SpriteComponent *spriteComp =
     static_cast<SpriteComponent*>(_entityManager.getComponent(playerShipId,
-  							      "SpriteComponent"));
+  							      SpriteComponent::name));
   PositionComponent *positionComp =
     static_cast<PositionComponent*>(_entityManager.getComponent(playerShipId,
-  							      "PositionComponent"));
+								PositionComponent::name));
+  HitBoxComponent *hitBoxComp =
+    static_cast<HitBoxComponent*>(_entityManager.getComponent(playerShipId,
+  							      HitBoxComponent::name));
   positionComp->setX(10);
   positionComp->setY(10);
   physComp->setSpeedX(0);
@@ -34,6 +38,23 @@ PlayerInputSystem::PlayerInputSystem(EntityManager &entityManager,
   spriteComp->setPathAnimated("./assets/sprites/r-typesheet42.gif");
   spriteComp->setEntityName("PlayerShip");
   spriteComp->setRec({166/5, 0, 166/5, 17}, 5);
+
+  int basicMonsterId = _entityManager.createEntity("BasicMonster");
+  spriteComp =
+    static_cast<SpriteComponent*>(_entityManager.getComponent(basicMonsterId,
+  							      SpriteComponent::name));
+  positionComp =
+    static_cast<PositionComponent*>(_entityManager.getComponent(basicMonsterId,
+        							PositionComponent::name));
+  hitBoxComp =
+    static_cast<HitBoxComponent*>(_entityManager.getComponent(basicMonsterId,
+  							      HitBoxComponent::name));
+  spriteComp->setPathAnimated("./assets/sprites/r-typesheet17.gif");
+  spriteComp->setEntityName("BasicMonster");
+  spriteComp->setRec({66, 0, 61, 132}, 8);
+  positionComp->setX(300);
+  positionComp->setY(300);
+  hitBoxComp->setCircleRadius(20);
 }
 
 void		PlayerInputSystem::updateEntity(int entityId)

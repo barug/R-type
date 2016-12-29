@@ -5,7 +5,7 @@
 // Login   <mikaz3@epitech.net>
 // 
 // Started on  Tue Dec 13 13:18:17 2016 Thomas Billot
-// Last update Tue Dec 27 10:36:00 2016 Thomas Billot
+// Last update Thu Dec 29 16:30:07 2016 Thomas Billot
 //
 
 #include	<iostream>
@@ -28,7 +28,8 @@ bool		SystemManager::addSystem(const std::shared_ptr<ASystem> &systemToAdd,
   if (systemToAdd && !name.empty() && !affectedComponents.empty())
     {
       systemToAdd->addName(name);
-      systemToAdd->addAffectedComponents(affectedComponents);
+      if (!affectedComponents.empty())
+	systemToAdd->addAffectedComponents(affectedComponents);
       _messageBus.registerSystem(systemToAdd);
       _messageBus.subscribeToMessage(name, MessageBus::ENTITY_CREATED);
       _messageBus.subscribeToMessage(name, MessageBus::ENTITY_DESTROYED);

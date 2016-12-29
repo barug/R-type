@@ -29,12 +29,21 @@ function (client)
     ${CORE_GAME_LIB_DIRECTORY}/srcs/PhysicSystem.cpp
     ${CORE_GAME_LIB_DIRECTORY}/srcs/PhysicComponent.cpp
     ${CORE_GAME_LIB_DIRECTORY}/srcs/PositionComponent.cpp
+    ${CORE_GAME_LIB_DIRECTORY}/srcs/HitBoxComponent.cpp
+    ${CORE_GAME_LIB_DIRECTORY}/srcs/CollisionSystem.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/client/srcs/coreGameLib.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/client/srcs/GuiSystem.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/client/srcs/SpriteComponent.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/client/srcs/PlayerInputSystem.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/client/srcs/PlayerInputComponent.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/client/srcs/RTypeUI.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/client/srcs/NetworkSystem.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/client/srcs/RTypeClient.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/client/srcs/CommandHandler.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/client/srcs/NetworkHandler.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/client/srcs/UnixSocket.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/client/srcs/WinSocket.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/client/srcs/Message.cpp
   )
 
   add_library(
