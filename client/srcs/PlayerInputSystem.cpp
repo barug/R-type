@@ -14,23 +14,23 @@ PlayerInputSystem::PlayerInputSystem(EntityManager &entityManager,
   loadMessageHandler(GuiSystem::Messages::KEY_INPUT_DATA,
   		     static_cast<message_handler>(&PlayerInputSystem::handleNewKeyInput));
   int playerShipId = _entityManager.createEntity("PlayerShip");
-  // std::cout << "created ship with id: " << playerShipId << std::endl;
-  // PhysicComponent *physComp =
-  //   static_cast<PhysicComponent*>(_entityManager.getComponent(playerShipId,
-  // 							      "PhysicComponent"));
-  // SpriteComponent *spriteComp =
-  //   static_cast<SpriteComponent*>(_entityManager.getComponent(playerShipId,
-  // 							      "SpriteComponent"));
-  // PositionComponent *positionComp =
-  //   static_cast<PositionComponent*>(_entityManager.getComponent(playerShipId,
-  // 							      "PositionComponent"));
-  // positionComp->setX(10);
-  // positionComp->setY(10);
-  // physComp->setSpeedX(0);
-  // physComp->setSpeedY(0);
-  // physComp->setAccelerationX(0);
-  // physComp->setAccelerationY(0);
-  // spriteComp->setPath("../assets/sprites/r-typesheet1.gif");
+  std::cout << "created ship with id: " << playerShipId << std::endl;
+  PhysicComponent *physComp =
+    static_cast<PhysicComponent*>(_entityManager.getComponent(playerShipId,
+  							      "PhysicComponent"));
+  SpriteComponent *spriteComp =
+    static_cast<SpriteComponent*>(_entityManager.getComponent(playerShipId,
+  							      "SpriteComponent"));
+  PositionComponent *positionComp =
+    static_cast<PositionComponent*>(_entityManager.getComponent(playerShipId,
+  							      "PositionComponent"));
+  positionComp->setX(10);
+  positionComp->setY(10);
+  physComp->setSpeedX(0);
+  physComp->setSpeedY(0);
+  physComp->setAccelerationX(0);
+  physComp->setAccelerationY(0);
+  spriteComp->setPath("assets/sprites/r-typesheet1.gif");
 }
 
 void		PlayerInputSystem::updateEntity(int entityId)
@@ -44,19 +44,26 @@ void		PlayerInputSystem::updateEntity(int entityId)
 
   physComp->setAccelerationX(0);
   physComp->setAccelerationY(0);
-  if (_lastKey == IGui::Key::K_Z)
-    physComp->setAccelerationY(-10);
-  if (_lastKey == IGui::Key::K_S)
-    physComp->setAccelerationY(10);
-  if (_lastKey == IGui::Key::K_Q)
-    physComp->setAccelerationX(-10);
-  if (_lastKey == IGui::Key::K_D)
-    physComp->setAccelerationY(10);
+  if (_lastKey == IGui::Key::UP)
+    physComp->setAccelerationY(-1);
+  if (_lastKey == IGui::Key::DOWN)
+    physComp->setAccelerationY(1);
+  if (_lastKey == IGui::Key::LEFT)
+    physComp->setAccelerationX(-1);
+  if (_lastKey == IGui::Key::RIGHT)
+    physComp->setAccelerationX(1);
 }
+
+void		PlayerInputSystem::postRoutine()
+{
+  _lastKey = IGui::Key::NONE;
+}
+
 
 void		PlayerInputSystem::handleNewKeyInput(void *messageData)
 {
   IGui::Key	*key = static_cast<IGui::Key*>(messageData);
 
+  std::cout << "getting new input message" << std::endl;
   _lastKey = *key;
 }
