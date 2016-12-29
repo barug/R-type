@@ -5,9 +5,10 @@
 // Login   <mikaz3@epitech.net>
 // 
 // Started on  Fri Nov 25 17:06:52 2016 Thomas Billot
-// Last update Wed Dec 28 21:48:55 2016 Thomas Billot
+// Last update Wed Dec 28 21:53:54 2016 Thomas Billot
 //
 
+#include <exception>
 #include <iostream>
 #include <type_traits>
 #include <stdexcept>
@@ -36,19 +37,30 @@ void		EntityManager::addEntityType(const std::string &typeName, const std::vecto
     {
       mask |= getComponentMask(it);
     }
+  std::cout << "new entity type mask" << mask << std::endl;
   _entityTypes[typeName] = mask;
 }
 
 int				EntityManager::createEntity(const std::string &typeName)
 {
-  int typeMask = _entityTypes.at(typeName);
+  int typeMask = 0;
+  std::cout << "map size: " << _entityTypes.size() << std::endl;
+  try {
+    typeMask = _entityTypes.at(typeName);
+  } catch (std::exception &e) {
+    
+    std::cout << "exception: " << e.what() << std::endl;
+  }
 
+  std::cout << "entity mask: " << typeMask << std::endl;
+  if (typeMask == -1)
+    return (-1);
   for (unsigned int id = 0; id < EntityManager::_maxEntities; id++)
     {
       if (_entities[id] == eState::NONE)
 	{
 	  _entities[id] = eState::USED;
-	  _typeofentities[id] = typeMask;
+	  _typeOfEntities[id] = typeMask;
 	  _messageBus.post(MessageBus::ENTITY_CREATED, new int(id));
 	  return id;
 	}

@@ -3,6 +3,8 @@
 # include "PositionComponent.hpp"
 # include "Window.hpp"
 
+const std::string	GuiSystem::name = "GuiSystem";
+
 GuiSystem::GuiSystem(EntityManager &entityManager, MessageBus &messageBus)
   : ASystem(entityManager, messageBus),
     _gui(new Window("RType", 800, 600, "./assets/font/digital.otf")),

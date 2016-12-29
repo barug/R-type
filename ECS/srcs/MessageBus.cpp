@@ -41,6 +41,11 @@ void		MessageBus::registerSystem(std::shared_ptr<ASystem> systemToManage)
   _systems.push_back(systemToManage);
 }
 
+void		MessageBus::registerValidMessageId(int messageId)
+{
+  _validMessages.push_back(messageId);
+}
+
 void		MessageBus::subscribeToMessage(const std::string &system,
 					       const int message)
 {

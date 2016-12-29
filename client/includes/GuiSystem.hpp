@@ -22,6 +22,8 @@ class           GuiSystem : public ASystem
 
 public:
 
+  static const std::string	name;
+  
   enum		Messages
     {
       KEY_INPUT_DATA = 11

@@ -19,7 +19,7 @@ class				IComponent
 public :
   
   virtual			~IComponent() {}
-  virtual const std::string     name() = 0;
+  virtual const std::string     getName() = 0;
 };
 
 
