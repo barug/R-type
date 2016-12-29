@@ -35,16 +35,7 @@ void	loadGameLibData(EntityManager &e, SystemManager &s, MessageBus &m)
   	      {GuiSystem::Messages::KEY_INPUT_DATA});
 }
 
-int	createShip(EntityManager &e)
-{
-  e.createEntity("PlayerShip");
-
-  e.getComponent(PositionComponent)
-}
-
 typedef void (*loaderPtr)(EntityManager &, SystemManager &, MessageBus &);
-
-typedef int (*creationPtr)(EntityManager &);
 
 extern "C" loaderPtr returnLoader()
 {
