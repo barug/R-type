@@ -5,7 +5,7 @@
 // Login   <mikaz3@epitech.net>
 // 
 // Started on  Fri Nov 25 17:06:52 2016 Thomas Billot
-// Last update Wed Dec 28 20:01:02 2016 Thomas Billot
+// Last update Wed Dec 28 21:53:54 2016 Thomas Billot
 //
 
 #include <exception>
@@ -43,7 +43,7 @@ void		EntityManager::addEntityType(const std::string &typeName, const std::vecto
 
 int				EntityManager::createEntity(const std::string &typeName)
 {
-  int typeMask;
+  int typeMask = 0;
   std::cout << "map size: " << _entityTypes.size() << std::endl;
   try {
     typeMask = _entityTypes.at(typeName);
@@ -53,7 +53,8 @@ int				EntityManager::createEntity(const std::string &typeName)
   }
 
   std::cout << "entity mask: " << typeMask << std::endl;
-  
+  if (typeMask == -1)
+    return (-1);
   for (unsigned int id = 0; id < EntityManager::_maxEntities; id++)
     {
       if (_entities[id] == eState::NONE)
