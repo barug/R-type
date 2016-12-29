@@ -30,7 +30,8 @@ void            GuiSystem::preRoutine(void)
   _gui->clear();
   _gui->handleEvents();
   if (_gui->getKey() != IGui::Key::NONE)
-    _messageBus.post(GuiSystem::Messages::KEY_INPUT_DATA, new IGui::Key(_gui->getKey()));
+    _messageBus.post(GuiSystem::Messages::KEY_INPUT_DATA,
+		     new IGui::Key(_gui->getKey()));
   ((*this).*(_contextHandler[_rtypeUI.getContext()]))();
 }
 

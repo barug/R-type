@@ -16,6 +16,9 @@ MessageBus::Message::Message(int typeId, void *data)
     _data(data)
 {}
 
+MessageBus::Message::~Message()
+{}
+
 int		MessageBus::Message::getTypeId()
 {
   return _typeId;

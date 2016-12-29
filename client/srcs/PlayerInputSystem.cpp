@@ -2,6 +2,7 @@
 #include "PlayerInputSystem.hpp"
 #include "PositionComponent.hpp"
 #include "SpriteComponent.hpp"
+#include "HitBoxComponent.hpp"
 #include <iostream>
 
 const std::string PlayerInputSystem::name = "PlayerInputSystem";
@@ -17,20 +18,40 @@ PlayerInputSystem::PlayerInputSystem(EntityManager &entityManager,
   std::cout << "created ship with id: " << playerShipId << std::endl;
   PhysicComponent *physComp =
     static_cast<PhysicComponent*>(_entityManager.getComponent(playerShipId,
-  							      "PhysicComponent"));
+  							      PhysicComponent::name));
   SpriteComponent *spriteComp =
     static_cast<SpriteComponent*>(_entityManager.getComponent(playerShipId,
-  							      "SpriteComponent"));
+  							      SpriteComponent::name));
   PositionComponent *positionComp =
     static_cast<PositionComponent*>(_entityManager.getComponent(playerShipId,
-  							      "PositionComponent"));
+								PositionComponent::name));
+  HitBoxComponent *hitBoxComp =
+    static_cast<HitBoxComponent*>(_entityManager.getComponent(playerShipId,
+  							      HitBoxComponent::name));
   positionComp->setX(10);
   positionComp->setY(10);
   physComp->setSpeedX(0);
   physComp->setSpeedY(0);
   physComp->setAccelerationX(0);
   physComp->setAccelerationY(0);
-  spriteComp->setPath("assets/sprites/r-typesheet1.gif");
+  spriteComp->setPath("assets/sprites/r-typesheet27.gif");
+  hitBoxComp->setCircleRadius(20);
+
+  int basicMonsterId = _entityManager.createEntity("BasicMonster");
+  spriteComp =
+    static_cast<SpriteComponent*>(_entityManager.getComponent(basicMonsterId,
+  							      SpriteComponent::name));
+  positionComp =
+    static_cast<PositionComponent*>(_entityManager.getComponent(basicMonsterId,
+								PositionComponent::name));
+  hitBoxComp =
+    static_cast<HitBoxComponent*>(_entityManager.getComponent(basicMonsterId,
+  							      HitBoxComponent::name));
+  spriteComp->setPath("assets/sprites/r-typesheet27.gif");
+  positionComp->setX(300);
+  positionComp->setY(300);
+  hitBoxComp->setCircleRadius(20);
+
 }
 
 void		PlayerInputSystem::updateEntity(int entityId)

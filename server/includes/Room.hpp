@@ -17,37 +17,39 @@ class		Room
 
 public :
 
-  explicit								Room(const std::string & name);
+  explicit					Room(const std::string & name);
   ~Room();
 
-  const std::string &							getName() const;
-  int									getNbPlayers() const;
-  const std::map< const std::string, std::shared_ptr< Client > > &	getPlayers() const;
-  std::shared_ptr< ISocket >						getSocket() const;
+  const std::string &				getName() const;
+  int						getNbPlayers() const;
+  const std::map< const std::string,
+		  std::shared_ptr< Client > > &	getPlayers() const;
+  std::shared_ptr< ISocket >			getSocket() const;
 
-  bool									addPlayer(const Client & clicli);
-  bool									removePlayer(const Client & clicli);
+  bool						addPlayer(const Client & clicli);
+  bool						removePlayer(const Client & clicli);
 
-  const bool								getRun() const;
-  void									setRun(const bool state);
+  const bool					getRun() const;
+  void						setRun(const bool state);
 
-  bool									run();
+  bool						run();
 
 private :
 
-  bool								gameStep();
+  bool						gameStep();
 
-  std::string							_name;
-  std::map< const std::string, std::shared_ptr< Client > >	_players;
-  int								_nbPlayers;
+  std::string					_name;
+  std::map< const std::string,
+	    std::shared_ptr< Client > >		_players;
+  int						_nbPlayers;
 
-  std::shared_ptr< ISocket >					_socket;
-  std::shared_ptr< CommandHandlerGame >				_commandHandler;
+  std::shared_ptr< ISocket >			_socket;
+  std::shared_ptr< CommandHandlerGame >		_commandHandler;
 
-  std::mutex							_locker;
-  std::thread							_thread;
+  std::mutex					_locker;
+  std::thread					_thread;
 
-  bool								_run;
+  bool						_run;
 
   // ESC
 };

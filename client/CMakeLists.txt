@@ -29,6 +29,8 @@ function (client)
     ${CORE_GAME_LIB_DIRECTORY}/srcs/PhysicSystem.cpp
     ${CORE_GAME_LIB_DIRECTORY}/srcs/PhysicComponent.cpp
     ${CORE_GAME_LIB_DIRECTORY}/srcs/PositionComponent.cpp
+    ${CORE_GAME_LIB_DIRECTORY}/srcs/HitBoxComponent.cpp
+    ${CORE_GAME_LIB_DIRECTORY}/srcs/CollisionSystem.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/client/srcs/coreGameLib.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/client/srcs/GuiSystem.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/client/srcs/SpriteComponent.cpp

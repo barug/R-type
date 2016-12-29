@@ -74,6 +74,11 @@ void				EntityManager::deleteEntity(int id)
   _messageBus.post(MessageBus::ENTITY_DESTROYED, new int(id));
 }
 
+int				EntityManager::getEntityType(int entityId)
+{
+  return _typeOfEntities[entityId];
+}
+
 int				EntityManager::createComponentMask(const std::string &name)
 {
   static int i = 0;

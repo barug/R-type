@@ -66,7 +66,7 @@ void			ASystem::handleEntityCreated(void *messageData)
 {
   int			*entity = static_cast<int*>(messageData);
 
-  
+  if ((_entityManager.getEntityType(*entity) & _mask) == _mask)
   _affectedEntities.push_back(*entity);
 }
 
