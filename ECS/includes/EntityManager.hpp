@@ -65,7 +65,7 @@ public:
   void					addEntityType(const std::string &typeName, const std::vector<std::string> &components);
   int					createEntity(const std::string &typeName);
   void					deleteEntity(int id);
-
+  int					getEntityType(int entityId);
   std::shared_ptr<std::vector<IComponent*> > getComponentsById(int entity) const;
   std::shared_ptr<component_pool>	getArrayByName(const std::string &name);
   const std::array<int, EntityManager::_maxEntities> &getEntities() const;

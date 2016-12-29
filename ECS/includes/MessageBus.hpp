@@ -27,6 +27,7 @@ class					MessageBus
 
   public:
     Message(int typeId, void *data);
+    ~Message();
     int					getTypeId();
     void				*getData();
   };

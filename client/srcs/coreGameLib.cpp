@@ -8,6 +8,8 @@
 #include "SpriteComponent.hpp"
 #include "PlayerInputComponent.hpp"
 #include "PlayerInputSystem.hpp"
+#include "HitBoxComponent.hpp"
+#include "CollisionSystem.hpp"
 
 void	loadGameLibData(EntityManager &e, SystemManager &s, MessageBus &m)
 {
@@ -15,12 +17,18 @@ void	loadGameLibData(EntityManager &e, SystemManager &s, MessageBus &m)
   e.addComponentType<PhysicComponent>(PhysicComponent::name);
   e.addComponentType<PlayerInputComponent>(PlayerInputComponent::name);
   e.addComponentType<SpriteComponent>(SpriteComponent::name);
+  e.addComponentType<HitBoxComponent>(HitBoxComponent::name);
   m.registerValidMessageId(GuiSystem::Messages::KEY_INPUT_DATA);
   e.addEntityType("PlayerShip",
 		  {PositionComponent::name,
 		      PhysicComponent::name,
 		      PlayerInputComponent::name,
-		      SpriteComponent::name});
+		      SpriteComponent::name,
+		      HitBoxComponent::name});
+  e.addEntityType("BasicMonster",
+		  {PositionComponent::name,
+		      SpriteComponent::name,
+		      HitBoxComponent::name});
   s.addSystem(std::make_shared<GuiSystem>(e, m),
 	      GuiSystem::name,
 	      {SpriteComponent::name, PositionComponent::name},
@@ -33,6 +41,10 @@ void	loadGameLibData(EntityManager &e, SystemManager &s, MessageBus &m)
   	      PlayerInputSystem::name,
   	      {PhysicComponent::name, PlayerInputComponent::name},
   	      {GuiSystem::Messages::KEY_INPUT_DATA});
+  s.addSystem(std::make_shared<CollisionSystem>(e, m),
+	      CollisionSystem::name,
+	      {PositionComponent::name, HitBoxComponent::name},
+	      {});
 }
 
 typedef void (*loaderPtr)(EntityManager &, SystemManager &, MessageBus &);

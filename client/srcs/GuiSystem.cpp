@@ -11,11 +11,11 @@ GuiSystem::GuiSystem(EntityManager &entityManager, MessageBus &messageBus)
     _rtypeUI(*_gui),
     _ip(),
     _port(),
-    _contextHandler({{RTypeUI::Context::Introduction,            &GuiSystem::_handleIntroduction},
-                     {RTypeUI::Context::Authentification,        &GuiSystem::_handleAuthentification},
-                     {RTypeUI::Context::WaitingRoom,             &GuiSystem::_handleWaitingRoom},
-                     {RTypeUI::Context::Game,                    &GuiSystem::_handleGame},
-                     {RTypeUI::Context::Loading,                 &GuiSystem::_handleLoading}})
+    _contextHandler({{RTypeUI::Context::Introduction, &GuiSystem::_handleIntroduction},
+                     {RTypeUI::Context::Authentification, &GuiSystem::_handleAuthentification},
+                     {RTypeUI::Context::WaitingRoom, &GuiSystem::_handleWaitingRoom},
+                     {RTypeUI::Context::Game, &GuiSystem::_handleGame},
+                     {RTypeUI::Context::Loading, &GuiSystem::_handleLoading}})
 {}
 
 GuiSystem::~GuiSystem()
@@ -26,19 +26,24 @@ void            GuiSystem::preRoutine(void)
   _gui->clear();
   _gui->handleEvents();
   if (_gui->getKey() != IGui::Key::NONE)
-    _messageBus.post(GuiSystem::Messages::KEY_INPUT_DATA, new IGui::Key(_gui->getKey()));
+    _messageBus.post(GuiSystem::Messages::KEY_INPUT_DATA,
+		     new IGui::Key(_gui->getKey()));
   ((*this).*(_contextHandler[_rtypeUI.getContext()]))();
 }
 
 void            GuiSystem::updateEntity(int entityId)
 {
   SpriteComponent *spriteComponent =
-    static_cast<SpriteComponent*>(_entityManager.getComponent(entityId, "SpriteComponent"));
+    static_cast<SpriteComponent*>(_entityManager.getComponent(entityId,
+							      SpriteComponent::name));
   PositionComponent *positionComponent =
-    static_cast<PositionComponent*>(_entityManager.getComponent(entityId, "PositionComponent"));
+    static_cast<PositionComponent*>(_entityManager.getComponent(entityId,
+								PositionComponent::name));
   // AnimationComponent *animationComponent =
   //   static_cast<AnimationComponent*>(_entityManager.getComponent(entityId, "AnimationComponent"));
-  _gui->setTextureAt(spriteComponent->getPath(), positionComponent->getX(), positionComponent->getY());
+  _gui->setTextureAt(spriteComponent->getPath(),
+		     positionComponent->getX(),
+		     positionComponent->getY());
 }
 
 void            GuiSystem::postRoutine(void)
