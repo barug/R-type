@@ -17,6 +17,7 @@ public:
   static const std::string	name;
   
   PlayerInputSystem(EntityManager &entityManager, MessageBus &MessageBus);
+  virtual		~PlayerInputSystem() {}
   virtual void		preRoutine() {}
   virtual void		updateEntity(int entityId);
   virtual void		postRoutine();

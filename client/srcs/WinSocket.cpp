@@ -6,8 +6,7 @@
 # include	<iostream>
 # include	<string.h>
 
-# include	"WinSocket.hpp"
-
+# include	"../includes/WinSocket.hpp"
 
 WinSocket::WinSocket() :
   _ipServer(),
@@ -17,7 +16,8 @@ WinSocket::WinSocket() :
   _fd(),
   _tv(),
   _readFd()
-{}
+{
+}
 
 WinSocket::WinSocket(const std::string& ipServer, int portServer) :
 _ipServer(ipServer),

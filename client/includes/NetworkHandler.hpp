@@ -11,8 +11,9 @@ class			NetworkHandler
 {
 
 public :
+  
   explicit NetworkHandler();
-  explicit NetworkHandler(const std::string ip, const int port);
+  explicit NetworkHandler(const std::string &ip, const int port);
   ~NetworkHandler();
 
   void                          connectToServer(const std::string &ip, const int port);

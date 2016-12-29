@@ -1,4 +1,5 @@
 # include "GuiSystem.hpp"
+# include "NetworkSystem.hpp"
 # include "SpriteComponent.hpp"
 # include "PositionComponent.hpp"
 # include "Window.hpp"
@@ -16,7 +17,10 @@ GuiSystem::GuiSystem(EntityManager &entityManager, MessageBus &messageBus)
                      {RTypeUI::Context::WaitingRoom,             &GuiSystem::_handleWaitingRoom},
                      {RTypeUI::Context::Game,                    &GuiSystem::_handleGame},
                      {RTypeUI::Context::Loading,                 &GuiSystem::_handleLoading}})
-{}
+{
+  loadMessageHandler(NetworkSystem::Messages::AUTHENTIFICATION_FAILED,
+		     static_cast<message_handler>(&GuiSystem::_handleAuthFailed));
+}
 
 GuiSystem::~GuiSystem()
 {}
@@ -32,13 +36,16 @@ void            GuiSystem::preRoutine(void)
 
 void            GuiSystem::updateEntity(int entityId)
 {
-  SpriteComponent *spriteComponent =
-    static_cast<SpriteComponent*>(_entityManager.getComponent(entityId, "SpriteComponent"));
-  PositionComponent *positionComponent =
-    static_cast<PositionComponent*>(_entityManager.getComponent(entityId, "PositionComponent"));
-  // AnimationComponent *animationComponent =
-  //   static_cast<AnimationComponent*>(_entityManager.getComponent(entityId, "AnimationComponent"));
-  _gui->setTextureAt(spriteComponent->getPath(), positionComponent->getX(), positionComponent->getY());
+  if (_rtypeUI.getContext() == RTypeUI::Context::Game)
+    {
+      SpriteComponent *spriteComponent =
+	static_cast<SpriteComponent*>(_entityManager.getComponent(entityId, "SpriteComponent"));
+      PositionComponent *positionComponent =
+	static_cast<PositionComponent*>(_entityManager.getComponent(entityId, "PositionComponent"));
+      // AnimationComponent *animationComponent =
+      //   static_cast<AnimationComponent*>(_entityManager.getComponent(entityId, "AnimationComponent"));
+      _gui->setTextureAt(spriteComponent->getPath(), positionComponent->getX(), positionComponent->getY());
+    }
 }
 
 void            GuiSystem::postRoutine(void)
@@ -56,7 +63,7 @@ void            GuiSystem::_handleAuthentification(void)
   _rtypeUI.displayAuthentification(&_ip, &_port);
   if (!_ip.empty() && _rtypeUI.getContext() != RTypeUI::Context::Authentification)
     {
-      std::cout << "ip == > " << _ip << " et " << _port << std::endl;
+      _messageBus.post(GuiSystem::Messages::AUTHENTIFICATION, new std::pair<std::string, unsigned int>(_ip, _port));
     }
 }
 
@@ -74,4 +81,9 @@ void            GuiSystem::_handleGame(void)
 void            GuiSystem::_handleLoading(void)
 {
   _rtypeUI.displayLoading();
+}
+
+void		GuiSystem::_handleAuthFailed(void *messageData)
+{
+  _rtypeUI.setContext(RTypeUI::Context::Authentification);
 }

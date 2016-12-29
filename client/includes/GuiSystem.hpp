@@ -20,13 +20,16 @@ class           GuiSystem : public ASystem
   void          _handleGame(void);
   void          _handleLoading(void);
 
+  void		_handleAuthFailed(void *messageData);
+  
 public:
 
   static const std::string	name;
   
   enum		Messages
     {
-      KEY_INPUT_DATA = 11
+      KEY_INPUT_DATA = 11,
+      AUTHENTIFICATION = 12,
     };
 
   explicit      GuiSystem(EntityManager &entityManager, MessageBus &messageBus);
