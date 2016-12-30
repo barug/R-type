@@ -41,12 +41,18 @@ bool			CommandHandler::listOfRoom(RTypeClient *client, Message *message)
 {
   std::cout << " \033[1;32m[+] Action 002 is managed\033[0m" << std::endl;
 
-  std::stringstream	*ss = new std::stringstream (message->getData());
+  // std::stringstream    *ss = new std::stringstream (message->getData());
   Message::ListOfRoom	rooms;
 
-  std::memcpy(&rooms, ss->str().c_str(), ss->str().size());
-  std::cout << "Their is " << rooms._nbRoom << " rooms" << std::endl;
+  
+  std::memcpy(&rooms, (void *)message->getData(), message->getSize());
 
+  std::cout << "nb Rooms= " << rooms._nbRoom << std::endl;
+
+  for (auto it : rooms._listOfRoom)
+    {
+      std::cout << it._name << std::endl;
+    }
   return true;
 }
 

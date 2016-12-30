@@ -9,6 +9,7 @@
 # include	"NetworkHandler.hpp"
 
 # define	MAX_ROOM (20)
+# define	MAX_PLAYER (4)
 
 class		Room;
 

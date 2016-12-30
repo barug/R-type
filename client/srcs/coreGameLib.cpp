@@ -30,6 +30,7 @@ void	loadGameLibData(EntityManager &e, SystemManager &s, MessageBus &m)
   m.registerValidMessageId(GuiSystem::Messages::KEY_INPUT_DATA);
   m.registerValidMessageId(GuiSystem::Messages::AUTHENTIFICATION);
   m.registerValidMessageId(NetworkSystem::Messages::AUTHENTIFICATION_FAILED);
+  m.registerValidMessageId(NetworkSystem::Messages::AUTHENTIFICATION_SUCCESS);
   m.registerValidMessageId(CollisionSystem::Messages::COLLISION_DETECTED);
   e.addEntityType("PlayerShip",
 		  {PositionComponent::name,
@@ -66,10 +67,10 @@ void	loadGameLibData(EntityManager &e, SystemManager &s, MessageBus &m)
 		  PlayerInputComponent::name,
 		  PositionComponent::name},
   	      {GuiSystem::Messages::KEY_INPUT_DATA});
-  // s.addSystem(std::make_shared<NetworkSystem>(e, m),
-  // 	      NetworkSystem::name,
-  // 	      {PhysicComponent::name},
-  // 	      {GuiSystem::Messages::AUTHENTIFICATION});
+  s.addSystem(std::make_shared<NetworkSystem>(e, m),
+  	      NetworkSystem::name,
+  	      {PhysicComponent::name},
+  	      {GuiSystem::Messages::AUTHENTIFICATION});
   s.addSystem(std::make_shared<CollisionSystem>(e, m),
 	      CollisionSystem::name,
 	      {PositionComponent::name,

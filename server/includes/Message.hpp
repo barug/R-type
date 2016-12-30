@@ -9,6 +9,9 @@
 
 # include	"ISocket.hpp"
 
+# define	MAX_ROOM (20)
+# define	MAX_PLAYER (4)
+
 class		Message
 {
 
@@ -68,13 +71,13 @@ public :
     int			_port;
     std::string		_name;
     int			_nbPlayer;
-    std::vector<Entity>	_players;
+    Entity		_players[MAX_PLAYER];
   };
 
   struct		ListOfRoom
   {
     int			_nbRoom;
-    std::vector<Room>	_listOfRoom;
+    Room		_listOfRoom[MAX_ROOM];
   };
 # pragma pack(pop)
 

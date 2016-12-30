@@ -13,8 +13,6 @@ Message::Message(int opCode, const std::string& ip, int port, void* data, int si
   _port(port),
   _datagram()
 {
-  if (size)
-    std::cout << (char*) _data << std::endl;
   std::cout << " [+] New Message Entity Create from Datas" << std::endl;
 }
 

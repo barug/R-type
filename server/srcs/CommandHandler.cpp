@@ -2,6 +2,7 @@
 # include	<sstream>
 
 # include	<string.h>
+# include	<cstring>
 
 # include	"CommandHandler.hpp"
 
@@ -60,14 +61,18 @@ bool						CommandHandler::listOfRoom(RTypeServer *server,
   std::cout << " \033[1;32m[+] Action 102 is managed\033[0m" << std::endl;
 
   std::shared_ptr<Message::ListOfRoom>		listOfRoom = std::make_shared<Message::ListOfRoom>();
-  std::vector<Message::Room>			roomVector;
+  //Message::Room					roomVector[MAX_ROOM];
+  int						j = -1;
   std::stringstream				ss;
 
   listOfRoom->_nbRoom = server->getRoomManager()->getRoomNumber();
+  std::cout << "Nbr of Rooms" << listOfRoom->_nbRoom << std::endl;
   for (auto it : server->getRoomManager()->getGameRooms())
     {
-      std::shared_ptr<Message::Room>		roomData = std::make_shared<Message::Room>();
-      std::vector<Message::Entity>		playerVector;
+      int					i = -1;
+      std::stringstream				ss;
+      std::shared_ptr< Message::Room >		roomData = std::make_shared<Message::Room>();
+      //Message::Entity				playerVector[MAX_PLAYER];
 
       roomData->_name = it.second->getName();
       roomData->_ip = it.second->getSocket()->getIp();
@@ -76,27 +81,34 @@ bool						CommandHandler::listOfRoom(RTypeServer *server,
 
       for (auto it2 : it.second->getPlayers())
 	{
-	  std::shared_ptr<Message::Entity>	entity = std::make_shared<Message::Entity>();
+	  std::shared_ptr< Message::Entity >	entity = std::make_shared<Message::Entity>();
 	  entity->_name = it2.second->getIp() + ":" + std::to_string(it2.second->getPort());
 	  // entity->_pos_x = ;
 	  // entity->_pos_y = ;
-	  playerVector.push_back(*(entity.get()));
-	}
-      roomData->_players = playerVector;
-      roomVector.push_back(*(roomData.get()));
+	  roomData->_players[++i] = *(entity.get());
+	}   
+      listOfRoom->_listOfRoom[++j] = *(roomData.get());    
     }
-
-  ss.write((char *) listOfRoom.get(), sizeof( *(listOfRoom.get()) ) );
-  for (auto it : roomVector)
+  ////
+  
+  ss.write((char *) listOfRoom.get(), sizeof( (listOfRoom.get()) ) );
+  for (int y = 0; y <= j; y++)
     {
-      ss.write((char *) &it, sizeof(it) );
-      for (auto it2 : it._players)
-	ss.write((char *) &it2, sizeof(it2) );
+      ss.write((char *) &listOfRoom->_listOfRoom[y],
+	       sizeof(listOfRoom->_listOfRoom[y]) );
+      
+      for (int x = 0; x < listOfRoom->_listOfRoom[y]._nbPlayer; x++)
+	ss.write((char *) &listOfRoom->_listOfRoom[y]._players[x],
+		 sizeof(listOfRoom->_listOfRoom[y]._players[x]) );
     }
 
+  for (auto it : ss.str())
+    {
+      std::cout << "[" << it << "]";
+    }
+  std::cout << std::endl;
   this->sendMessage(server, 2, client.getIp(), client.getPort(),
 		    (void *)ss.str().c_str(), ss.str().size());
-
   return true;
 }
 
@@ -154,10 +166,12 @@ bool							CommandHandler::joinRoom(RTypeServer *server,
     {
       if (room->getNbPlayers() < 4)
 	{
+	  int						i = -1;
 	  std::stringstream				ss;
 	  std::shared_ptr< Message::Room >		roomData = std::make_shared<Message::Room>();
-	  std::vector< Message::Entity >		playerVector;
+	  Message::Entity				playerVector[MAX_PLAYER];
 
+	  std::memset(&playerVector, 0, sizeof(Message::Entity) * MAX_PLAYER);
 	  room->addPlayer(client);
 
 	  roomData->_name = room->getName();
@@ -171,12 +185,12 @@ bool							CommandHandler::joinRoom(RTypeServer *server,
 	      entity->_name = it.second->getIp() + ":" + std::to_string(it.second->getPort());
 	      // entity->_pos_x = ;
 	      // entity->_pos_y = ;
-	      playerVector.push_back(*(entity.get()));
+	      playerVector[++i] = *(entity.get());
 	    }
 
-	  ss.write((char *) roomData.get(), sizeof(*(roomData.get())));
-	  for (auto it : playerVector)
-	    ss.write((char *) &it, sizeof(it));
+	  ss.write((char *) roomData.get(), sizeof(*(roomData.get())));	 
+	  for (int x = 0; x <= i; x++)
+	    ss.write((char *) &playerVector[x], sizeof(playerVector[x]));
 
 	  this->sendMessage(server, 4, client.getIp(), client.getPort(),
 			    (void *)ss.str().c_str(), ss.str().size());
