@@ -29,15 +29,24 @@ PlayerInputSystem::PlayerInputSystem(EntityManager &entityManager,
   HitBoxComponent *hitBoxComp =
     static_cast<HitBoxComponent*>(_entityManager.getComponent(playerShipId,
   							      HitBoxComponent::name));
+
   positionComp->setX(10);
   positionComp->setY(10);
   physComp->setSpeedX(0);
   physComp->setSpeedY(0);
   physComp->setAccelerationX(0);
   physComp->setAccelerationY(0);
-  spriteComp->setPathAnimated("./assets/sprites/r-typesheet42.gif");
+  spriteComp->setPathAnimated("./assets/sprites/r-typesheet42.png");
   spriteComp->setEntityName("PlayerShip");
-  spriteComp->setRec({166/5, 0, 166/5, 17}, 5);
+  spriteComp->setFrames({166/5, 0, 166/5, 17}, 5);
+  // ou
+  // spriteComp->setFrames({
+  //     {166/5, 0, 166/5, 17},
+  //       {(166/5)*2, 0, 166/5, 17},
+  //         {(166/5)*3, 0, 166/5, 17},
+  //           {(166/5)*4, 0, 166/5, 17},
+  //             {(166/5)*5, 0, 166/5, 17}}
+  //   );
 
   int basicMonsterId = _entityManager.createEntity("BasicMonster");
   spriteComp =
@@ -49,9 +58,9 @@ PlayerInputSystem::PlayerInputSystem(EntityManager &entityManager,
   hitBoxComp =
     static_cast<HitBoxComponent*>(_entityManager.getComponent(basicMonsterId,
   							      HitBoxComponent::name));
-  spriteComp->setPathAnimated("./assets/sprites/r-typesheet17.gif");
+  spriteComp->setPathAnimated("./assets/sprites/r-typesheet17.png");
   spriteComp->setEntityName("BasicMonster");
-  spriteComp->setRec({66, 0, 61, 132}, 8);
+  spriteComp->setFrames({66, 0, 61, 132}, 8);
   positionComp->setX(300);
   positionComp->setY(300);
   hitBoxComp->setCircleRadius(20);

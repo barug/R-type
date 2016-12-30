@@ -211,8 +211,37 @@ Animation               Window::addFrames(const std::string &path,
                                           std::vector<unsigned int> rec)
 {
   Animation animation = loadAnimation(path);
-  for (unsigned int i = 0; i < nbFrame; i++)
-    animation.addFrame(i * rec[0], rec[1], rec[2], rec[3]);
+  if (!nbFrame)
+    {
+      unsigned int j = 0;
+      for (unsigned int i = 0; i < rec.size(); i++)
+        {
+          if ((i % 4) == 0)
+            {
+              // animation.addFrame(j * rec[0], rec[1], rec[2], rec[3]);
+              j++;
+            }
+        }
+    }
+  else
+    {
+      for (unsigned int i = 0; i < nbFrame; i++)
+        animation.addFrame(i * rec[0], rec[1], rec[2], rec[3]);
+    }
+  return animation;
+}
+
+Animation               Window::addFrames(const std::string &path,
+                                          std::vector<std::vector<unsigned int> > fullFrames)
+{
+  Animation animation = loadAnimation(path);
+  for (unsigned int i = 0; i < fullFrames.size(); i++)
+    {
+      for (unsigned int j = 0; j < fullFrames[i].size(); j++)
+        {
+          animation.addFrame(fullFrames[i][0], fullFrames[i][1], fullFrames[i][2], fullFrames[i][3]);
+        }
+    }
   return animation;
 }
 

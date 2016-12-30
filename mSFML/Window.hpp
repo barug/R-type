@@ -66,6 +66,8 @@ public:
   virtual Animation     addFrames(const std::string &path,
                                   const unsigned int nbFrame,
                                   std::vector<unsigned int> rec);
+  virtual Animation     addFrames(const std::string &path,
+                                  std::vector<std::vector<unsigned int> > fullFrames);
   virtual void          addFrames(Animation &animation,
                                   const unsigned int nbFrame,
                                   const unsigned int x1,

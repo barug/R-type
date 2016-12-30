@@ -4,7 +4,7 @@
 const std::string SpriteComponent::name = "SpriteComponent";
 
 SpriteComponent::SpriteComponent() : _isAnimated(false),
-                                     _allRecActivated(false),
+                                     _isFullFrames(false),
                                      _animatedSprite(NULL)
 {}
 
@@ -37,6 +37,11 @@ void                            SpriteComponent::setPathAnimated(const std::stri
     _animatedSprite = new AnimatedSprite;
 }
 
+bool                            SpriteComponent::isFullFrames(void) const
+{
+  return _isFullFrames;
+}
+
 bool                            SpriteComponent::isAnimated(void) const
 {
   return _isAnimated;
@@ -52,31 +57,29 @@ void                            SpriteComponent::setEntityName(const std::string
   _entityName = entityName;
 }
 
-void                            SpriteComponent::setRec(const std::vector<unsigned int> &rec,
-                                                        const unsigned int nbFrames)
-{
-  for (auto it : rec)
-    _rec.push_back(it);
-  _nbFrames = nbFrames;
-}
-
-void                            SpriteComponent::setAllRec(const std::vector<std::vector<unsigned int> > &allRec,
+void                            SpriteComponent::setFrames(const std::vector<unsigned int> &frames,
                                                            const unsigned int nbFrames)
 {
-  for (auto it : allRec)
-    _allRec.push_back(it);
+  for (auto it : frames)
+    _frames.push_back(it);
   _nbFrames = nbFrames;
-  _allRecActivated = true;
 }
 
-const std::vector<unsigned int>& SpriteComponent::getRec(void) const
+void                            SpriteComponent::setFrames(const std::vector<std::vector<unsigned int> > &fullFrames)
 {
-  return _rec;
+  for (auto it : fullFrames)
+    _fullFrames.push_back(it);
+  _isFullFrames = true;
 }
 
-const std::vector<std::vector<unsigned int> >& SpriteComponent::getAllRec(void) const
+const std::vector<unsigned int>& SpriteComponent::getFrames(void) const
 {
-  return _allRec;
+  return _frames;
+}
+
+const std::vector<std::vector<unsigned int> >& SpriteComponent::getFullFrames(void) const
+{
+  return _fullFrames;
 }
 
 const unsigned int              SpriteComponent::getNbFrames(void) const
