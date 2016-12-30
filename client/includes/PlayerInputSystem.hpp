@@ -7,6 +7,7 @@
 # include "PhysicComponent.hpp"
 # include "IGui.hpp"
 # include "GuiSystem.hpp"
+# include "clientMessages.hpp"
 
 class		PlayerInputSystem : public ASystem
 {

@@ -10,11 +10,6 @@ class           NetworkSystem : public ASystem
 {
 
 public:
-
-  enum		Messages
-    {
-      AUTHENTIFICATION_FAILED = 13,
-    }; 
   
   static const std::string	name;
   

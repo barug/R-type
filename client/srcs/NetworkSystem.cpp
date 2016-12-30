@@ -9,7 +9,7 @@ NetworkSystem::NetworkSystem(EntityManager &entityManager, MessageBus &messageBu
     _client(new RTypeClient()),
     _isAuthentified(false)
 {
-  loadMessageHandler(GuiSystem::Messages::AUTHENTIFICATION,
+  loadMessageHandler(ClientMessages::AUTHENTIFICATION,
 		     static_cast<message_handler>(&NetworkSystem::handleAuthentification));
 }
 
@@ -27,7 +27,7 @@ void            NetworkSystem::updateEntity(int entityId)
 	{
 	  std::cout << "RTypeClient::run return false" << std::endl;
 	  _isAuthentified = false;
-	  _messageBus.post(Messages::AUTHENTIFICATION_FAILED, NULL);
+	  _messageBus.post(ClientMessages::AUTHENTIFICATION_FAILED, NULL);
 	}
     }
 }

@@ -14,6 +14,12 @@ PhysicSystem::PhysicSystem(EntityManager &entityManager,
     _winY(winY)
 {}
 
+bool		PhysicSystem::testIfOutScreen(int x, int y)
+{
+  return (x < 0 || x > (int) (_winX) ||
+	  y < 0 || y > (int) (_winY));
+}
+
 void		PhysicSystem::updateEntity(int entityId)
 {
   int		newPosX;
@@ -29,15 +35,30 @@ void		PhysicSystem::updateEntity(int entityId)
   newPosY = posComp->getY() + physComp->getSpeedY();
   // physComp->setSpeedX(physComp->getSpeedX() + physComp->getAccelerationX());
   // physComp->setSpeedY(physComp->getSpeedY() + physComp->getAccelerationY());
-  if (!(!physComp->getCanLeaveScreen() && (newPosX < 0 || newPosX > (int) (_winX) ||
-					   newPosY < 0 || newPosY > (int) (_winY))))
+  if (physComp->getCanLeaveScreen())
     {
-      posComp->setX(newPosX);
-      posComp->setY(newPosY);
+      if (!testIfOutScreen(newPosX, newPosY))
+	{
+	  posComp->setX(newPosX);
+	  posComp->setY(newPosY);
+	}
+      else
+	{
+	  _entityManager.deleteEntity(entityId);
+	}
+      
     }
   else
     {
-      physComp->setSpeedX(0);
-      physComp->setSpeedY(0);
+      if (!testIfOutScreen(newPosX, newPosY))
+	{
+	  posComp->setX(newPosX);
+	  posComp->setY(newPosY);
+	}
+      else
+	{
+	  physComp->setSpeedX(0);
+	  physComp->setSpeedY(0);
+	}
     }
 }

@@ -21,7 +21,7 @@ GuiSystem::GuiSystem(EntityManager &entityManager,
                      {RTypeUI::Context::Game,                    &GuiSystem::_handleGame},
                      {RTypeUI::Context::Loading,                 &GuiSystem::_handleLoading}})
 {
-  loadMessageHandler(NetworkSystem::Messages::AUTHENTIFICATION_FAILED,
+  loadMessageHandler(ClientMessages::AUTHENTIFICATION_FAILED,
 		     static_cast<message_handler>(&GuiSystem::_handleAuthFailed));
 }
 
@@ -33,7 +33,7 @@ void            GuiSystem::preRoutine(void)
   _gui->clear();
   _gui->handleEvents();
   if (_gui->getKey() != IGui::Key::NONE)
-    _messageBus.post(GuiSystem::Messages::KEY_INPUT_DATA, new IGui::Key(_gui->getKey()));
+    _messageBus.post(ClientMessages::KEY_INPUT_DATA, new IGui::Key(_gui->getKey()));
   ((*this).*(_contextHandler[_rtypeUI.getContext()]))();
 }
 
@@ -95,7 +95,7 @@ void            GuiSystem::_handleAuthentification(void)
   _rtypeUI.displayAuthentification(&_ip, &_port);
   if (!_ip.empty() && _rtypeUI.getContext() != RTypeUI::Context::Authentification)
     {
-      _messageBus.post(GuiSystem::Messages::AUTHENTIFICATION, new std::pair<std::string, unsigned int>(_ip, _port));
+      _messageBus.post(ClientMessages::AUTHENTIFICATION, new std::pair<std::string, unsigned int>(_ip, _port));
     }
 }
 
@@ -117,5 +117,5 @@ void            GuiSystem::_handleLoading(void)
 
 void		GuiSystem::_handleAuthFailed(void *messageData)
 {
-  _rtypeUI.setContext(RTypeUI::Context::Authentification);
+  // _rtypeUI.setContext(RTypeUI::Context::Authentification);
 }
