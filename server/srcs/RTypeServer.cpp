@@ -1,6 +1,10 @@
 # include	<iostream>
+#if defined (__UNIX__)
 # include	<unistd.h>
-
+# define _read read;
+#elif defined(_WIN32) || defined (WIN32)
+#include <io.h>
+#endif
 # include	"RTypeServer.hpp"
 
 RTypeServer::RTypeServer(const int port) :
@@ -28,7 +32,7 @@ void		RTypeServer::checkInput()
   char		buff[5];
   int		r;
 
-  r = read(STDIN_FILENO, buff, 4);
+  r = _read(0, buff, 4);
   buff[r] = 0;
 
   std::string	quit(buff);
@@ -53,11 +57,11 @@ void						RTypeServer::checkSocket()
 void		RTypeServer::run()
 {
   int		fd;
-  _networkHandler->getSocket().addFdSelect(STDIN_FILENO);
+  _networkHandler->getSocket().addFdSelect(0);
 
   while (_run)
     {
-      if ( ( fd = _networkHandler->getSocket().somethingToRead() ) == STDIN_FILENO )
+      if ( ( fd = _networkHandler->getSocket().somethingToRead() ) == 0)
 	this->checkInput();
       else if (fd != -1)
 	this->checkSocket();
