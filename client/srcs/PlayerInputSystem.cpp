@@ -33,6 +33,9 @@ PlayerInputSystem::PlayerInputSystem(EntityManager &entityManager,
   HealthComponent *healthComp =
     static_cast<HealthComponent*>(_entityManager.getComponent(playerShipId,
 							      HealthComponent::name));
+  PlayerInputComponent *playerComp =
+    static_cast<PlayerInputComponent*>(_entityManager.getComponent(playerShipId,
+								   PlayerInputComponent::name));
   positionComp->setX(10);
   positionComp->setY(10);
   physComp->setSpeedX(0);
@@ -53,7 +56,7 @@ PlayerInputSystem::PlayerInputSystem(EntityManager &entityManager,
   healthComp->setHealth(1);
   healthComp->setDamagePower(0);
   healthComp->setFaction(HealthComponent::Faction::PLAYERS);
-
+  playerComp->setLastFire(std::chrono::system_clock::now());
   int basicMonsterId = _entityManager.createEntity("BasicMonster");
   spriteComp =
     static_cast<SpriteComponent*>(_entityManager.getComponent(basicMonsterId,
@@ -80,12 +83,15 @@ PlayerInputSystem::PlayerInputSystem(EntityManager &entityManager,
 
 void		PlayerInputSystem::updateEntity(int entityId)
 {
-  // PlayerInputComponent *inputComp =
-  //   static_cast<PlayerInputComponent*>(_entityManager.getComponent(entityId,
-  // 								   "PlayerInputComponent"));
+  PlayerInputComponent *inputComp =
+    static_cast<PlayerInputComponent*>(_entityManager.getComponent(entityId,
+  								   PlayerInputComponent::name));
   PhysicComponent *physComp =
     static_cast<PhysicComponent*>(_entityManager.getComponent(entityId,
-							      "PhysicComponent"));
+							      PhysicComponent::name));
+  PositionComponent *playerPosComp =
+    static_cast<PositionComponent*>(_entityManager.getComponent(entityId,
+								PositionComponent::name));
 
   physComp->setAccelerationX(0);
   physComp->setAccelerationY(0);
@@ -97,6 +103,47 @@ void		PlayerInputSystem::updateEntity(int entityId)
     physComp->setSpeedX(physComp->getSpeedX() - 0.5);
   if (_lastKey == IGui::Key::RIGHT)
     physComp->setSpeedX(physComp->getSpeedX() + 0.5);
+  if(_lastKey == IGui::Key::SPACE)
+    {
+     std::chrono::time_point<std::chrono::system_clock> now =
+       std::chrono::system_clock::now();
+     std::chrono::time_point<std::chrono::system_clock> lastFire =
+       inputComp->getLastFire();
+     int elapsed = 
+       std::chrono::duration_cast<std::chrono::milliseconds>(now - lastFire).count();
+     if (elapsed > 500)
+       {
+	 inputComp->setLastFire(now);
+	 int projectileId = _entityManager.createEntity("playerBasicProjectile");
+	 PositionComponent *projectilePosComp =
+	   static_cast<PositionComponent*>(_entityManager.getComponent(projectileId,
+								       PositionComponent::name));
+	 PhysicComponent *projectilePhysComp =
+	   static_cast<PhysicComponent*>(_entityManager.getComponent(projectileId,
+								     PhysicComponent::name));
+	 HitBoxComponent *projectileHitBoxComp =
+	   static_cast<HitBoxComponent*>(_entityManager.getComponent(projectileId,
+								     HitBoxComponent::name));
+	 SpriteComponent *projectileSpriteComp =
+	   static_cast<SpriteComponent*>(_entityManager.getComponent(projectileId,
+								     SpriteComponent::name));
+	 HealthComponent *projectileHealthComp =
+	   static_cast<HealthComponent*>(_entityManager.getComponent(projectileId,
+								     HealthComponent::name));
+	 projectilePosComp->setX(playerPosComp->getX() + 20);
+	 projectilePosComp->setY(playerPosComp->getY());
+	 projectilePhysComp->setSpeedX(5);
+	 projectilePhysComp->setSpeedY(0);
+	 projectilePhysComp->setCanLeaveScreen(true);
+	 projectileHitBoxComp->setCircleRadius(10);
+	 projectileSpriteComp->setPathAnimated("./assets/sprites/r-typesheet3.png");
+	 projectileSpriteComp->setEntityName("playerBasicProjectile");
+	 projectileSpriteComp->setFrames({208/12, 0, 208/12, 18}, 12);
+	 projectileHealthComp->setHealth(1);
+	 projectileHealthComp->setDamagePower(-1);
+	 projectileHealthComp->setFaction(HealthComponent::Faction::PLAYERS);
+       }
+    }
 }
 
 void		PlayerInputSystem::postRoutine()
@@ -109,6 +156,5 @@ void		PlayerInputSystem::handleNewKeyInput(void *messageData)
 {
   IGui::Key	*key = static_cast<IGui::Key*>(messageData);
 
-  std::cout << "getting new input message" << std::endl;
   _lastKey = *key;
 }

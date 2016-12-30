@@ -109,10 +109,10 @@ void		MessageBus::broadcast()
 {
   for (auto message : _messages)
     {
-      for (auto system : _systems)
+      for (auto it = _systems.begin(); it != _systems.end(); ++it)
 	{
-	  if (isSubscribed(system->name(), message.getTypeId()))
-	    system->handleMessage(message.getTypeId(), message.getData());
+	  if (isSubscribed((*it)->name(), message.getTypeId()))
+	    (*it)->handleMessage(message.getTypeId(), message.getData());
 	}
     }
   _messages.clear();

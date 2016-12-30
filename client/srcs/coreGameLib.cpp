@@ -14,8 +14,13 @@
 #include "HealthComponent.hpp"
 #include "HealthSystem.hpp"
 
+
+
 void	loadGameLibData(EntityManager &e, SystemManager &s, MessageBus &m)
 {
+  unsigned int		winX = 1200;
+  unsigned int		winY = 800;
+  
   e.addComponentType<PositionComponent>(PositionComponent::name);
   e.addComponentType<PhysicComponent>(PhysicComponent::name);
   e.addComponentType<PlayerInputComponent>(PlayerInputComponent::name);
@@ -38,17 +43,27 @@ void	loadGameLibData(EntityManager &e, SystemManager &s, MessageBus &m)
 		      SpriteComponent::name,
 		      HitBoxComponent::name,
 		      HealthComponent::name});
-  s.addSystem(std::make_shared<GuiSystem>(e, m),
+  e.addEntityType("playerBasicProjectile",
+		  {PositionComponent::name,
+		      PhysicComponent::name,
+		      SpriteComponent::name,
+		      HitBoxComponent::name,
+		      HealthComponent::name});
+  s.addSystem(std::make_shared<GuiSystem>(e, m, winX, winY),
 	      GuiSystem::name,
-	      {SpriteComponent::name, PositionComponent::name},
+	      {SpriteComponent::name,
+		  PositionComponent::name},
 	      {NetworkSystem::Messages::AUTHENTIFICATION_FAILED});
-  s.addSystem(std::make_shared<PhysicSystem>(e, m),
+  s.addSystem(std::make_shared<PhysicSystem>(e, m, winX, winY),
 	      PhysicSystem::name,
-	      {PhysicComponent::name, PositionComponent::name},
+	      {PhysicComponent::name,
+		  PositionComponent::name},
 	      {});
   s.addSystem(std::make_shared<PlayerInputSystem>(e, m),
   	      PlayerInputSystem::name,
-  	      {PhysicComponent::name, PlayerInputComponent::name},
+  	      {PhysicComponent::name,
+		  PlayerInputComponent::name,
+		  PositionComponent::name},
   	      {GuiSystem::Messages::KEY_INPUT_DATA});
   s.addSystem(std::make_shared<NetworkSystem>(e, m),
   	      NetworkSystem::name,
@@ -56,7 +71,8 @@ void	loadGameLibData(EntityManager &e, SystemManager &s, MessageBus &m)
   	      {GuiSystem::Messages::AUTHENTIFICATION});
   s.addSystem(std::make_shared<CollisionSystem>(e, m),
 	      CollisionSystem::name,
-	      {PositionComponent::name, HitBoxComponent::name},
+	      {PositionComponent::name,
+		  HitBoxComponent::name},
 	      {});
   s.addSystem(std::make_shared<HealthSystem>(e, m),
   	      HealthSystem::name,
