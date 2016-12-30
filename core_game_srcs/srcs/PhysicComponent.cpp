@@ -11,42 +11,53 @@ const std::string	PhysicComponent::getName()
   return PhysicComponent::name;
 }
 
-void			PhysicComponent::setSpeedX(int speedX)
+void			PhysicComponent::setSpeedX(float speedX)
 {
   _speedX = speedX;
 }
 
-void			PhysicComponent::setSpeedY(int speedY)
+void			PhysicComponent::setSpeedY(float speedY)
 {
   _speedY = speedY;
 }
 
-void			PhysicComponent::setAccelerationX(int accelerationX)
+void			PhysicComponent::setAccelerationX(float accelerationX)
 {
   _accelerationX = accelerationX;
 }
 
-void			PhysicComponent::setAccelerationY(int accelerationY)
+void			PhysicComponent::setAccelerationY(float accelerationY)
 {
   _accelerationY = accelerationY;
 }
 
-int			PhysicComponent::getSpeedX() const
+void			PhysicComponent::setCanLeaveScreen(bool canLeaveScreen)
+{
+  _canLeaveScreen = canLeaveScreen;
+}
+
+
+float			PhysicComponent::getSpeedX() const
 {
   return _speedX;
 }
 
-int			PhysicComponent::getSpeedY() const
+float			PhysicComponent::getSpeedY() const
 {
   return _speedY;
 }
 
-int			PhysicComponent::getAccelerationX() const
+float			PhysicComponent::getAccelerationX() const
 {
   return _accelerationX;
 }
 
-int			PhysicComponent::getAccelerationY() const
+float			PhysicComponent::getAccelerationY() const
 {
   return _accelerationY;
+}
+
+bool			PhysicComponent::getCanLeaveScreen() const
+{
+  return _canLeaveScreen;
 }

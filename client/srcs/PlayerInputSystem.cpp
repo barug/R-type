@@ -42,7 +42,7 @@ PlayerInputSystem::PlayerInputSystem(EntityManager &entityManager,
   spriteComp->setPathAnimated("./assets/sprites/r-typesheet42.gif");
   spriteComp->setEntityName("PlayerShip");
   spriteComp->setRec({166/5, 0, 166/5, 17}, 5);
-  healthComp->setHealth(0);
+  healthComp->setHealth(1);
   healthComp->setDamagePower(0);
   healthComp->setFaction(HealthComponent::Faction::PLAYERS);
 
@@ -57,7 +57,7 @@ PlayerInputSystem::PlayerInputSystem(EntityManager &entityManager,
     static_cast<HitBoxComponent*>(_entityManager.getComponent(basicMonsterId,
   							      HitBoxComponent::name));
   healthComp =
-    static_cast<HealthComponent*>(_entityManager.getComponent(playerShipId,
+    static_cast<HealthComponent*>(_entityManager.getComponent(basicMonsterId,
 							      HealthComponent::name));
   spriteComp->setPathAnimated("./assets/sprites/r-typesheet17.gif");
   spriteComp->setEntityName("BasicMonster");
@@ -82,13 +82,13 @@ void		PlayerInputSystem::updateEntity(int entityId)
   physComp->setAccelerationX(0);
   physComp->setAccelerationY(0);
   if (_lastKey == IGui::Key::UP)
-    physComp->setAccelerationY(-1);
+    physComp->setSpeedY(physComp->getSpeedY() - 0.5);
   if (_lastKey == IGui::Key::DOWN)
-    physComp->setAccelerationY(1);
+    physComp->setSpeedY(physComp->getSpeedY() + 0.5);
   if (_lastKey == IGui::Key::LEFT)
-    physComp->setAccelerationX(-1);
+    physComp->setSpeedX(physComp->getSpeedX() - 0.5);
   if (_lastKey == IGui::Key::RIGHT)
-    physComp->setAccelerationX(1);
+    physComp->setSpeedX(physComp->getSpeedX() + 0.5);
 }
 
 void		PlayerInputSystem::postRoutine()

@@ -31,11 +31,13 @@ void	loadGameLibData(EntityManager &e, SystemManager &s, MessageBus &m)
 		      PhysicComponent::name,
 		      PlayerInputComponent::name,
 		      SpriteComponent::name,
-		      HitBoxComponent::name});
+		      HitBoxComponent::name,
+		      HealthComponent::name});
   e.addEntityType("BasicMonster",
 		  {PositionComponent::name,
 		      SpriteComponent::name,
-		      HitBoxComponent::name});
+		      HitBoxComponent::name,
+		      HealthComponent::name});
   s.addSystem(std::make_shared<GuiSystem>(e, m),
 	      GuiSystem::name,
 	      {SpriteComponent::name, PositionComponent::name},
@@ -57,9 +59,9 @@ void	loadGameLibData(EntityManager &e, SystemManager &s, MessageBus &m)
 	      {PositionComponent::name, HitBoxComponent::name},
 	      {});
   s.addSystem(std::make_shared<HealthSystem>(e, m),
-	      HealthSystem::name,
-	      {HealthComponent::name},
-	      {CollisionSystem::Messages::COLLISION_DETECTED});
+  	      HealthSystem::name,
+  	      {HealthComponent::name},
+  	      {CollisionSystem::Messages::COLLISION_DETECTED});
 }
 
 typedef void (*loaderPtr)(EntityManager &, SystemManager &, MessageBus &);

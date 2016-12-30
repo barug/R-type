@@ -17,7 +17,7 @@ public:
 
   enum			Messages
     {
-      COLLISION_DETECTED
+      COLLISION_DETECTED = 14
     };
 
   static const std::string	name;

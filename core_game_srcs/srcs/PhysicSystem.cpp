@@ -10,6 +10,8 @@ PhysicSystem::PhysicSystem(EntityManager &entityManager, MessageBus &messageBus)
 
 void		PhysicSystem::updateEntity(int entityId)
 {
+  int		newPosX;
+  int		newPosY;
   PositionComponent *posComp =
     static_cast<PositionComponent*>(_entityManager.getComponent(entityId,
 								"PositionComponent"));
@@ -17,8 +19,11 @@ void		PhysicSystem::updateEntity(int entityId)
     static_cast<PhysicComponent*>(_entityManager.getComponent(entityId,
 							      "PhysicComponent"));
 
-  physComp->setSpeedX(physComp->getSpeedX() + physComp->getAccelerationX());
-  physComp->setSpeedY(physComp->getSpeedY() + physComp->getAccelerationY());
-  posComp->setX(posComp->getX() + physComp->getSpeedX());
-  posComp->setY(posComp->getY() + physComp->getSpeedY());
+  newPosX = posComp->getX() + physComp->getSpeedX();
+  newPosY = posComp->getY() + physComp->getSpeedY();
+  // physComp->setSpeedX(physComp->getSpeedX() + physComp->getAccelerationX());
+  // physComp->setSpeedY(physComp->getSpeedY() + physComp->getAccelerationY());
+  // if (!(!physComp->getCanLeaveScreen && (newPosX < 0 || newPosX
+  posComp->setX(newPosX);
+  posComp->setY(newPosY);
 }

@@ -22,15 +22,21 @@ void				HealthSystem::updateEntity(int entityId)
 
 void				HealthSystem::handleCollision(void *messageData)
 {
+  std::cout << "entering handle collision" << std::endl;
   std::pair<int, int>		*idPair =
     static_cast<std::pair<int, int>*>(messageData);
+  std::cout << "firstId: " << idPair->first << std::endl;
+  std::cout << "secondId: " << idPair->second << std::endl;
   HealthComponent		*firstHealthComp =
     static_cast<HealthComponent*>(_entityManager.getComponent(idPair->first,
 							       HealthComponent::name));
   HealthComponent		*secondHealthComp =
     static_cast<HealthComponent*>(_entityManager.getComponent(idPair->second,
-							       HealthComponent::name));  
-  if (firstHealthComp->getFaction() != secondHealthComp->getFaction())
+							      HealthComponent::name));
+  std::cout << "firstHealthCompPtr: " << firstHealthComp << std::endl;
+  std::cout << "secondHealthCompPtr: " << secondHealthComp << std::endl;
+  if (firstHealthComp && secondHealthComp &&
+      firstHealthComp->getFaction() != secondHealthComp->getFaction())
     {
       firstHealthComp->modifyHealth(secondHealthComp->getDamagePower());
       secondHealthComp->modifyHealth(firstHealthComp->getDamagePower());
