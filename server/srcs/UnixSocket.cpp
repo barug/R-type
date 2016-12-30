@@ -77,6 +77,10 @@ bool			UnixSocket::writeSocket(const ISocket::Datagram& datagram)
   if (sendto(_fd, datagram._data, datagram._lenght,
 	     0, (struct sockaddr *)&s_addr, s_len) == -1)
     return false;
+
+  std::cout << " [+] Write packet to " << inet_ntoa(s_addr.sin_addr)
+	    << ":" <<  ntohs(s_addr.sin_port) << std::endl;
+
   return true;
 }
 

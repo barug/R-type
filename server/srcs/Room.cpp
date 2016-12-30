@@ -127,7 +127,7 @@ bool	Room::run()
 	  std::cout << " [+] Game Cmd " << std::endl;
 	  // _commandHandler->execFuncByOperationCode(this, *clicli, message.get());
 	}
-      if (_nbPlayers == 1)
+      if (_nbPlayers > 0)
 	this->gameStep();
     }
   return true;
