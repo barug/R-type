@@ -15,6 +15,11 @@ class			CollisionSystem : public ASystem
   
 public:
 
+  enum			Messages
+    {
+      COLLISION_DETECTED
+    };
+
   static const std::string	name;
   
   CollisionSystem(EntityManager &entityManager, MessageBus &messageBus);

@@ -6,8 +6,17 @@
 
 class				HealthComponent : public IComponent
 {
+public:
+  enum				Faction
+    {
+      PLAYERS,
+      ENEMIES
+    };
 
+private:
   int				_health;
+  int				_damagePower;
+  HealthComponent::Faction	_faction;
   
 public:
   static const std::string	name;
@@ -16,6 +25,11 @@ public:
   virtual const std::string	getName();
   void				setHealth(int health);
   int				getHealth() const;
+  void				modifyHealth(int modifier);
+  void				setFaction(HealthComponent::Faction faction);
+  HealthComponent::Faction	getFaction() const;
+  void				setDamagePower(int damagePower);
+  int				getDamagePower() const;
 };
 
 

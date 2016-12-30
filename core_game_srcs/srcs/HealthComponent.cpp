@@ -1,6 +1,8 @@
 
 #include "HealthComponent.hpp"
 
+const std::string	HealthComponent::name = "HealthComponent";
+
 HealthComponent::HealthComponent()
 {}
 
@@ -17,4 +19,29 @@ void			HealthComponent::setHealth(int health)
 int			HealthComponent::getHealth() const
 {
   return _health;
+}
+
+void			HealthComponent::modifyHealth(int modifier)
+{
+  _health += modifier;
+}
+
+void			HealthComponent::setFaction(HealthComponent::Faction faction)
+{
+  _faction = faction;
+}
+
+HealthComponent::Faction	HealthComponent::getFaction() const
+{
+  return _faction;
+}
+
+void			HealthComponent::setDamagePower(int damagePower)
+{
+  _damagePower = damagePower;
+}
+
+int			HealthComponent::getDamagePower() const
+{
+  return _damagePower;
 }

@@ -3,6 +3,7 @@
 #include "PositionComponent.hpp"
 #include "SpriteComponent.hpp"
 #include "HitBoxComponent.hpp"
+#include "HealthComponent.hpp"
 #include <iostream>
 
 const std::string PlayerInputSystem::name = "PlayerInputSystem";
@@ -29,6 +30,9 @@ PlayerInputSystem::PlayerInputSystem(EntityManager &entityManager,
   HitBoxComponent *hitBoxComp =
     static_cast<HitBoxComponent*>(_entityManager.getComponent(playerShipId,
   							      HitBoxComponent::name));
+  HealthComponent *healthComp =
+    static_cast<HealthComponent*>(_entityManager.getComponent(playerShipId,
+							      HealthComponent::name));
   positionComp->setX(10);
   positionComp->setY(10);
   physComp->setSpeedX(0);
@@ -38,6 +42,9 @@ PlayerInputSystem::PlayerInputSystem(EntityManager &entityManager,
   spriteComp->setPathAnimated("./assets/sprites/r-typesheet42.gif");
   spriteComp->setEntityName("PlayerShip");
   spriteComp->setRec({166/5, 0, 166/5, 17}, 5);
+  healthComp->setHealth(0);
+  healthComp->setDamagePower(0);
+  healthComp->setFaction(HealthComponent::Faction::PLAYERS);
 
   int basicMonsterId = _entityManager.createEntity("BasicMonster");
   spriteComp =
@@ -49,12 +56,18 @@ PlayerInputSystem::PlayerInputSystem(EntityManager &entityManager,
   hitBoxComp =
     static_cast<HitBoxComponent*>(_entityManager.getComponent(basicMonsterId,
   							      HitBoxComponent::name));
+  healthComp =
+    static_cast<HealthComponent*>(_entityManager.getComponent(playerShipId,
+							      HealthComponent::name));
   spriteComp->setPathAnimated("./assets/sprites/r-typesheet17.gif");
   spriteComp->setEntityName("BasicMonster");
   spriteComp->setRec({66, 0, 61, 132}, 8);
   positionComp->setX(300);
   positionComp->setY(300);
   hitBoxComp->setCircleRadius(20);
+  healthComp->setHealth(1);
+  healthComp->setDamagePower(-1);
+  healthComp->setFaction(HealthComponent::Faction::ENEMIES);
 }
 
 void		PlayerInputSystem::updateEntity(int entityId)
