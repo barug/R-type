@@ -64,6 +64,7 @@ void		SystemManager::updateSystems()
     {
       // std::cout << "SystemManager::updating " << it->second->name() << std::endl;
       it->second->update();
+      _messageBus.broadcast();
     }
 }
 

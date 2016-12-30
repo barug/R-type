@@ -65,10 +65,10 @@ void	loadGameLibData(EntityManager &e, SystemManager &s, MessageBus &m)
 		  PlayerInputComponent::name,
 		  PositionComponent::name},
   	      {GuiSystem::Messages::KEY_INPUT_DATA});
-  s.addSystem(std::make_shared<NetworkSystem>(e, m),
-  	      NetworkSystem::name,
-  	      {PhysicComponent::name},
-  	      {GuiSystem::Messages::AUTHENTIFICATION});
+  // s.addSystem(std::make_shared<NetworkSystem>(e, m),
+  // 	      NetworkSystem::name,
+  // 	      {PhysicComponent::name},
+  // 	      {GuiSystem::Messages::AUTHENTIFICATION});
   s.addSystem(std::make_shared<CollisionSystem>(e, m),
 	      CollisionSystem::name,
 	      {PositionComponent::name,

@@ -13,15 +13,15 @@ HealthSystem::HealthSystem(EntityManager &entityManager, MessageBus &messageBus)
 
 void				HealthSystem::updateEntity(int entityId)
 {
-  // HealthComponent		*healthComp =
-  //   static_cast<HealthComponent*>(_entityManager.getComponent(entityId,
-  // 							      HealthComponent::name));
+  HealthComponent		*healthComp =
+    static_cast<HealthComponent*>(_entityManager.getComponent(entityId,
+  							      HealthComponent::name));
 
-  // if (healthComp->getHealth() <= 0)
-  //   {
-  //     std::cout << "deleting entity" << std::endl;
-  //     _entityManager.deleteEntity(entityId);
-  //   }
+  if (healthComp->getHealth() <= 0)
+    {
+      std::cout << "deleting entity" << std::endl;
+      _entityManager.deleteEntity(entityId);
+    }
 }
 
 void				HealthSystem::handleCollision(void *messageData)
@@ -44,15 +44,15 @@ void				HealthSystem::handleCollision(void *messageData)
     {
       firstHealthComp->modifyHealth(secondHealthComp->getDamagePower());
       secondHealthComp->modifyHealth(firstHealthComp->getDamagePower());
-      if (firstHealthComp->getHealth() <= 0)
-	{
-	  std::cout << "deleting entity" << std::endl;
-	  _entityManager.deleteEntity(idPair->first);
-	}
-      if (secondHealthComp->getHealth() <= 0)
-	{
-	  std::cout << "deleting entity" << std::endl;
-	  _entityManager.deleteEntity(idPair->second);
-	}
+      // if (firstHealthComp->getHealth() <= 0)
+      // 	{
+      // 	  std::cout << "deleting entity" << std::endl;
+      // 	  _entityManager.deleteEntity(idPair->first);
+      // 	}
+      // if (secondHealthComp->getHealth() <= 0)
+      // 	{
+      // 	  std::cout << "deleting entity" << std::endl;
+      // 	  _entityManager.deleteEntity(idPair->second);
+      // 	}
     }
 }

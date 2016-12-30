@@ -77,6 +77,7 @@ int			GameEngine::run(void)
   std::chrono::time_point<std::chrono::system_clock> now, then;
   then = std::chrono::system_clock::now();
 
+  std::cout << "[starting game loop]" << std::endl;
   while (run)
     {
       now = std::chrono::system_clock::now();
@@ -85,7 +86,6 @@ int			GameEngine::run(void)
       if (elapsed >= 10)
 	{
 	  _systemManager.updateSystems();
-	  _messageBus.broadcast();
 	  then = now;
 	}
     }
