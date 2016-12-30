@@ -8,7 +8,7 @@ const std::string	GuiSystem::name = "GuiSystem";
 
 GuiSystem::GuiSystem(EntityManager &entityManager, MessageBus &messageBus)
   : ASystem(entityManager, messageBus),
-    _gui(new Window("RType", 800, 600, "./assets/font/digital.otf")),
+    _gui(new Window("RType", GuiSystem::winX, GuiSystem::winY, "./assets/font/digital.otf")),
     _rtypeUI(*_gui),
     _ip(),
     _port(),
