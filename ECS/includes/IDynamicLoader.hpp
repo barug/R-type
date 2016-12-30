@@ -8,7 +8,11 @@
 class				IDynamicLoader
 {
 public:
-  typedef void (__cdecl *ptrToF)(EntityManager &, SystemManager&, MessageBus &);
+#if defined(__UNIX__)
+  typedef void (*ptrToF)(EntityManager &, SystemManager&, MessageBus &);
+#elif defined (_WIN32) || defined(WIN32)
+   typedef void (__cdecl *ptrToF)(EntityManager &, SystemManager&, MessageBus &);
+#endif
   typedef ptrToF	(*f)();
 
   virtual ~IDynamicLoader() {}
