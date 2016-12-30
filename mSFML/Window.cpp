@@ -31,7 +31,11 @@ Window::Window(const std::string &windowName,
 	     {sf::Keyboard::Num6,	IGui::K_6},
 	     {sf::Keyboard::Num7,	IGui::K_7},
 	     {sf::Keyboard::Num8,	IGui::K_8},
-	     {sf::Keyboard::Num9,	IGui::K_9}})
+             {sf::Keyboard::Num9,	IGui::K_9},
+             {sf::Keyboard::Z,          IGui::K_Z},
+             {sf::Keyboard::Q,          IGui::K_Q},
+             {sf::Keyboard::S,          IGui::K_S},
+             {sf::Keyboard::D,          IGui::K_D}})
 {
   this->_window.setFramerateLimit(60);
   if (fontPath != "")
