@@ -194,6 +194,22 @@ void			Window::writeAt(const std::string &msg,
   text.setPosition(x, y);
   this->_window.draw(text);
 }
+void			Window::writeAt(const std::string &msg, const std::string &fontPath,
+                                        const float x, const float y,
+                                        const unsigned int hexaColorCode,
+                                        const float scale)
+{
+  std::vector<unsigned int> rgb = hexaToRgb(hexaColorCode);
+  sf::Text text;
+
+  this->_font.loadFromFile(fontPath);
+  text.setFont(this->_font);
+  text.setString(msg);
+  text.setFillColor(sf::Color(rgb[0], rgb[1], rgb[2]));
+  text.setScale(scale, scale);
+  text.setPosition(x, y);
+  this->_window.draw(text);
+}
 
 /*
 ** Animated Sprite

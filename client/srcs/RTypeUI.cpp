@@ -27,6 +27,7 @@ void                    RTypeUI::displayIntroduction(void)
 {
   static unsigned int   i = 0;
 
+  _gui.loadFont("./assets/font/breeze.ttf");
   if (i < 255)
     i += 10;
   _gui.setTextureAt("./assets/sprites/background.jpg", 0, 0, 1.);
@@ -43,10 +44,10 @@ void                    RTypeUI::displayIntroduction(void)
               _timer->setState(Timer::State::NONE);
             }
           else
-            _gui.writeAt("> START", 560, 400, 0x00ff00, 1.2);
+            _gui.writeAt("START", 560, 400, 0xffffff, 1.2);
         }
       else
-        _gui.writeAt("START", 550, 400, 0xc60000, 1.2);
+        _gui.writeAt("START", 550, 400, 0x00ff00, 1.2);
       if (_gui.getKey() == IGui::Key::ENTER)
         {
           _context = Context::Authentification;
@@ -62,10 +63,11 @@ void                    RTypeUI::displayAuthentification(std::string *ip, unsign
   static std::string    ipSet;
   static std::string    portSet;
 
+  _gui.loadFont("./assets/font/digital.otf");
   _gui.setTextureAt("./assets/sprites/background.jpg", 0, 0, 1.);
   _gui.setTextureAt("./assets/sprites/rtype-logo.png", 380, 40, 1.);
   _gui.writeAt("IP :", 400, 300, 0xffffff, 1.);
-  _gui.writeAt("PORT :", 400 - 40, 400, 0xffffff, 1.);
+  _gui.writeAt("PORT :",  400 - 40, 400, 0xffffff, 1.);
   _gui.writeAt("tab to switch and enter for done..", (1200/2) - 100, 800-100, 0x000000, 0.5);
 
   if (_gui.getKey() == IGui::Key::TAB)
@@ -111,6 +113,7 @@ void                    RTypeUI::displayAuthentification(std::string *ip, unsign
           _gui.setCurrentInputBuffer("");
           ipIsSet = true;
         }
+
     }
 
   else
