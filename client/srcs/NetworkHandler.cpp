@@ -12,7 +12,6 @@ NetworkHandler::NetworkHandler(const std::string &ip, const int port) :
 # define	OS_Windows
 # endif
 {
-  std::cout << "this is NetworkHandler ctor 2param" << std::endl;
 }
 
 NetworkHandler::NetworkHandler() :
@@ -23,7 +22,6 @@ NetworkHandler::NetworkHandler() :
 # define	OS_Windows
 # endif
 {
-  std::cout << "this is NetworkHandler ctor 0param" << std::endl;
 }
 
 NetworkHandler::~NetworkHandler()

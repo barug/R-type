@@ -64,8 +64,12 @@ bool	RTypeClient::run()
     }
   if (!_isAuthentified)
     {
+      std::cout << "RTypeClient::run isnt auth" << std::endl;
       if (_askedForAuth)
-	_askedForAuth = false;
+	{
+	  std::cout << "RTypeClient::run asked for auth" << std::endl;
+	  _askedForAuth = false;
+	}
       return false;
     }
   return true;
