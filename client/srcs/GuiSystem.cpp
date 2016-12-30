@@ -23,6 +23,8 @@ GuiSystem::GuiSystem(EntityManager &entityManager,
 {
   loadMessageHandler(NetworkSystem::Messages::AUTHENTIFICATION_FAILED,
 		     static_cast<message_handler>(&GuiSystem::_handleAuthFailed));
+  loadMessageHandler(NetworkSystem::Messages::AUTHENTIFICATION_SUCCESS,
+		     static_cast<message_handler>(&GuiSystem::_handleAuthSuccess));
 }
 
 GuiSystem::~GuiSystem()
@@ -117,4 +119,10 @@ void            GuiSystem::_handleLoading(void)
 void		GuiSystem::_handleAuthFailed(void *messageData)
 {
   _rtypeUI.setContext(RTypeUI::Context::Authentification);
+}
+
+void		GuiSystem::_handleAuthSuccess(void *messageData)
+{
+  std::cout << "DAFUQ" << std::endl;
+  // _rtypeUI.setContext(RTypeUI::Context::Game);
 }

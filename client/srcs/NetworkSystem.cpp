@@ -21,14 +21,24 @@ void            NetworkSystem::preRoutine(void)
 
 void            NetworkSystem::updateEntity(int entityId)
 {
+  static int	ticks = 0;
+
   if (_isAuthentified)
     {
       if (_client->run() != true)
 	{
 	  std::cout << "RTypeClient::run return false" << std::endl;
-	  _isAuthentified = false;
-	  _messageBus.post(Messages::AUTHENTIFICATION_FAILED, NULL);
+	  std::cout << "This " << ticks++ << " tick auth is still not done" << std::endl;
+	  if (ticks >= 100)
+	    {
+	      _isAuthentified = false;
+	      _messageBus.post(Messages::AUTHENTIFICATION_FAILED, NULL);
+	      ticks = 0;
+	    }
+	  ticks++;
 	}
+      else
+      	_messageBus.post(Messages::AUTHENTIFICATION_SUCCESS, NULL);
     }
 }
 

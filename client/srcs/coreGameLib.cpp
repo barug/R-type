@@ -53,7 +53,8 @@ void	loadGameLibData(EntityManager &e, SystemManager &s, MessageBus &m)
 	      GuiSystem::name,
 	      {SpriteComponent::name,
 		  PositionComponent::name},
-	      {NetworkSystem::Messages::AUTHENTIFICATION_FAILED});
+	      {NetworkSystem::Messages::AUTHENTIFICATION_FAILED,
+		  NetworkSystem::Messages::AUTHENTIFICATION_SUCCESS});
   s.addSystem(std::make_shared<PhysicSystem>(e, m, winX, winY),
 	      PhysicSystem::name,
 	      {PhysicComponent::name,

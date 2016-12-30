@@ -14,6 +14,7 @@ public:
   enum		Messages
     {
       AUTHENTIFICATION_FAILED = 13,
+      AUTHENTIFICATION_SUCCESS = 14,
     }; 
   
   static const std::string	name;
