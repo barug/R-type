@@ -1,4 +1,4 @@
-// # ifdef __unix__
+#if defined(__unix__)
 # include	<iostream>
 # include	<unistd.h>
 # include	<arpa/inet.h>
@@ -129,4 +129,4 @@ bool	UnixSocket::somethingToRead()
     { /* maybe some clean of code there */ }
   return (FD_ISSET(_fd, &_readFd)) ? true : false;
 }
-// # endif
+ # endif
