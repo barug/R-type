@@ -7,7 +7,7 @@
 
 RTypeUI::RTypeUI(IGui &gui) : _gui(gui),
                               _timer(new Timer),
-                              _context(RTypeUI::Context::Game)
+                              _context(RTypeUI::Context::Introduction)
 {}
 
 RTypeUI::~RTypeUI()
@@ -30,11 +30,11 @@ void                    RTypeUI::displayIntroduction(void)
   if (i < 255)
     i += 10;
   _gui.setTextureAt("./assets/sprites/background.jpg", 0, 0, 1.);
-  _gui.fillRec(0, 0, 800, 600, 0x000000, i);
+  _gui.fillRec(0, 0, 1200, 800, 0x000000, i);
   if (i >= 254)
     {
-      _gui.setTextureAt("./assets/sprites/rtype-logo.png", 180, 40, 1.);
-      if (_gui.magnetTile(_gui.getMouseX(), _gui.getMouseY(), 380, 300, 40, 40))
+      _gui.setTextureAt("./assets/sprites/rtype-logo.png", 380, 40, 1.);
+      if (_gui.magnetTile(_gui.getMouseX(), _gui.getMouseY(), 580, 400, 40, 40))
         {
           if (_gui.buttonLeftIsClicked())
             {
@@ -43,10 +43,10 @@ void                    RTypeUI::displayIntroduction(void)
               _timer->setState(Timer::State::NONE);
             }
           else
-            _gui.writeAt("> START", 340, 300, 0x00ff00, 1.2);
+            _gui.writeAt("> START", 560, 400, 0x00ff00, 1.2);
         }
       else
-        _gui.writeAt("START", 350, 300, 0xc60000, 1.2);
+        _gui.writeAt("START", 550, 400, 0xc60000, 1.2);
       if (_gui.getKey() == IGui::Key::ENTER)
         {
           _context = Context::Authentification;
@@ -63,10 +63,10 @@ void                    RTypeUI::displayAuthentification(std::string *ip, unsign
   static std::string    portSet;
 
   _gui.setTextureAt("./assets/sprites/background.jpg", 0, 0, 1.);
-  _gui.setTextureAt("./assets/sprites/rtype-logo.png", 180, 40, 1.);
-  _gui.writeAt("IP :", 200, 200, 0xffffff, 1.);
-  _gui.writeAt("PORT :", 160, 300, 0xffffff, 1.);
-  _gui.writeAt("tab to switch and enter for done..", 800/2 - 100, 380, 0xffffff, 0.5);
+  _gui.setTextureAt("./assets/sprites/rtype-logo.png", 380, 40, 1.);
+  _gui.writeAt("IP :", 400, 300, 0xffffff, 1.);
+  _gui.writeAt("PORT :", 400 - 40, 400, 0xffffff, 1.);
+  _gui.writeAt("tab to switch and enter for done..", (1200/2) - 100, 800-100, 0x000000, 0.5);
 
   if (_gui.getKey() == IGui::Key::TAB)
     {
@@ -82,14 +82,14 @@ void                    RTypeUI::displayAuthentification(std::string *ip, unsign
   if (!ipIsSet)
     {
       // selection for ipSet
-      _gui.fillRec(250, 200, 300, 50, 0xffffff, 200);
-      _gui.fillRec(250, 300, 300, 50, 0xffffff, 150);
+      _gui.fillRec(450, 300, 300, 50, 0x000000, 100);
+      _gui.fillRec(450, 400, 300, 50, 0x000000, 50);
 
       if (ipSet != _gui.getCurrentInputBuffer())
         ipSet = _gui.getCurrentInputBuffer();
 
-      _gui.writeAt(ipSet, 400-(ipSet.size()*4), 205, 0xffffff, 1.);
-      _gui.writeAt(portSet, 370, 305, 0xffffff, 1.);
+      _gui.writeAt(ipSet, (1200/2)-(ipSet.size()*4), 305, 0xffffff, 1.);
+      _gui.writeAt(portSet, 570, 405, 0xffffff, 1.);
 
       if (_gui.getKey() == IGui::Key::ENTER)
         {
@@ -116,13 +116,13 @@ void                    RTypeUI::displayAuthentification(std::string *ip, unsign
   else
     {
       // selection for portSet
-      _gui.fillRec(250, 200, 300, 50, 0xffffff, 150);
-      _gui.fillRec(250, 300, 300, 50, 0xffffff, 200);
+      _gui.fillRec(450, 300, 300, 50, 0x000000, 50);
+      _gui.fillRec(450, 400, 300, 50, 0x000000, 100);
 
       if (portSet != _gui.getCurrentInputBuffer())
         portSet = _gui.getCurrentInputBuffer();
-      _gui.writeAt(ipSet, 350, 205, 0xffffff, 1.);
-      _gui.writeAt(portSet, 370, 305, 0xffffff, 1.);
+      _gui.writeAt(ipSet, 550, 305, 0xffffff, 1.);
+      _gui.writeAt(portSet, (1200/2)-(ipSet.size()*4), 405, 0xffffff, 1.);
 
       if (_gui.getKey() == IGui::Key::ENTER)
         {
@@ -154,9 +154,9 @@ void                    RTypeUI::displayLoading(void)
       for (unsigned int i = 0; i < _timer->timeLeft() / 100 && i < 3; i++)
         displayDot += ".";
       _gui.setTextureAt("./assets/sprites/background.jpg", 0, 0, 1.);
-      _gui.setTextureAt("./assets/sprites/rtype-logo.png", 180, 40, 1.);
-      _gui.fillRec(0, 0, 800, 600, 0x000000, 180);
-      _gui.writeAt("loading" + displayDot, (800/2) - 50, (600/2) - 50, 0x00ff00, 1.2);
+      _gui.setTextureAt("./assets/sprites/rtype-logo.png", 380, 40, 1.);
+      _gui.fillRec(0, 0, 1200, 800, 0x000000, 180);
+      _gui.writeAt("loading" + displayDot, (1200/2) - 50, (800/2) - 50, 0x00ff00, 1.2);
     }
   else
     {
@@ -168,7 +168,7 @@ void                    RTypeUI::displayLoading(void)
 void                    RTypeUI::displayWaitingRoom(void)
 {
   _gui.setTextureAt("./assets/sprites/background.jpg", 0, 0, 1.);
-  _gui.fillRec(0, 0, 800, 600, 0x000000, 180);
+  _gui.fillRec(0, 0, 1200, 800, 0x000000, 180);
   _gui.writeAt("Waiting Room", 300, 30, 0x00ff00, 1.2);
   _context = RTypeUI::Context::Game;
 }
@@ -176,18 +176,18 @@ void                    RTypeUI::displayWaitingRoom(void)
 void                    RTypeUI::displayGame(void)
 {
   static int            firstImageSpaceX = 0;
-  static int            secondImageSpaceX = 800;
+  static int            secondImageSpaceX = 1200;
 
-  if (firstImageSpaceX == -800)
+  if (firstImageSpaceX == -1200)
     firstImageSpaceX = 0;
   if (secondImageSpaceX == 0)
-    secondImageSpaceX = 800;
-  _gui.setTextureAt("./assets/sprites/rtype-space.png", firstImageSpaceX-=2, 0, 1.);
-  _gui.setTextureAt("./assets/sprites/rtype-space.png", secondImageSpaceX-=2, 0, 1.);
+    secondImageSpaceX = 1200;
+  _gui.setTextureAt("./assets/sprites/rtype-space.jpg", firstImageSpaceX-=2, 0, 1.);
+  _gui.setTextureAt("./assets/sprites/rtype-space.jpg", secondImageSpaceX-=2, 0, 1.);
 }
 
 void                    RTypeUI::displayMenu(void)
 {
   _gui.setTextureAt("./assets/sprites/background.jpg", 0, 0, 1.);
-  _gui.fillRec(0, 0, 800, 600, 0x000000, 180);
+  _gui.fillRec(0, 0, 1200, 800, 0x000000, 180);
 }

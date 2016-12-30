@@ -68,8 +68,8 @@ void            GuiSystem::updateEntity(int entityId)
           if (it != _animationHandler.end())
             {
               _gui->updateAnimatedSprite(it->second.first, *it->second.second,
-                                         positionComponent->getX() - spriteComponent->getWidth(),
-                                         positionComponent->getY() - spriteComponent->getHeight());
+                                         positionComponent->getX() - (spriteComponent->getWidth() / 2),
+                                         positionComponent->getY() - (spriteComponent->getHeight() / 2));
             }
         }
       else
