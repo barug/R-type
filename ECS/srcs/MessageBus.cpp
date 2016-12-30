@@ -5,7 +5,7 @@
 // Login   <mikaz3@epitech.net>
 // 
 // Started on  Wed Dec 21 18:25:12 2016 Thomas Billot
-// Last update Wed Dec 28 20:06:17 2016 Thomas Billot
+// Last update Fri Dec 30 18:04:07 2016 Thomas Billot
 //
 
 #include	<iostream>
@@ -77,7 +77,6 @@ void		MessageBus::subscribeToMessage(const std::string &system,
 void		MessageBus::post(const int messageTypeId,
 				 void *messageData)
 {
-  std::cout << _messages.empty() << std::endl;
   _messages.push_back(Message(messageTypeId, messageData));
 }
 
