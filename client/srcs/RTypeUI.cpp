@@ -34,6 +34,7 @@ void                    RTypeUI::displayIntroduction(void)
   _gui.fillRec(0, 0, 1200, 800, 0x000000, i);
   if (i >= 254)
     {
+      _gui.fillRec(500, 350, 200, 55, 0x000000, 150);
       _gui.setTextureAt("./assets/sprites/rtype-logo.png", 380, 40, 1.);
       if (_gui.magnetTile(_gui.getMouseX(), _gui.getMouseY(), 580, 400, 40, 40))
         {
@@ -44,10 +45,10 @@ void                    RTypeUI::displayIntroduction(void)
               _timer->setState(Timer::State::NONE);
             }
           else
-            _gui.writeAt("START", 560, 400, 0xffffff, 1.2);
+            _gui.writeAt("START", 520, 355, 0xffffff, 1.2);
         }
       else
-        _gui.writeAt("START", 550, 400, 0x00ff00, 1.2);
+        _gui.writeAt("START", 520, 355, 0x00ff00, 1.2);
       if (_gui.getKey() == IGui::Key::ENTER)
         {
           _context = Context::Authentification;
@@ -113,7 +114,13 @@ void                    RTypeUI::displayAuthentification(std::string *ip, unsign
           _gui.setCurrentInputBuffer("");
           ipIsSet = true;
         }
-
+      if (_gui.buttonLeftIsClicked())
+        if (_gui.magnetTile(_gui.getMouseX(), _gui.getMouseY(), (450 + (300/2)), 400 + 25, 40, 40))
+          {
+            ipSet = _gui.getCurrentInputBuffer();
+            _gui.setCurrentInputBuffer("");
+            ipIsSet = true;
+          }
     }
 
   else
@@ -145,6 +152,13 @@ void                    RTypeUI::displayAuthentification(std::string *ip, unsign
           _gui.setCurrentInputBuffer("");
           ipIsSet = false;
         }
+      if (_gui.buttonLeftIsClicked())
+        if (_gui.magnetTile(_gui.getMouseX(), _gui.getMouseY(), (450 + (300/2)), 300 + 25, 40, 40))
+          {
+            portSet = _gui.getCurrentInputBuffer();
+            _gui.setCurrentInputBuffer("");
+            ipIsSet = false;
+          }
     }
 }
 
