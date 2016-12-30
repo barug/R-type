@@ -45,7 +45,7 @@ void            AnimatedSprite::setFrameTime(const float time)
 
 void            AnimatedSprite::play()
 {
-    _isPaused = false;
+  _isPaused = false;
 }
 
 void            AnimatedSprite::play(const Animation& animation)

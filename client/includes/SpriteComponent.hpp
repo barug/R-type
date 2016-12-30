@@ -8,14 +8,15 @@
 class           SpriteComponent : public IComponent
 {
   bool                          _isAnimated;
-  bool                          _allRecActivated;
+  bool                          _isFullFrames;
   unsigned int                  _nbFrames;
   std::string			_path;
   std::string                   _entityName;
-  std::vector<unsigned int>     _rec;
-  std::vector<std::vector<unsigned int> > _allRec;
+  std::vector<unsigned int>     _frames;
+  std::vector<std::vector<unsigned int> > _fullFrames;
   AnimatedSprite                *_animatedSprite;
   Animation                     _animation;
+
 public:
   static const std::string	name;
   SpriteComponent();
@@ -24,17 +25,17 @@ public:
 
   const std::string             &getPath(void) const;
   void				setPath(const std::string &path);
+  bool                          isFullFrames(void) const;
   bool                          isAnimated(void) const;
   void				setPathAnimated(const std::string &path);
   void                          setEntityName(const std::string &entityName);
   const std::string             &getEntityName(void) const;
 
   // rect assimilation
-  void                          setRec(const std::vector<unsigned int> &rec, const unsigned int nbFrames);
-  void                          setAllRec(const std::vector<std::vector<unsigned int> > &allRec,
-                                          const unsigned int nbFrames);
-  const std::vector<unsigned int> &getRec(void) const;
-  const std::vector<std::vector<unsigned int> > &getAllRec(void) const;
+  void                          setFrames(const std::vector<unsigned int> &rec, const unsigned int nbFrames);
+  void                          setFrames(const std::vector<std::vector<unsigned int> > &allRec);
+  const std::vector<unsigned int> &getFrames(void) const;
+  const std::vector<std::vector<unsigned int> > &getFullFrames(void) const;
   const unsigned int            getNbFrames(void) const;
 
   // animationToolSet

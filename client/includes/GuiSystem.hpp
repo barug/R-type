@@ -27,9 +27,10 @@ class           GuiSystem : public ASystem
   void          _handleLoading(void);
 
   void		_handleAuthFailed(void *messageData);
-  
-public:
 
+public:
+  static const unsigned int     winX = 1200;
+  static const unsigned int     winY = 800;
   static const std::string	name;
 
   enum		Messages

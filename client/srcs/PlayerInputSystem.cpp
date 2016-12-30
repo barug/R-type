@@ -39,9 +39,17 @@ PlayerInputSystem::PlayerInputSystem(EntityManager &entityManager,
   physComp->setSpeedY(0);
   physComp->setAccelerationX(0);
   physComp->setAccelerationY(0);
-  spriteComp->setPathAnimated("./assets/sprites/r-typesheet42.gif");
+  spriteComp->setPathAnimated("./assets/sprites/r-typesheet42.png");
   spriteComp->setEntityName("PlayerShip");
-  spriteComp->setRec({166/5, 0, 166/5, 17}, 5);
+  spriteComp->setFrames({166/5, 0, 166/5, 17}, 5);
+  // ou
+  // spriteComp->setFrames({
+  //     {166/5, 0, 166/5, 17},
+  //       {(166/5)*2, 0, 166/5, 17},
+  //         {(166/5)*3, 0, 166/5, 17},
+  //           {(166/5)*4, 0, 166/5, 17},
+  //             {(166/5)*5, 0, 166/5, 17}}
+  //   );
   healthComp->setHealth(1);
   healthComp->setDamagePower(0);
   healthComp->setFaction(HealthComponent::Faction::PLAYERS);
@@ -59,9 +67,9 @@ PlayerInputSystem::PlayerInputSystem(EntityManager &entityManager,
   healthComp =
     static_cast<HealthComponent*>(_entityManager.getComponent(basicMonsterId,
 							      HealthComponent::name));
-  spriteComp->setPathAnimated("./assets/sprites/r-typesheet17.gif");
+  spriteComp->setPathAnimated("./assets/sprites/r-typesheet17.png");
   spriteComp->setEntityName("BasicMonster");
-  spriteComp->setRec({66, 0, 61, 132}, 8);
+  spriteComp->setFrames({66, 0, 61, 132}, 8);
   positionComp->setX(300);
   positionComp->setY(300);
   hitBoxComp->setCircleRadius(20);

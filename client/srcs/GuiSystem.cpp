@@ -8,7 +8,7 @@ const std::string	GuiSystem::name = "GuiSystem";
 
 GuiSystem::GuiSystem(EntityManager &entityManager, MessageBus &messageBus)
   : ASystem(entityManager, messageBus),
-    _gui(new Window("RType", 800, 600, "./assets/font/digital.otf")),
+    _gui(new Window("RType", GuiSystem::winX, GuiSystem::winY, "./assets/font/digital.otf")),
     _rtypeUI(*_gui),
     _ip(),
     _port(),
@@ -30,8 +30,7 @@ void            GuiSystem::preRoutine(void)
   _gui->clear();
   _gui->handleEvents();
   if (_gui->getKey() != IGui::Key::NONE)
-    _messageBus.post(GuiSystem::Messages::KEY_INPUT_DATA,
-		     new IGui::Key(_gui->getKey()));
+    _messageBus.post(GuiSystem::Messages::KEY_INPUT_DATA, new IGui::Key(_gui->getKey()));
   ((*this).*(_contextHandler[_rtypeUI.getContext()]))();
 }
 
@@ -47,9 +46,14 @@ void            GuiSystem::updateEntity(int entityId)
       auto it = _animationHandler.find(spriteComponent->getEntityName());
       if (it == _animationHandler.end())
         {
-          spriteComponent->setAnimation(_gui->addFrames(spriteComponent->getPath(),
-                                                        spriteComponent->getNbFrames(),
-                                                        spriteComponent->getRec()));
+          if (spriteComponent->isFullFrames())
+            spriteComponent->setAnimation(_gui->addFrames(spriteComponent->getPath(),
+                                                          spriteComponent->getFullFrames()));
+          else
+            spriteComponent->setAnimation(_gui->addFrames(spriteComponent->getPath(),
+                                                          spriteComponent->getNbFrames(),
+                                                          spriteComponent->getFrames()));
+
           _animationHandler.insert(AnimationMap::value_type(spriteComponent->getEntityName(),
                                                             std::make_pair(spriteComponent->getAnimation(),
                                                                            spriteComponent->getAnimatedSprite())));
@@ -57,9 +61,12 @@ void            GuiSystem::updateEntity(int entityId)
 
       if (spriteComponent->isAnimated())
         {
-          for (auto it : _animationHandler)
-            _gui->updateAnimatedSprite(it.second.first, *it.second.second,
-                                       positionComponent->getX(), positionComponent->getY());
+          auto it = _animationHandler.find(spriteComponent->getEntityName());
+          if (it != _animationHandler.end())
+            {
+              _gui->updateAnimatedSprite(it->second.first, *it->second.second,
+                                         positionComponent->getX(), positionComponent->getY());
+            }
         }
       else
         {
