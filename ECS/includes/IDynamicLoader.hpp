@@ -11,7 +11,7 @@ public:
 // #if defined(__UNIX__)
   typedef void (*ptrToF)(EntityManager &, SystemManager&, MessageBus &);
 // #elif defined (_WIN32) || defined(WIN32)
-//    typedef void (__cdecl *ptrToF)(EntityManager &, SystemManager&, MessageBus &);
+    //typedef void (__cdecl *ptrToF)(EntityManager &, SystemManager&, MessageBus &);
 // #endif
   typedef ptrToF	(*f)();
 
@@ -86,7 +86,7 @@ public:
 	std::cout << "newLibName: " << newLibName << std::endl;
 	std::cout << "symname: " << symName << std::endl;
 	std::cout << "libhandle: " << handler << std::endl;
-	//if (!(fPtr = reinterpret_cast<f>(GetProcAddress((HINSTANCE)handler, symName.c_str()))))
+	//if (!(fPtr = reinterpret_cast<f>(GetProcAddress(GetModuleHandle(TEXT("client_rtype.dll")), "returnLoader"))))
 	if (!(fPtr = reinterpret_cast<f>(GetProcAddress(handler, symName.c_str()))))
 	{
         std::cerr << "[DynamicLoader::Load] failure : " << symName.c_str() << " libname = " << libName << std::endl;

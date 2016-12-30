@@ -11,7 +11,7 @@ GuiSystem::GuiSystem(EntityManager &entityManager,
 		     unsigned int winX,
 		     unsigned int winY)
   : ASystem(entityManager, messageBus),
-    _gui(new Window("RType", winX, winY, "./assets/font/digital.otf")),
+    _gui(new Window("RType", winX, winY, "./assets/font/breeze.ttf")),
     _rtypeUI(*_gui),
     _ip(),
     _port(),
@@ -68,8 +68,8 @@ void            GuiSystem::updateEntity(int entityId)
           if (it != _animationHandler.end())
             {
               _gui->updateAnimatedSprite(it->second.first, *it->second.second,
-                                         positionComponent->getX() - spriteComponent->getWidth(),
-                                         positionComponent->getY() - spriteComponent->getHeight());
+                                         positionComponent->getX() - (spriteComponent->getWidth() / 2),
+                                         positionComponent->getY() - (spriteComponent->getHeight() / 2));
             }
         }
       else

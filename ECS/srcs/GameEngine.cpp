@@ -48,7 +48,7 @@ GameEngine::GameEngine(const std::string &libsDir)
 	  StringCchCopy(szDir, MAX_PATH, libsDir.c_str());
 	  StringCchCat(szDir, MAX_PATH, TEXT("\\*"));
 	  hFind = FindFirstFile(szDir, &ffd);
-	  do
+	  while (FindNextFile(hFind, &ffd))
 	  {
 		  if (ffd.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
 		  {
@@ -56,14 +56,16 @@ GameEngine::GameEngine(const std::string &libsDir)
 		  }
 		  else
 		  {
-			  filesize.LowPart = ffd.nFileSizeLow;
-			  filesize.HighPart = ffd.nFileSizeHigh;
-			  _tprintf(TEXT("  %s   %ld bytes\n"), ffd.cFileName, filesize.QuadPart);
-			  std::string s(libsDir.c_str());
-			  s += ffd.cFileName;
-			  loadLib(s);
+			filesize.LowPart = ffd.nFileSizeLow;
+			filesize.HighPart = ffd.nFileSizeHigh;
+			if (filesize.QuadPart > 1) {
+				_tprintf(TEXT("  %s   %ld bytes\n"), ffd.cFileName, filesize.QuadPart);
+				std::string s(libsDir.c_str());
+				s += ffd.cFileName;
+				loadLib(s);
+			  }
 		  }
-	  } while (FindNextFile(hFind, &ffd) != 0);
+	  }
 	  FindClose(hFind);
 
 #elif           defined(__GNUC__)

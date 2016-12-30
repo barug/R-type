@@ -90,9 +90,25 @@ void	loadGameLibData(EntityManager &e, SystemManager &s, MessageBus &m)
   // 	      {});
 }
 
-typedef void (*loaderPtr)(EntityManager &, SystemManager &, MessageBus &);
-
+#if defined(__GNUC__)
+typedef void(*loaderPtr)(EntityManager &, SystemManager &, MessageBus &);
 extern "C" loaderPtr returnLoader()
 {
-  return loadGameLibData;
+	return &loadGameLibData;
 }
+#elif defined(_WIN32) || defined(WIN32)
+#ifdef BUILD_DLL
+#define EXPORT __declspec(dllexport)
+#else
+#define EXPORT __declspec(dllimport)
+#endif
+
+typedef void(*loaderPtr)(EntityManager &, SystemManager &, MessageBus &);
+__declspec(dllexport) extern "C" {
+	loaderPtr returnLoader()
+	{
+		return &loadGameLibData;
+	}
+}
+
+#endif

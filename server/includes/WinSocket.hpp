@@ -32,6 +32,7 @@ private :
   std::string		_ip;
   int			_port;
   int			_fd;
+  int			_fds[2];
   struct timeval	_tv;
   fd_set		_readFd;
   int			_nbFds;
