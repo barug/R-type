@@ -132,8 +132,8 @@ void		PlayerInputSystem::updateEntity(int entityId)
 								     HealthComponent::name));
 	 projectilePosComp->setX(playerPosComp->getX() + 20);
 	 projectilePosComp->setY(playerPosComp->getY());
-	 projectilePhysComp->setSpeedX(physComp->getSpeedX() + 15);
-	 projectilePhysComp->setSpeedY(physComp->getSpeedY());
+	 projectilePhysComp->setSpeedX(15);
+	 projectilePhysComp->setSpeedY(0);
 	 projectilePhysComp->setCanLeaveScreen(true);
 	 projectileHitBoxComp->setCircleRadius(10);
 	 projectileSpriteComp->setPathAnimated("./assets/sprites/r-typesheet3.png");
