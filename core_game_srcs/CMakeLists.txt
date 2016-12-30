@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.5)
 project (ClientRType)
-set(CMAKE_CXX_FLAGS "-Wall -std=c++14")
+set(CMAKE_CXX_FLAGS "-Wall -std=c++14 -Wl,-z,defs")
 set(CMAKE_BUILD_TYPE Release)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/includes
 		${CMAKE_CURRENT_SOURCE_DIR}/../../ECS/includes
