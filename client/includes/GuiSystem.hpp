@@ -4,6 +4,7 @@
 # include       "ASystem.hpp"
 # include       "IGui.hpp"
 # include       "RTypeUI.hpp"
+# include	"clientMessages.hpp"
 
 class           GuiSystem : public ASystem
 {
@@ -30,12 +31,6 @@ class           GuiSystem : public ASystem
 
 public:
   static const std::string	name;
-
-  enum		Messages
-    {
-      KEY_INPUT_DATA = 11,
-      AUTHENTIFICATION = 12,
-    };
 
   explicit      GuiSystem(EntityManager &entityManager,
 			  MessageBus &messageBus,

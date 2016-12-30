@@ -64,7 +64,7 @@ void CollisionSystem::postRoutine()
 {
   for (auto idPair: _detectedCollisions)
     {
-      _messageBus.post(CollisionSystem::Messages::COLLISION_DETECTED,
+      _messageBus.post(CoreGameSrcsMessages::COLLISION_DETECTED,
       		       new std::pair<int, int>(idPair.first,
 					       idPair.second));
       std::cout << "detected collision: "

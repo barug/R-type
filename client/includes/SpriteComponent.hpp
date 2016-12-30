@@ -30,6 +30,8 @@ public:
   void				setPathAnimated(const std::string &path);
   void                          setEntityName(const std::string &entityName);
   const std::string             &getEntityName(void) const;
+  const unsigned int            getHeight(void) const;
+  const unsigned int            getWidth(void) const;
 
   // rect assimilation
   void                          setFrames(const std::vector<unsigned int> &rec, const unsigned int nbFrames);
