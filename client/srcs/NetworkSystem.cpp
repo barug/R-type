@@ -21,8 +21,15 @@ void            NetworkSystem::preRoutine(void)
 
 void            NetworkSystem::updateEntity(int entityId)
 {
-  if (_client->run() != true)
-    _messageBus.post(Messages::AUTHENTIFICATION_FAILED, NULL);
+  if (_isAuthentified)
+    {
+      if (_client->run() != true)
+	{
+	  std::cout << "RTypeClient::run return false" << std::endl;
+	  _isAuthentified = false;
+	  _messageBus.post(Messages::AUTHENTIFICATION_FAILED, NULL);
+	}
+    }
 }
 
 void            NetworkSystem::postRoutine(void)
@@ -35,4 +42,5 @@ void		NetworkSystem::handleAuthentification(void *messageData)
 
   _client->connectToServer(p->first, p->second);
   _isAuthentified = true;
+  std::cout << "NetworkSystem::handleAuth" << std::endl;
 }

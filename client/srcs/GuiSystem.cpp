@@ -116,5 +116,5 @@ void            GuiSystem::_handleLoading(void)
 
 void		GuiSystem::_handleAuthFailed(void *messageData)
 {
-  // _rtypeUI.setContext(RTypeUI::Context::Authentification);
+  _rtypeUI.setContext(RTypeUI::Context::Authentification);
 }
