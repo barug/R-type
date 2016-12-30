@@ -8,11 +8,15 @@
 class				IDynamicLoader
 {
 public:
+// #if defined(__UNIX__)
   typedef void (*ptrToF)(EntityManager &, SystemManager&, MessageBus &);
+// #elif defined (_WIN32) || defined(WIN32)
+//    typedef void (__cdecl *ptrToF)(EntityManager &, SystemManager&, MessageBus &);
+// #endif
   typedef ptrToF	(*f)();
 
   virtual ~IDynamicLoader() {}
-  virtual ptrToF                load(const std::string &libName, const std::string &symName) = 0;
+  virtual ptrToF        load(const std::string &libName, const std::string &symName) = 0;
   virtual void			close(const std::string &symName) = 0;
 };
 
@@ -38,12 +42,12 @@ public:
 	std::cerr << "[DynamicLoader::Load] failure : " << dlerror() << std::endl;
       }
     _hashHandler[symName] = handler;
-    std::cout << "trying to open: " << libName << std::endl;
-    std::cout << "newLibName: " << newLibName << std::endl;
-    std::cout << "symname: " << symName << std::endl;
-    std::cout << "libhandle: " << handler << std::endl;
-    std::cout << "pointer: " << dlsym(handler, symName.c_str()) << std::endl;
-    if (!(fPtr = reinterpret_cast<f>(dlsym(handler, symName.c_str()))))
+	std::cout << "trying to open: " << libName << std::endl;
+	std::cout << "newLibName: " << newLibName << std::endl;
+	std::cout << "symname: " << symName << std::endl;
+	std::cout << "libhandle: " << handler << std::endl;
+	std::cout << "pointer: " << dlsym(handler, symName.c_str()) << std::endl;
+	if (!(fPtr = reinterpret_cast<f>(dlsym(handler, symName.c_str()))))
       {
 	std::cerr << "[DynamicLoader::Load] failure : " << dlerror() << std::endl;
       }
@@ -73,22 +77,42 @@ public:
 #include <string>
   virtual ptrToF        	load(const std::string &libName, const std::string &symName)
   {
-    f           		fPtr;
-    std::string			newLibName = libName + ".dll";
-    void			*handler = (void*)LoadLibrary((newLibName.c_str()));
+	f	           			fPtr;
+    std::string				newLibName = libName;
+	HINSTANCE			    handler = LoadLibrary((newLibName.c_str()));
 
-    _hashHandler[symName] = handler;
-    if (!(fPtr = reinterpret_cast<f>(GetProcAddress((HINSTANCE)handler, symName.c_str()))))
-      {
-        std::cerr << "[DynamicLoader::Load] failure : " << std::endl;
+    //_hashHandler[symName] = handler;
+	std::cout << "trying to open: " << libName << std::endl;
+	std::cout << "newLibName: " << newLibName << std::endl;
+	std::cout << "symname: " << symName << std::endl;
+	std::cout << "libhandle: " << handler << std::endl;
+	//if (!(fPtr = reinterpret_cast<f>(GetProcAddress((HINSTANCE)handler, symName.c_str()))))
+	if (!(fPtr = reinterpret_cast<f>(GetProcAddress(handler, symName.c_str()))))
+	{
+        std::cerr << "[DynamicLoader::Load] failure : " << symName.c_str() << " libname = " << libName << std::endl;
       }
     return fPtr();
+	  //HINSTANCE hGetProcIDDLL = LoadLibrary(libName.c_str());
+
+	  //if (!hGetProcIDDLL) {
+		 // std::cout << "could not load the dynamic library" << std::endl;
+		 // //return EXIT_FAILURE;
+	  //}
+
+		 // f_funci funci = (f_funci)GetProcAddress(hGetProcIDDLL, symName.c_str());
+	  //if (!funci) {
+		 // std::cout << "could not locate the function" << std::endl;
+		 // //return EXIT_FAILURE;
+	  //}
+
+	  //std::cout << "funci() returned " << funci() << std::endl;
+	  //return (funci());
   }
 
   virtual void			close(const std::string &symName)
   {
-    FreeLibrary((HINSTANCE)_hashHandler[symName]);
-    _hashHandler.erase(symName);
+    //FreeLibrary((HINSTANCE)_hashHandler[symName]);
+    //_hashHandler.erase(symName);
   }
 
 private:
