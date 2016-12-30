@@ -11,6 +11,8 @@
 #include "NetworkSystem.hpp"
 #include "HitBoxComponent.hpp"
 #include "CollisionSystem.hpp"
+#include "HealthComponent.hpp"
+#include "HealthSystem.hpp"
 
 void	loadGameLibData(EntityManager &e, SystemManager &s, MessageBus &m)
 {
@@ -19,9 +21,11 @@ void	loadGameLibData(EntityManager &e, SystemManager &s, MessageBus &m)
   e.addComponentType<PlayerInputComponent>(PlayerInputComponent::name);
   e.addComponentType<SpriteComponent>(SpriteComponent::name);
   e.addComponentType<HitBoxComponent>(HitBoxComponent::name);
+  e.addComponentType<HealthComponent>(HealthComponent::name);
   m.registerValidMessageId(GuiSystem::Messages::KEY_INPUT_DATA);
   m.registerValidMessageId(GuiSystem::Messages::AUTHENTIFICATION);
   m.registerValidMessageId(NetworkSystem::Messages::AUTHENTIFICATION_FAILED);
+  m.registerValidMessageId(CollisionSystem::Messages::COLLISION_DETECTED);
   e.addEntityType("PlayerShip",
 		  {PositionComponent::name,
 		      PhysicComponent::name,
@@ -52,6 +56,10 @@ void	loadGameLibData(EntityManager &e, SystemManager &s, MessageBus &m)
 	      CollisionSystem::name,
 	      {PositionComponent::name, HitBoxComponent::name},
 	      {});
+  s.addSystem(std::make_shared<HealthSystem>(e, m),
+	      HealthSystem::name,
+	      {HealthComponent::name},
+	      {CollisionSystem::Messages::COLLISION_DETECTED});
 }
 
 typedef void (*loaderPtr)(EntityManager &, SystemManager &, MessageBus &);

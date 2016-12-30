@@ -77,7 +77,7 @@ void		MessageBus::subscribeToMessage(const std::string &system,
 void		MessageBus::post(const int messageTypeId,
 				 void *messageData)
 {
-  std::cout << _messages.empty() << std::endl;
+  // std::cout << _messages.empty() << std::endl;
   _messages.push_back(Message(messageTypeId, messageData));
 }
 
