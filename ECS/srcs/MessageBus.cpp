@@ -5,7 +5,7 @@
 // Login   <mikaz3@epitech.net>
 // 
 // Started on  Wed Dec 21 18:25:12 2016 Thomas Billot
-// Last update Fri Dec 30 18:04:07 2016 Thomas Billot
+// Last update Fri Dec 30 18:06:53 2016 Thomas Billot
 //
 
 #include	<iostream>
@@ -108,10 +108,10 @@ void		MessageBus::broadcast()
 {
   for (auto message : _messages)
     {
-      for (auto system : _systems)
+      for (auto it = _systems.begin(); it != _systems.end(); ++it)
 	{
-	  if (isSubscribed(system->name(), message.getTypeId()))
-	    system->handleMessage(message.getTypeId(), message.getData());
+	  if (isSubscribed((*it)->name(), message.getTypeId()))
+	    (*it)->handleMessage(message.getTypeId(), message.getData());
 	}
     }
   _messages.clear();

@@ -7,7 +7,7 @@
 
 RTypeUI::RTypeUI(IGui &gui) : _gui(gui),
                               _timer(new Timer),
-                              _context(RTypeUI::Context::Authentification)
+                              _context(RTypeUI::Context::Game)
 {}
 
 RTypeUI::~RTypeUI()
@@ -28,7 +28,7 @@ void                    RTypeUI::displayIntroduction(void)
   static unsigned int   i = 0;
 
   if (i < 255)
-    i += 2;
+    i += 10;
   _gui.setTextureAt("./assets/sprites/background.jpg", 0, 0, 1.);
   _gui.fillRec(0, 0, 800, 600, 0x000000, i);
   if (i >= 254)

@@ -5,9 +5,10 @@
 # include "Animation.hpp"
 
 Animation::Animation() : _texture(NULL)
-{
+{}
 
-}
+Animation::~Animation()
+{}
 
 void                    Animation::addFrame(const unsigned int x1,
                                             const unsigned int x2,

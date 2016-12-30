@@ -176,9 +176,9 @@ void			Window::loadFont(const std::string &path)
 }
 
 void			Window::writeAt(const std::string &msg,
-					      const float x, const float y,
-					      const unsigned int hexaColorCode,
-					      const float scale)
+                                        const float x, const float y,
+                                        const unsigned int hexaColorCode,
+                                        const float scale)
 {
   std::vector<unsigned int> rgb = hexaToRgb(hexaColorCode);
   sf::Text text;
@@ -206,30 +206,76 @@ Animation		Window::loadAnimation(const std::string &path)
   return (animation);
 }
 
+Animation               Window::addFrames(const std::string &path,
+                                          const unsigned int nbFrame,
+                                          std::vector<unsigned int> rec)
+{
+  Animation animation = loadAnimation(path);
+  if (!nbFrame)
+    {
+      unsigned int j = 0;
+      for (unsigned int i = 0; i < rec.size(); i++)
+        {
+          if ((i % 4) == 0)
+            {
+              // animation.addFrame(j * rec[0], rec[1], rec[2], rec[3]);
+              j++;
+            }
+        }
+    }
+  else
+    {
+      for (unsigned int i = 0; i < nbFrame; i++)
+        animation.addFrame(i * rec[0], rec[1], rec[2], rec[3]);
+    }
+  return animation;
+}
+
+Animation               Window::addFrames(const std::string &path,
+                                          std::vector<std::vector<unsigned int> > fullFrames)
+{
+  Animation animation = loadAnimation(path);
+  for (unsigned int i = 0; i < fullFrames.size(); i++)
+    {
+      for (unsigned int j = 0; j < fullFrames[i].size(); j++)
+        {
+          animation.addFrame(fullFrames[i][0], fullFrames[i][1], fullFrames[i][2], fullFrames[i][3]);
+        }
+    }
+  return animation;
+}
+
 void			Window::addFrames(Animation &animation,
-						const unsigned int nbFrame,
-						const unsigned int x1,
-						const unsigned int x2,
-						const unsigned int x3,
-						const unsigned int x4)
+                                          const unsigned int nbFrame,
+                                          const unsigned int x1,
+                                          const unsigned int x2,
+                                          const unsigned int x3,
+                                          const unsigned int x4)
 {
   for (unsigned int i = 0; i < nbFrame; i++)
     animation.addFrame(i * x1, x2, x3, x4);
 }
 
+void			Window::addFrames(Animation &animation,
+                                          const unsigned int nbFrame,
+                                          std::vector<unsigned int> rec)
+{
+  for (unsigned int i = 0; i < nbFrame; i++)
+    animation.addFrame(i * rec[0], rec[1], rec[2], rec[3]);
+}
+
 void			Window::addFrame(Animation &animation,
-					       const unsigned int x1,
-					       const unsigned int x2,
-					       const unsigned int x3,
-					       const unsigned int x4)
+                                         const unsigned int x1,
+                                         const unsigned int x2,
+                                         const unsigned int x3,
+                                         const unsigned int x4)
 {
   animation.addFrame(x1, x2, x3, x4);
 }
 
 void			Window::updateAnimatedSprite(Animation &currentAnimation,
-							   AnimatedSprite &animatedSprite,
-							   const float x,
-							   const float y)
+                                                     AnimatedSprite &animatedSprite,
+                                                     const float x, const float y)
 {
   animatedSprite.play(currentAnimation);
   animatedSprite.setPosition(x, y);
@@ -237,8 +283,17 @@ void			Window::updateAnimatedSprite(Animation &currentAnimation,
   this->_window.draw(animatedSprite);
 }
 
+void			Window::updateAnimatedSprite(AnimatedSprite &animatedSprite,
+                                                     const float x, const float y)
+{
+  animatedSprite.play(*animatedSprite.getAnimation());
+  animatedSprite.setPosition(x, y);
+  animatedSprite.update(_frameTime);
+  this->_window.draw(animatedSprite);
+}
+
 void			Window::moveAnimatedSprite(AnimatedSprite &animatedSprite,
-							 const float x, const float y)
+                                                   const float x, const float y)
 {
   animatedSprite.move(x * _frameTime.asSeconds(), y * _frameTime.asSeconds());
 }
@@ -247,8 +302,8 @@ void			Window::moveAnimatedSprite(AnimatedSprite &animatedSprite,
 ** textures
 */
 void			Window::setTextureAt(const std::string &path,
-						   const float x, const float y,
-						   const float scale)
+                                             const float x, const float y,
+                                             const float scale)
 {
   sf::Sprite		sprite;
   const sf::Texture	*texture;
@@ -262,10 +317,10 @@ void			Window::setTextureAt(const std::string &path,
 }
 
 void			Window::setTextureRecAt(const std::string &path,
-						      const float x, const float y,
-						      const float h1, const float w1,
-						      const float h2, const float w2,
-						      const float scale)
+                                                const float x, const float y,
+                                                const float h1, const float w1,
+                                                const float h2, const float w2,
+                                                const float scale)
 {
   sf::Sprite		sprite;
   const sf::Texture	*texture;
@@ -283,11 +338,11 @@ void			Window::setTextureRecAt(const std::string &path,
 ** Fill Rectangle
 */
 void			Window::fillRec(const unsigned int x,
-					      const unsigned int y,
-					      const unsigned int i,
-					      const unsigned int j,
-					      const unsigned int hexaColorCode,
-					      const unsigned int alpha)
+                                        const unsigned int y,
+                                        const unsigned int i,
+                                        const unsigned int j,
+                                        const unsigned int hexaColorCode,
+                                        const unsigned int alpha)
 {
   std::vector<unsigned int> rgb = hexaToRgb(hexaColorCode);
   sf::RectangleShape rectangle;
@@ -299,10 +354,10 @@ void			Window::fillRec(const unsigned int x,
 }
 
 void			Window::fillCircle(const unsigned int x,
-						 const unsigned int y,
-						 const unsigned int i,
-						 const unsigned int j,
-						 const unsigned int hexaColorCode)
+                                           const unsigned int y,
+                                           const unsigned int i,
+                                           const unsigned int j,
+                                           const unsigned int hexaColorCode)
 {
   std::vector<unsigned int> rgb = hexaToRgb(hexaColorCode);
   sf::CircleShape circle;
@@ -314,11 +369,11 @@ void			Window::fillCircle(const unsigned int x,
 }
 
 bool			Window::magnetTile(const unsigned int mouseX,
-						 const unsigned int mouseY,
-						 const unsigned int x,
-						 const unsigned int y,
-						 const unsigned int intensityX,
-						 const unsigned int intensityY) const
+                                           const unsigned int mouseY,
+                                           const unsigned int x,
+                                           const unsigned int y,
+                                           const unsigned int intensityX,
+                                           const unsigned int intensityY) const
 {
   for (unsigned int i = 0; i < intensityX; i++)
     for (unsigned int j = 0; j < intensityY; j++)

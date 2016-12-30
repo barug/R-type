@@ -1,8 +1,3 @@
-//
-// made by kama 13/12/2016
-// thomas.bogard@epitech.eu
-//
-
 #ifndef				__IDYNAMIC_LOADER_HPP__
 # define			__IDYNAMIC_LOADER_HPP__
 

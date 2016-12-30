@@ -4,7 +4,21 @@
 
 #include        "AnimatedSprite.hpp"
 
-AnimatedSprite::AnimatedSprite(const float frameTime, const bool paused, const bool looped)
+AnimatedSprite::AnimatedSprite(const float frameTime,
+                               const bool paused,
+                               const bool looped)
+  : _animation(NULL),
+    _frameTime(sf::Time(sf::seconds(frameTime))),
+    _currentFrame(0),
+    _isPaused(paused),
+    _isLooped(looped),
+    _texture(NULL)
+{}
+
+AnimatedSprite::AnimatedSprite(const Animation& animation,
+                               const float frameTime,
+                               const bool paused,
+                               const bool looped)
   : _animation(NULL),
     _frameTime(sf::Time(sf::seconds(frameTime))),
     _currentFrame(0),
@@ -12,25 +26,26 @@ AnimatedSprite::AnimatedSprite(const float frameTime, const bool paused, const b
     _isLooped(looped),
     _texture(NULL)
 {
-
+  setAnimation(animation);
 }
+
 
 void            AnimatedSprite::setAnimation(const Animation& animation)
 {
-    _animation = &animation;
-    _texture = _animation->getSpriteSheet();
-    _currentFrame = 0;
-    setFrame(_currentFrame);
+  _animation = &animation;
+  _texture = _animation->getSpriteSheet();
+  _currentFrame = 0;
+  setFrame(_currentFrame);
 }
 
-void            AnimatedSprite::setFrameTime(sf::Time time)
+void            AnimatedSprite::setFrameTime(const float time)
 {
-    _frameTime = time;
+  _frameTime = sf::Time(sf::seconds(time));
 }
 
 void            AnimatedSprite::play()
 {
-    _isPaused = false;
+  _isPaused = false;
 }
 
 void            AnimatedSprite::play(const Animation& animation)

@@ -6,9 +6,12 @@
 
 const std::string	GuiSystem::name = "GuiSystem";
 
-GuiSystem::GuiSystem(EntityManager &entityManager, MessageBus &messageBus)
+GuiSystem::GuiSystem(EntityManager &entityManager,
+		     MessageBus &messageBus,
+		     unsigned int winX,
+		     unsigned int winY)
   : ASystem(entityManager, messageBus),
-    _gui(new Window("RType", 800, 600, "./assets/font/digital.otf")),
+    _gui(new Window("RType", winX, winY, "./assets/font/digital.otf")),
     _rtypeUI(*_gui),
     _ip(),
     _port(),
@@ -30,8 +33,7 @@ void            GuiSystem::preRoutine(void)
   _gui->clear();
   _gui->handleEvents();
   if (_gui->getKey() != IGui::Key::NONE)
-    _messageBus.post(GuiSystem::Messages::KEY_INPUT_DATA,
-		     new IGui::Key(_gui->getKey()));
+    _messageBus.post(GuiSystem::Messages::KEY_INPUT_DATA, new IGui::Key(_gui->getKey()));
   ((*this).*(_contextHandler[_rtypeUI.getContext()]))();
 }
 
@@ -40,17 +42,45 @@ void            GuiSystem::updateEntity(int entityId)
   if (_rtypeUI.getContext() == RTypeUI::Context::Game)
     {
       SpriteComponent *spriteComponent =
-	static_cast<SpriteComponent*>(_entityManager.getComponent(entityId, "SpriteComponent"));
+        static_cast<SpriteComponent*>(_entityManager.getComponent(entityId, "SpriteComponent"));
       PositionComponent *positionComponent =
-	static_cast<PositionComponent*>(_entityManager.getComponent(entityId, "PositionComponent"));
-      // AnimationComponent *animationComponent =
-      //   static_cast<AnimationComponent*>(_entityManager.getComponent(entityId, "AnimationComponent"));
-      _gui->setTextureAt(spriteComponent->getPath(), positionComponent->getX(), positionComponent->getY());
+        static_cast<PositionComponent*>(_entityManager.getComponent(entityId, "PositionComponent"));
+
+      auto it = _animationHandler.find(spriteComponent->getEntityName());
+      if (it == _animationHandler.end())
+        {
+          if (spriteComponent->isFullFrames())
+            spriteComponent->setAnimation(_gui->addFrames(spriteComponent->getPath(),
+                                                          spriteComponent->getFullFrames()));
+          else
+            spriteComponent->setAnimation(_gui->addFrames(spriteComponent->getPath(),
+                                                          spriteComponent->getNbFrames(),
+                                                          spriteComponent->getFrames()));
+
+          _animationHandler.insert(AnimationMap::value_type(spriteComponent->getEntityName(),
+                                                            std::make_pair(spriteComponent->getAnimation(),
+                                                                           spriteComponent->getAnimatedSprite())));
+        }
+
+      if (spriteComponent->isAnimated())
+        {
+          auto it = _animationHandler.find(spriteComponent->getEntityName());
+          if (it != _animationHandler.end())
+            {
+              _gui->updateAnimatedSprite(it->second.first, *it->second.second,
+                                         positionComponent->getX(), positionComponent->getY());
+            }
+        }
+      else
+        {
+          _gui->setTextureAt(spriteComponent->getPath(), positionComponent->getX(), positionComponent->getY());
+        }
     }
 }
 
 void            GuiSystem::postRoutine(void)
 {
+  _gui->update();
   _gui->display();
 }
 
@@ -86,5 +116,5 @@ void            GuiSystem::_handleLoading(void)
 
 void		GuiSystem::_handleAuthFailed(void *messageData)
 {
-  _rtypeUI.setContext(RTypeUI::Context::Authentification);
+  // _rtypeUI.setContext(RTypeUI::Context::Authentification);
 }
