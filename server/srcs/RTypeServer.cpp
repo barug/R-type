@@ -1,7 +1,6 @@
 # include	<iostream>
-#if defined (__UNIX__)
+#if defined (__GNUC__)
 # include	<unistd.h>
-# define _read read;
 #elif defined(_WIN32) || defined (WIN32)
 #include <io.h>
 #endif
@@ -31,8 +30,11 @@ void		RTypeServer::checkInput()
 {
   char		buff[5];
   int		r;
-
+#if defined(_WIN32) || defined (WIN32)
   r = _read(0, buff, 4);
+#else
+  r = read(0, buff, 4);
+#endif
   buff[r] = 0;
 
   std::string	quit(buff);

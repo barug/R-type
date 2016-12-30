@@ -19,7 +19,7 @@ void	loadGameLibData(EntityManager &e, SystemManager &s, MessageBus &m)
 {
   unsigned int		winX = 1200;
   unsigned int		winY = 800;
-  
+
   e.addComponentType<PositionComponent>(PositionComponent::name);
   e.addComponentType<PhysicComponent>(PhysicComponent::name);
   e.addComponentType<PlayerInputComponent>(PlayerInputComponent::name);
@@ -79,7 +79,7 @@ void	loadGameLibData(EntityManager &e, SystemManager &s, MessageBus &m)
   	      {CoreGameSrcsMessages::COLLISION_DETECTED});
 }
 
-#if defined(__UNIX__)
+#if defined(__GNUC__)
 typedef void(*loaderPtr)(EntityManager &, SystemManager &, MessageBus &);
 extern "C" loaderPtr returnLoader()
 {
