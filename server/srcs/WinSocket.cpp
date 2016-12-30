@@ -107,7 +107,7 @@ int WinSocket::getFd() const
 }
 
 
-bool	UnixSocket::addFdSelect(int fd)
+bool	WinSocket::addFdSelect(int fd)
 {
   if (_nbFds >= 2)
     return false;
@@ -115,7 +115,7 @@ bool	UnixSocket::addFdSelect(int fd)
   return true;
 }
 
-void	UnixSocket::setFds()
+void	WinSocket::setFds()
 {
   FD_ZERO(&_readFd);
   _fdMax = 0;
@@ -130,7 +130,7 @@ void	UnixSocket::setFds()
   _fdMax++;
 }
 
-int	UnixSocket::checkFds()
+int	WinSocket::checkFds()
 {
   for (int i = 0; i < _nbFds; i++)
     if (FD_ISSET(_fds[i], &_readFd))
@@ -138,7 +138,7 @@ int	UnixSocket::checkFds()
   return -1;
 }
 
-int	UnixSocket::somethingToRead()
+int	WinSocket::somethingToRead()
 {
   this->setFds();
   if (select(_fdMax, &_readFd,

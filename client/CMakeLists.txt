@@ -54,6 +54,6 @@ function (client)
     ${SOURCES_CLIENT}
   )
 
- target_link_libraries(client_rtype Threads::Threads sfml-window sfml-system sfml-audio sfml-graphics dl)
+ target_link_libraries(client_rtype Threads::Threads sfml-window sfml-system sfml-audio sfml-graphics)
 
 endfunction()

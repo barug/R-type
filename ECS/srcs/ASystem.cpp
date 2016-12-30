@@ -74,7 +74,12 @@ void			ASystem::handleEntityDeleted(void *messageData)
 {
   int			*entity = static_cast<int*>(messageData);
 
-  for (auto it : _affectedEntities)
-    if (it == *entity)
-      _affectedEntities.erase(_affectedEntities.begin() + _affectedEntities.at(*entity));
+  for (auto it = _affectedEntities.begin();
+       it != _affectedEntities.end();
+       ++it)
+    if (*it == *entity)
+      {
+	_affectedEntities.erase(it);
+	return;
+      }
 }
