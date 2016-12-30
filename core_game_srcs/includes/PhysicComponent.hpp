@@ -6,25 +6,29 @@
 
 class				PhysicComponent : public IComponent
 {
-  int				_speedX;
-  int				_speedY;
-  int				_accelerationX;
-  int				_accelerationY;
-
+  float				_speedX;
+  float				_speedY;
+  float				_accelerationX;
+  float				_accelerationY;
+  bool				_canLeaveScreen;
+  
 public:
 
   static const std::string	name;
   
   PhysicComponent();
   virtual const std::string getName();
-  void				setSpeedX(int speedX);
-  void				setSpeedY(int speedY);
-  void				setAccelerationX(int accelerationX);
-  void				setAccelerationY(int accelerationY);
-  int				getSpeedX() const;
-  int				getSpeedY() const;
-  int				getAccelerationX() const;
-  int				getAccelerationY() const;
+  void				setSpeedX(float speedX);
+  void				setSpeedY(float speedY);
+  void				setAccelerationX(float accelerationX);
+  void				setAccelerationY(float accelerationY);
+  void				setCanLeaveScreen(bool canLeaveScreen);
+  float				getSpeedX() const;
+  float				getSpeedY() const;
+  float				getAccelerationX() const;
+  float				getAccelerationY() const;
+  bool				getCanLeaveScreen() const;
+  
 };
 
 #endif /* !_PHYSIC_COMPONENT_HPP_ */

@@ -137,7 +137,6 @@ int			GameEngine::run(void)
 			if (elapsed >= 10)
 			{
 				_systemManager.updateSystems();
-				_messageBus.broadcast();
 				then = now;
 			}
 		}
@@ -146,5 +145,5 @@ int			GameEngine::run(void)
 	{
 		std::cout << e.what() << std::endl;
 	}
-  return 0;
+	return 0;
 }

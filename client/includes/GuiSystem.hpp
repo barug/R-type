@@ -29,8 +29,6 @@ class           GuiSystem : public ASystem
   void		_handleAuthFailed(void *messageData);
 
 public:
-  static const unsigned int     winX = 1200;
-  static const unsigned int     winY = 800;
   static const std::string	name;
 
   enum		Messages
@@ -39,7 +37,10 @@ public:
       AUTHENTIFICATION = 12,
     };
 
-  explicit      GuiSystem(EntityManager &entityManager, MessageBus &messageBus);
+  explicit      GuiSystem(EntityManager &entityManager,
+			  MessageBus &messageBus,
+			  unsigned int winX,
+			  unsigned int winY);
   virtual       ~GuiSystem();
   virtual void  preRoutine(void);
   virtual void  updateEntity(int entityId);

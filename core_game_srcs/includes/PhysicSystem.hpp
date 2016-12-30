@@ -8,11 +8,17 @@
 
 class				PhysicSystem : public ASystem
 {
+  unsigned int			_winX;
+  unsigned int			_winY;
+  
 public:
 
   static const std::string	name;
   
-  PhysicSystem(EntityManager &entityManager, MessageBus &messageBus);
+  PhysicSystem(EntityManager &entityManager,
+	       MessageBus &messageBus,
+	       unsigned int winX,
+	       unsigned int winY);
   virtual void			preRoutine() {};
   virtual void			updateEntity(int entityId);
   virtual void			postRoutine() {};
