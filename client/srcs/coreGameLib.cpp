@@ -93,7 +93,7 @@ extern "C" loaderPtr returnLoader()
 #endif
 
 typedef void(*loaderPtr)(EntityManager &, SystemManager &, MessageBus &);
-EXPORT extern "C" {
+__declspec(dllexport) extern "C" {
 	loaderPtr returnLoader()
 	{
 		return &loadGameLibData;
