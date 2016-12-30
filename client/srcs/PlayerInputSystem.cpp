@@ -4,6 +4,8 @@
 #include "SpriteComponent.hpp"
 #include "HitBoxComponent.hpp"
 #include "HealthComponent.hpp"
+#include "ScriptComponent.hpp"
+#include "BasicMonsterScript.hpp"
 #include <iostream>
 
 const std::string PlayerInputSystem::name = "PlayerInputSystem";
@@ -70,15 +72,25 @@ PlayerInputSystem::PlayerInputSystem(EntityManager &entityManager,
   healthComp =
     static_cast<HealthComponent*>(_entityManager.getComponent(basicMonsterId,
 							      HealthComponent::name));
+  physComp =
+    static_cast<PhysicComponent*>(_entityManager.getComponent(basicMonsterId,
+  							      PhysicComponent::name));
+  // ScriptComponent *scriptComp =
+  //   static_cast<ScriptComponent*>(_entityManager.getComponent(basicMonsterId,
+  // 							      ScriptComponent::name));
+
   spriteComp->setPathAnimated("./assets/sprites/r-typesheet17.png");
   spriteComp->setEntityName("BasicMonster");
   spriteComp->setFrames({66, 0, 61, 132}, 8);
-  positionComp->setX(300);
-  positionComp->setY(300);
+  positionComp->setX(1150);
+  positionComp->setY(400);
+  physComp->setSpeedX(-5);
+  physComp->setSpeedY(0);
   hitBoxComp->setCircleRadius(20);
   healthComp->setHealth(1);
   healthComp->setDamagePower(-1);
   healthComp->setFaction(HealthComponent::Faction::ENEMIES);
+  // scriptComp->setScript(new BasicMonsterScript(entityManager, basicMonsterId));
 }
 
 void		PlayerInputSystem::updateEntity(int entityId)

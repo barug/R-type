@@ -14,18 +14,24 @@
 #include "HealthComponent.hpp"
 #include "HealthSystem.hpp"
 #include "clientMessages.hpp"
+#include "ScriptComponent.hpp"
+#include "ScriptSystem.hpp"
 
 void	loadGameLibData(EntityManager &e, SystemManager &s, MessageBus &m)
 {
   unsigned int		winX = 1200;
   unsigned int		winY = 800;
-  
+
+  std::cout << "[loading game data]" << std::endl;
   e.addComponentType<PositionComponent>(PositionComponent::name);
   e.addComponentType<PhysicComponent>(PhysicComponent::name);
   e.addComponentType<PlayerInputComponent>(PlayerInputComponent::name);
   e.addComponentType<SpriteComponent>(SpriteComponent::name);
   e.addComponentType<HitBoxComponent>(HitBoxComponent::name);
   e.addComponentType<HealthComponent>(HealthComponent::name);
+  // std::cout << "[loading ScriptComponent]" << std::endl;
+  // e.addComponentType<ScriptComponent>(ScriptComponent::name);
+  // std::cout << "[Script Component Loaded]" << std::endl;
   m.registerValidMessageId(ClientMessages::KEY_INPUT_DATA);
   m.registerValidMessageId(ClientMessages::AUTHENTIFICATION);
   m.registerValidMessageId(ClientMessages::AUTHENTIFICATION_FAILED);
@@ -39,6 +45,7 @@ void	loadGameLibData(EntityManager &e, SystemManager &s, MessageBus &m)
 		      HealthComponent::name});
   e.addEntityType("BasicMonster",
 		  {PositionComponent::name,
+		      PhysicComponent::name,
 		      SpriteComponent::name,
 		      HitBoxComponent::name,
 		      HealthComponent::name});
@@ -77,6 +84,10 @@ void	loadGameLibData(EntityManager &e, SystemManager &s, MessageBus &m)
   	      HealthSystem::name,
   	      {HealthComponent::name},
   	      {CoreGameSrcsMessages::COLLISION_DETECTED});
+  // s.addSystem(std::make_shared<ScriptSystem>(e, m),
+  // 	      ScriptSystem::name,
+  // 	      {ScriptComponent::name},
+  // 	      {});
 }
 
 typedef void (*loaderPtr)(EntityManager &, SystemManager &, MessageBus &);
