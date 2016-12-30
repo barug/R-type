@@ -7,7 +7,7 @@ const std::string		HealthSystem::name = "HealthSystem";
 HealthSystem::HealthSystem(EntityManager &entityManager, MessageBus &messageBus)
   : ASystem(entityManager, messageBus)
 {
-  loadMessageHandler(CollisionSystem::Messages::COLLISION_DETECTED,
+  loadMessageHandler(CoreGameSrcsMessages::COLLISION_DETECTED,
   		     static_cast<message_handler>(&HealthSystem::handleCollision));
 }
 

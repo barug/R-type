@@ -13,7 +13,7 @@ PlayerInputSystem::PlayerInputSystem(EntityManager &entityManager,
   : ASystem(entityManager, MessageBus),
     _lastKey(IGui::Key::NONE)
 {
-  loadMessageHandler(GuiSystem::Messages::KEY_INPUT_DATA,
+  loadMessageHandler(ClientMessages::KEY_INPUT_DATA,
   		     static_cast<message_handler>(&PlayerInputSystem::handleNewKeyInput));
   int playerShipId = _entityManager.createEntity("PlayerShip");
   std::cout << "created ship with id: " << playerShipId << std::endl;
@@ -111,7 +111,7 @@ void		PlayerInputSystem::updateEntity(int entityId)
        inputComp->getLastFire();
      int elapsed = 
        std::chrono::duration_cast<std::chrono::milliseconds>(now - lastFire).count();
-     if (elapsed > 500)
+     if (elapsed > 250)
        {
 	 inputComp->setLastFire(now);
 	 int projectileId = _entityManager.createEntity("playerBasicProjectile");
@@ -132,8 +132,8 @@ void		PlayerInputSystem::updateEntity(int entityId)
 								     HealthComponent::name));
 	 projectilePosComp->setX(playerPosComp->getX() + 20);
 	 projectilePosComp->setY(playerPosComp->getY());
-	 projectilePhysComp->setSpeedX(5);
-	 projectilePhysComp->setSpeedY(0);
+	 projectilePhysComp->setSpeedX(physComp->getSpeedX() + 15);
+	 projectilePhysComp->setSpeedY(physComp->getSpeedY());
 	 projectilePhysComp->setCanLeaveScreen(true);
 	 projectileHitBoxComp->setCircleRadius(10);
 	 projectileSpriteComp->setPathAnimated("./assets/sprites/r-typesheet3.png");

@@ -22,6 +22,7 @@ public:
   virtual void			preRoutine() {};
   virtual void			updateEntity(int entityId);
   virtual void			postRoutine() {};
+  bool				testIfOutScreen(int x, int y);
 };
 
 #endif /* !_PHYSIC_SYSTEM_HPP_ */
