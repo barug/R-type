@@ -77,7 +77,7 @@ void		MessageBus::subscribeToMessage(const std::string &system,
 void		MessageBus::post(const int messageTypeId,
 				 void *messageData)
 {
-  // std::cout << "[posting Message] id = " << messageTypeId << std::endl;
+  std::cout << "[posting Message] id = " << messageTypeId << std::endl;
   _messages.push_back(Message(messageTypeId, messageData));
 }
 
@@ -109,7 +109,7 @@ void		MessageBus::broadcast()
 {
   for (auto message : _messages)
     {
-      // std::cout << "[broadcast Message] id = " << message.getTypeId() << std::endl;
+      std::cout << "[broadcast Message] id = " << message.getTypeId() << std::endl;
       for (auto it = _systems.begin(); it != _systems.end(); ++it)
 	{
 	  if (isSubscribed((*it)->name(), message.getTypeId()))
