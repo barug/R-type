@@ -19,7 +19,7 @@ NetworkSystem::~NetworkSystem()
 
 void            NetworkSystem::preRoutine(void)
 {
-  if (_clients.size() > 1 && )
+  if (_clients.size() > 1 && !_hasGameStarted)
     {
       std::cout << "More than 1 client" << std::endl;
       for (auto it : _clients)
@@ -31,6 +31,7 @@ void            NetworkSystem::preRoutine(void)
 	  pS->writeSocket(*(pM->createDatagram()));
 	  std::cout << "data sent" << std::endl;
 	}
+      _hasGameStarted = true;
     }
 }
 
