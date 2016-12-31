@@ -91,6 +91,10 @@ public:
 				const float x, const float y,
 				const unsigned int hexaColorCode = 0x000000,
 				const float scale = 1.) = 0;
+  virtual void	        writeAt(const std::string  &msg, const std::string &fontPath,
+				const float x, const float y,
+				const unsigned int hexaColorCode = 0x000000,
+				const float scale = 1.) = 0;
 
   /*
   ** Animated Sprites

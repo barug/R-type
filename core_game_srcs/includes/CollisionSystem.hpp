@@ -5,6 +5,7 @@
 # include "ASystem.hpp"
 # include "HitBoxComponent.hpp"
 # include "PositionComponent.hpp"
+# include "coreGameSrcsMessages.hpp"
 
 class			CollisionSystem : public ASystem
 {
@@ -14,11 +15,6 @@ class			CollisionSystem : public ASystem
   bool			testIfAllreadyDetected(int firstId, int secondId);
   
 public:
-
-  enum			Messages
-    {
-      COLLISION_DETECTED = 14
-    };
 
   static const std::string	name;
   

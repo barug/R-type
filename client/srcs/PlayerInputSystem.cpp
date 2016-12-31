@@ -4,6 +4,8 @@
 #include "SpriteComponent.hpp"
 #include "HitBoxComponent.hpp"
 #include "HealthComponent.hpp"
+#include "ScriptComponent.hpp"
+#include "BasicMonsterScript.hpp"
 #include <iostream>
 
 const std::string PlayerInputSystem::name = "PlayerInputSystem";
@@ -13,7 +15,7 @@ PlayerInputSystem::PlayerInputSystem(EntityManager &entityManager,
   : ASystem(entityManager, MessageBus),
     _lastKey(IGui::Key::NONE)
 {
-  loadMessageHandler(GuiSystem::Messages::KEY_INPUT_DATA,
+  loadMessageHandler(ClientMessages::KEY_INPUT_DATA,
   		     static_cast<message_handler>(&PlayerInputSystem::handleNewKeyInput));
   int playerShipId = _entityManager.createEntity("PlayerShip");
   std::cout << "created ship with id: " << playerShipId << std::endl;
@@ -70,15 +72,25 @@ PlayerInputSystem::PlayerInputSystem(EntityManager &entityManager,
   healthComp =
     static_cast<HealthComponent*>(_entityManager.getComponent(basicMonsterId,
 							      HealthComponent::name));
+  physComp =
+    static_cast<PhysicComponent*>(_entityManager.getComponent(basicMonsterId,
+  							      PhysicComponent::name));
+  // ScriptComponent *scriptComp =
+  //   static_cast<ScriptComponent*>(_entityManager.getComponent(basicMonsterId,
+  // 							      ScriptComponent::name));
+
   spriteComp->setPathAnimated("./assets/sprites/r-typesheet17.png");
   spriteComp->setEntityName("BasicMonster");
   spriteComp->setFrames({66, 0, 61, 132}, 8);
-  positionComp->setX(300);
-  positionComp->setY(300);
+  positionComp->setX(1150);
+  positionComp->setY(400);
+  physComp->setSpeedX(-5);
+  physComp->setSpeedY(0);
   hitBoxComp->setCircleRadius(20);
   healthComp->setHealth(1);
   healthComp->setDamagePower(-1);
   healthComp->setFaction(HealthComponent::Faction::ENEMIES);
+  // scriptComp->setScript(new BasicMonsterScript(entityManager, basicMonsterId));
 }
 
 void		PlayerInputSystem::updateEntity(int entityId)
@@ -111,7 +123,7 @@ void		PlayerInputSystem::updateEntity(int entityId)
        inputComp->getLastFire();
      int elapsed = 
        std::chrono::duration_cast<std::chrono::milliseconds>(now - lastFire).count();
-     if (elapsed > 500)
+     if (elapsed > 250)
        {
 	 inputComp->setLastFire(now);
 	 int projectileId = _entityManager.createEntity("playerBasicProjectile");
@@ -132,7 +144,7 @@ void		PlayerInputSystem::updateEntity(int entityId)
 								     HealthComponent::name));
 	 projectilePosComp->setX(playerPosComp->getX() + 20);
 	 projectilePosComp->setY(playerPosComp->getY());
-	 projectilePhysComp->setSpeedX(5);
+	 projectilePhysComp->setSpeedX(15);
 	 projectilePhysComp->setSpeedY(0);
 	 projectilePhysComp->setCanLeaveScreen(true);
 	 projectileHitBoxComp->setCircleRadius(10);

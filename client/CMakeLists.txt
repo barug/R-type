@@ -4,6 +4,7 @@ cmake_minimum_required(VERSION 3.5)
 
 function (client)
   project (client_rtype)
+  set(CMAKE_CXX_FLAGS "-Wall -std=c++14 -Wl,-z,defs")
 
   set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/client/gameLibs)
 
@@ -32,6 +33,9 @@ function (client)
     ${CORE_GAME_LIB_DIRECTORY}/srcs/HitBoxComponent.cpp
     ${CORE_GAME_LIB_DIRECTORY}/srcs/CollisionSystem.cpp
     ${CORE_GAME_LIB_DIRECTORY}/srcs/HealthComponent.cpp
+    ${CORE_GAME_LIB_DIRECTORY}/srcs/ScriptComponent.cpp
+    ${CORE_GAME_LIB_DIRECTORY}/srcs/ScriptSystem.cpp
+    ${CORE_GAME_LIB_DIRECTORY}/srcs/BasicMonsterScript.cpp
     ${CORE_GAME_LIB_DIRECTORY}/srcs/HealthSystem.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/client/srcs/coreGameLib.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/client/srcs/GuiSystem.cpp

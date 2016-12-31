@@ -72,6 +72,24 @@ void                            SpriteComponent::setFrames(const std::vector<std
   _isFullFrames = true;
 }
 
+const unsigned int              SpriteComponent::getWidth(void) const
+{
+  if (_isFullFrames && !_fullFrames.empty())
+    return (_fullFrames[0][0]);
+  else if (!_frames.empty())
+    return (_frames[0]);
+  return 0;
+}
+
+const unsigned int              SpriteComponent::getHeight(void) const
+{
+  if (_isFullFrames && !_fullFrames.empty())
+    return (_fullFrames[0][3]);
+  else if (!_frames.empty())
+    return (_frames[3]);
+  return 0;
+}
+
 const std::vector<unsigned int>& SpriteComponent::getFrames(void) const
 {
   return _frames;

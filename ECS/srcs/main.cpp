@@ -14,9 +14,14 @@ int			main()
 {
   try
     {
-      GameEngine		g("./gameLibs/");
-      g.run();
-    }
+#if defined(__UNIX__)
+	  GameEngine		g("./gameLibs/");
+	  g.run();
+#elif defined(WIN32) || defined(_WIN32)
+	  GameEngine		g("./gameLibs/Release/");
+	  g.run();
+#endif
+  }
   catch (const std::exception &e)
     {
       std::cout << e.what() << std::endl;

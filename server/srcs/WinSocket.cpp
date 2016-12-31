@@ -2,7 +2,7 @@
 
 # include	<iostream>
 # include	<winsock2.h>
-
+# include	<WS2tcpip.h>
 # pragma	comment(lib,"ws2_32.lib") //Winsock Library
 
 # include	"WinSocket.hpp"
@@ -17,7 +17,7 @@ WinSocket::WinSocket(const std::string& ip, int port) :
   _nbFds(0)
 {
   SOCKADDR_IN		s_in = { 0, 0, 0, 0, 0, 0, 0, 0 };
-  SOCKLEN_T_t		addressLength = sizeof(s_in);
+  socklen_t		addressLength = sizeof(s_in);
   WSADATA		wsa;
 
   s_in.sin_family = AF_INET;
