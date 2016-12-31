@@ -4,7 +4,7 @@
 # include	<string.h>
 # include	<cstring>
 
-# include	"CommandHandler.hpp"
+# include	"../includes/CommandHandler.hpp"
 
 CommandHandler::CommandHandler() :
   _fptr{ {101, &CommandHandler::logInUser },

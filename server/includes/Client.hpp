@@ -25,7 +25,8 @@ private :
 
   std::string	_ip;
   int		_port;
-
+  int		_portGame;
+  
 };
 
 # endif		// !__CLIENT_HPP__

@@ -1,8 +1,8 @@
 # include	<iterator>
 # include	<iostream>
-# include	"../includes/NetworkHandler.hpp"
-# include	"../includes/UnixSocket.hpp"
-# include	"../includes/WinSocket.hpp"
+# include	"../includes_ecs/NetworkHandler.hpp"
+# include	"../includes_ecs/UnixSocket.hpp"
+# include	"../includes_ecs/WinSocket.hpp"
 
 NetworkHandler::NetworkHandler(const std::string &ip, const int port) :
 # if defined (__unix__)

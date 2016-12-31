@@ -2,7 +2,7 @@
 # include	<cstring>
 # include	<sstream>
 
-# include	"../includes/CommandHandler.hpp"
+# include	"../includes_ecs/CommandHandler.hpp"
 
 CommandHandler::CommandHandler() :
   _fptr { { 1, &CommandHandler::userLoggedIn },

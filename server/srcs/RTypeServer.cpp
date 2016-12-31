@@ -45,15 +45,20 @@ void		RTypeServer::checkInput()
 void						RTypeServer::checkSocket()
 {
   const std::shared_ptr<ISocket::Datagram>	data = _networkHandler->getSocket().readSocket();
+  std::cout << "This is test" << std::endl;
   std::string					ipPort(data->_ip + ":" + std::to_string(data->_port));
   Client *					clicli;
 
+  std::cout << "ABC" << std::endl;
   if (!(clicli = _networkHandler->getClientByKey(ipPort)))
     clicli = _networkHandler->addClient(ipPort, data->_ip, data->_port);
+  std::cout << "DEF" << std::endl;
 
   std::unique_ptr<Message>			message = std::make_unique<Message>(*data);
 
+  std::cout << "GHI" << std::endl;
   _commandHandler->execFuncByOperationCode(this, *clicli, message.get());
+  std::cout << "Finished to handle commands" << std::endl;
 }
 
 void		RTypeServer::run()

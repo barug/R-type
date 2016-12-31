@@ -1,11 +1,9 @@
-# ifdef		__unix__
-
 # include	<iostream>
 # include	<unistd.h>
 # include	<arpa/inet.h>
 # include	<string.h>
 
-# include	"UnixSocket.hpp"
+# include	"../includes/UnixSocket.hpp"
 
 UnixSocket::UnixSocket(const std::string& ip, int port) :
   _ip(ip),
@@ -137,5 +135,3 @@ int	UnixSocket::somethingToRead()
     { /* maybe some clean of code there */ }
   return this->checkFds();
 }
-
-# endif

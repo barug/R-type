@@ -31,6 +31,8 @@ class		RoomManager
 
   void								checkRoom();
 
+  std::string							getFirstIdForRoom(void);
+  
 private :
 
   std::shared_ptr< NetworkHandler >				_networkHandler;

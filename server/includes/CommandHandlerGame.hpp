@@ -22,7 +22,9 @@ public :
   typedef bool		(CommandHandlerGame::* f)(Room *room, Client &client, Message *message);
 
   bool			execFuncByOperationCode(Room *room, Client &client, Message *message);
+  void			sendGameMessage(Room *room, int opCode, void * data = NULL, int size = 0);
 
+  bool			userJoinedGame(Room *room, Client &client, Message *message);
 private:
 
   std::map<int, f>	_fptr;

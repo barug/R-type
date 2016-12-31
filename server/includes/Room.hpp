@@ -8,6 +8,7 @@
 # include	<mutex>
 
 # include	"ISocket.hpp"
+# include	"GameEngine.hpp"
 # include	"CommandHandlerGame.hpp"
 
 class		CommandHandlerGame;
@@ -41,11 +42,14 @@ private :
   std::string					_name;
   std::map< const std::string,
 	    std::shared_ptr< Client > >		_players;
+  std::map< const std::string,
+	    const std::string>			_playersGameId;
   int						_nbPlayers;
 
   std::shared_ptr< ISocket >			_socket;
   std::shared_ptr< CommandHandlerGame >		_commandHandler;
 
+  GameEngine					_gameEngine;
   std::mutex					_locker;
   std::thread					_thread;
 

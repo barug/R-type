@@ -56,6 +56,11 @@ bool			RTypeClient::connectToServer(const std::string &ip, const int port)
 
 bool	RTypeClient::run()
 {
+  std::unique_ptr< Message >	message =
+    std::make_unique< Message >(109,
+                                _networkHandler->getSocket().getIpServer(),
+                                _networkHandler->getSocket().getPortServer());
+  _networkHandler->getSocket().writeSocket(*message->createDatagram());  
   if (_networkHandler->getSocket().somethingToRead())
     {
       _isAuthentified = true;      

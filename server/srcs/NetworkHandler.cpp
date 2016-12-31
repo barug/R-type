@@ -1,8 +1,8 @@
 # include	<iterator>
 
-# include	"NetworkHandler.hpp"
-# include	"UnixSocket.hpp"
-# include	"WinSocket.hpp"
+# include	"../includes/NetworkHandler.hpp"
+# include	"../includes/UnixSocket.hpp"
+# include	"../includes/WinSocket.hpp"
 
 NetworkHandler::NetworkHandler(const int port) :
   _client(),

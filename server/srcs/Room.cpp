@@ -1,13 +1,14 @@
 # include	<iostream>
 
-# include	"UnixSocket.hpp"
-# include	"WinSocket.hpp"
+# include	"../includes/UnixSocket.hpp"
+# include	"../includes/WinSocket.hpp"
 
 # include	"Room.hpp"
 
 Room::Room(const std::string & name) :
   _name(name),
   _players(),
+  _playersGameId(),
   _nbPlayers(0),
 # ifdef		__unix__
   _socket(std::make_shared<UnixSocket>("0", 0)),
@@ -16,6 +17,7 @@ Room::Room(const std::string & name) :
 # define	OS_Windows
 # endif
   _commandHandler(std::make_shared< CommandHandlerGame>()),
+  _gameEngine("./serverLibs/"),
   _locker(),
   _thread(std::thread(&Room::run, this)),
   _run(true)
@@ -103,14 +105,14 @@ void	Room::setRun(const bool state)
 bool	Room::gameStep()
 {
   // shall we do a new object ?
-  std::cout << "And one more Step" << std::endl;
+  // std::cout << "And one more Step" << std::endl;
   return true;
 }
 
 bool	Room::run()
 {
   bool	run = true;
-
+  
   while (run)
     {
       _locker.lock();
@@ -119,13 +121,22 @@ bool	Room::run()
 
       if (_socket->somethingToRead() != -1)
 	{
-
 	  const std::shared_ptr<ISocket::Datagram>	data = _socket->readSocket();
 	  std::string					ipPort(data->_ip + ":" + std::to_string(data->_port));
-	  Client					clicli = *_players[ipPort];
 	  std::unique_ptr<Message>			message = std::make_unique<Message>(*data);
-	  std::cout << " [+] Game Cmd " << std::endl;
-	  // _commandHandler->execFuncByOperationCode(this, *clicli, message.get());
+	  if (_playersGameId.size() != 1)
+	    {
+	      Message::Room				*room = (Message::Room *)message->getData();
+	      _playersGameId.emplace(ipPort, room->_name);
+	    }
+	  else
+	    {
+	      std::string realId = _playersGameId[ipPort];
+
+	      Client &client = *_players[realId];
+	      std::cout << " [+] Game Cmd " << std::endl;
+	      _commandHandler->execFuncByOperationCode(this, client, message.get());
+	    }
 	}
       if (_nbPlayers > 0)
 	this->gameStep();

@@ -59,9 +59,20 @@ Room *		RoomManager::createRoom(const std::string name)
   return _gameRooms[name].get();
 }
 
-void	RoomManager::checkRoom()
+void			RoomManager::checkRoom()
 {
   for (auto it : _gameRooms)
     if (it.second->getRun() == false)
       _gameRooms.erase(it.first);
 }
+
+std::string		 RoomManager::getFirstIdForRoom(void)
+{
+  for (auto it : _gameRooms)
+    {
+      if (it.second->getNbPlayers() < 4)
+	return it.first ;
+    }
+  return std::string("");
+}
+  
