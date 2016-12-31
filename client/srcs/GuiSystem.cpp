@@ -12,7 +12,7 @@ GuiSystem::GuiSystem(EntityManager &entityManager,
 		     unsigned int winX,
 		     unsigned int winY)
   : ASystem(entityManager, messageBus),
-    _gui(new Window("RType", winX, winY, "./assets/font/breeze.ttf")),
+    _gui(new Window("RType", winX, winY, "./assets/font/digital.otf")),
     _audio(new Audio),
     _rtypeUI(*_gui),
     _ip(),
