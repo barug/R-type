@@ -124,6 +124,5 @@ void		GuiSystem::_handleAuthFailed(void *messageData)
 
 void		GuiSystem::_handleAuthSuccess(void *messageData)
 {
-  std::cout << "DAFUQ" << std::endl;
-  // _rtypeUI.setContext(RTypeUI::Context::Game);
+  _rtypeUI.setContext(RTypeUI::Context::Game);
 }

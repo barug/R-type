@@ -4,7 +4,7 @@
 # include	<string>
 # include	<memory>
 
-# define	BUFFLEN (4096)
+# define	BUFFLEN (8192)
 
 class		ISocket
 {

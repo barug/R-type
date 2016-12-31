@@ -2,6 +2,7 @@
 # include	<sstream>
 
 # include	<string.h>
+# include	<cstring>
 
 # include	"CommandHandler.hpp"
 
@@ -59,44 +60,58 @@ bool						CommandHandler::listOfRoom(RTypeServer *server,
 {
   std::cout << " \033[1;32m[+] Action 102 is managed\033[0m" << std::endl;
 
-  std::shared_ptr<Message::ListOfRoom>		listOfRoom = std::make_shared<Message::ListOfRoom>();
-  std::vector<Message::Room>			roomVector;
+  Message::ListOfRoom				answer = {};
+  std::vector<Message::Room>			rooms;
+  std::vector<Message::Entity>			players;
   std::stringstream				ss;
-
-  listOfRoom->_nbRoom = server->getRoomManager()->getRoomNumber();
+  
+  answer._nbRoom = server->getRoomManager()->getRoomNumber();
+  std::cout << "Nbr of Rooms" << answer._nbRoom << std::endl;
   for (auto it : server->getRoomManager()->getGameRooms())
     {
-      std::shared_ptr<Message::Room>		roomData = std::make_shared<Message::Room>();
-      std::vector<Message::Entity>		playerVector;
+      int				        i = -1;
+      Message::Room				currentRoom = {};
 
-      roomData->_name = it.second->getName();
-      roomData->_ip = it.second->getSocket()->getIp();
-      roomData->_port = it.second->getSocket()->getPort();
-      roomData->_nbPlayer = it.second->getNbPlayers();
+      for (auto name : it.second->getName())
+	currentRoom._name[++i] = name;
+      
+      currentRoom._port = it.second->getSocket()->getPort();
 
-      for (auto it2 : it.second->getPlayers())
+      i = -1;
+      for (auto ip : it.second->getSocket()->getIp())
+	currentRoom._ip[++i] = ip;
+
+      currentRoom._nbPlayer = it.second->getNbPlayers();
+
+      
+      for (auto currentPlayer : it.second->getPlayers())
 	{
-	  std::shared_ptr<Message::Entity>	entity = std::make_shared<Message::Entity>();
-	  entity->_name = it2.second->getIp() + ":" + std::to_string(it2.second->getPort());
-	  // entity->_pos_x = ;
-	  // entity->_pos_y = ;
-	  playerVector.push_back(*(entity.get()));
+	  i = -1;
+	  Message::Entity		player = {};
+
+	  for (auto car : currentPlayer.second->getIp())
+	    player._name[++i] = car;
+	  player._name[++i] = ':';
+	  for (auto car : std::to_string(currentPlayer.second->getPort()))
+	    player._name[++i] = car;
+	  i = -1;
+	  players.push_back(player);
 	}
-      roomData->_players = playerVector;
-      roomVector.push_back(*(roomData.get()));
+      rooms.push_back(currentRoom);      
     }
-
-  ss.write((char *) listOfRoom.get(), sizeof( *(listOfRoom.get()) ) );
-  for (auto it : roomVector)
+  
+  ss.write((char*) &answer, sizeof(answer));
+  int	countPlayer = 0;
+  int	nbPlayerWrite = 0;
+  for (auto room : rooms)
     {
-      ss.write((char *) &it, sizeof(it) );
-      for (auto it2 : it._players)
-	ss.write((char *) &it2, sizeof(it2) );
+      ss.write((char*) &room, sizeof(room));
+      countPlayer += room._nbPlayer;
+      for (;nbPlayerWrite < countPlayer; ++nbPlayerWrite)
+	ss.write((char *) &(players[nbPlayerWrite]), sizeof(players[nbPlayerWrite]));
     }
-
   this->sendMessage(server, 2, client.getIp(), client.getPort(),
 		    (void *)ss.str().c_str(), ss.str().size());
-
   return true;
 }
 
@@ -153,37 +168,49 @@ bool							CommandHandler::joinRoom(RTypeServer *server,
   if (room)
     {
       if (room->getNbPlayers() < 4)
-	{
-	  std::stringstream				ss;
-	  std::shared_ptr< Message::Room >		roomData = std::make_shared<Message::Room>();
-	  std::vector< Message::Entity >		playerVector;
-
+  	{
 	  room->addPlayer(client);
+	  
+  	  int						i = -1;
+  	  std::stringstream				ss;
+	  Message::Room				answer = {};
+	  std::vector<Message::Entity>			players;
 
-	  roomData->_name = room->getName();
-	  roomData->_ip = room->getSocket()->getIp();
-	  roomData->_port = room->getSocket()->getPort();
-	  roomData->_nbPlayer = room->getNbPlayers();
+	  for (auto name : room->getName())
+	    answer._name[++i] = name;
+      
+	  answer._port = room->getSocket()->getPort();
 
-	  for (auto it : room->getPlayers())
+	  i = -1;
+	  for (auto ip : room->getSocket()->getIp())
+	    answer._ip[++i] = ip;
+
+	  answer._nbPlayer = room->getNbPlayers();
+
+	  for (auto currentPlayer : room->getPlayers())
 	    {
-	      std::shared_ptr< Message::Entity >	entity = std::make_shared<Message::Entity>();
-	      entity->_name = it.second->getIp() + ":" + std::to_string(it.second->getPort());
-	      // entity->_pos_x = ;
-	      // entity->_pos_y = ;
-	      playerVector.push_back(*(entity.get()));
-	    }
+	      i = -1;
+	      Message::Entity		player = {};
 
-	  ss.write((char *) roomData.get(), sizeof(*(roomData.get())));
-	  for (auto it : playerVector)
+	      for (auto car : currentPlayer.second->getIp())
+		player._name[++i] = car;
+	      player._name[++i] = ':';
+	      for (auto car : std::to_string(currentPlayer.second->getPort()))
+		player._name[++i] = car;
+	      i = -1;
+	      players.push_back(player);
+	    }
+	  ss.write((char *) &answer, sizeof(answer));
+
+	  for (auto it : players)
 	    ss.write((char *) &it, sizeof(it));
 
 	  this->sendMessage(server, 4, client.getIp(), client.getPort(),
 			    (void *)ss.str().c_str(), ss.str().size());
-	  return true;
-	}
+  	  return true;
+  	}
       else
-	this->sendMessage(server, 202, client.getIp(), client.getPort());
+  	this->sendMessage(server, 202, client.getIp(), client.getPort());
     }
   else
     this->sendMessage(server, 201, client.getIp(), client.getPort());

@@ -4,7 +4,7 @@
 // Login   <mikaz3@epitech.net>
 // 
 // Started on  Fri Nov 25 14:48:49 2016 Thomas Billot
-// Last update Tue Dec 27 09:55:18 2016 Thomas Billot
+// Last update Sat Dec 31 01:49:57 2016 Thomas Billot
 //
 
 #include        <iostream>
@@ -14,7 +14,7 @@ int			main()
 {
   try
     {
-#if defined(__UNIX__)
+#if defined(__GNUC__)
 	  GameEngine		g("./gameLibs/");
 	  g.run();
 #elif defined(WIN32) || defined(_WIN32)

@@ -40,9 +40,12 @@ Message::Message(const ISocket::Datagram& data) :
   std::cout << "Header = [" << _size
 	    << "] [" << _operationCode
 	    << "]" << std::endl;
-  // std::cout << "Data = [\n";
-  // for (unsigned int i = 0; i < data._lenght; i++)
-  //   printf("[%c]", data._data[i]);
+  if (_size)
+    {
+      std::cout << "Data = [\n";
+      for (unsigned int i = 0; i < data._lenght; i++)
+	printf("[%c]", data._data[i]);
+    }
   std::cout << "\n] ]" << std::endl;
 }
 

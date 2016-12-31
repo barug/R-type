@@ -72,10 +72,10 @@ void	loadGameLibData(EntityManager &e, SystemManager &s, MessageBus &m)
 		  PlayerInputComponent::name,
 		  PositionComponent::name},
   	      {ClientMessages::KEY_INPUT_DATA});
-  // s.addSystem(std::make_shared<NetworkSystem>(e, m),
-  // 	      NetworkSystem::name,
-  // 	      {PhysicComponent::name},
-  // 	      {GuiSystem::Messages::AUTHENTIFICATION});
+  s.addSystem(std::make_shared<NetworkSystem>(e, m),
+  	      NetworkSystem::name,
+  	      {PhysicComponent::name},
+  	      {ClientMessages::AUTHENTIFICATION});
   s.addSystem(std::make_shared<CollisionSystem>(e, m),
 	      CollisionSystem::name,
 	      {PositionComponent::name,
@@ -89,6 +89,7 @@ void	loadGameLibData(EntityManager &e, SystemManager &s, MessageBus &m)
   // 	      ScriptSystem::name,
   // 	      {ScriptComponent::name},
   // 	      {});
+  std::cout << "Done loading" << std::endl;
 }
 
 #if defined(__GNUC__)

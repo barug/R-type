@@ -13,8 +13,6 @@ Message::Message(int opCode, const std::string& ip, int port, void* data, int si
   _port(port),
   _datagram()
 {
-  if (size)
-    std::cout << (char*) _data << std::endl;
   std::cout << " [+] New Message Entity Create from Datas" << std::endl;
 }
 
@@ -82,6 +80,7 @@ std::shared_ptr<ISocket::Datagram>	Message::createDatagram()
   std::shared_ptr<ISocket::Datagram>	datagram = std::make_shared<ISocket::Datagram>();
   datagram->_ip = _ip;
   datagram->_port = _port;
+  std::cout << _size << std::endl;
   memset(datagram->_data, 0, BUFFLEN); //check len
 
   Message::Header			header;
