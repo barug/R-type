@@ -8,7 +8,8 @@ const std::string NetworkSystem::name = "NetworkSystem";
 NetworkSystem::NetworkSystem(EntityManager &entityManager, MessageBus &messageBus)
   : ASystem(entityManager, messageBus),
     _client(new RTypeClient()),
-    _isAuthentified(false)
+    _isAuthentified(false),
+    _gameStarted(false)
 {
   loadMessageHandler(ClientMessages::AUTHENTIFICATION,
 		     static_cast<message_handler>(&NetworkSystem::handleAuthentification));
@@ -62,6 +63,12 @@ void		NetworkSystem::handleKeyInputData(void *messageData)
 {
   IGui::Key	*key = static_cast<IGui::Key*>(messageData);  
 
-  _client->connectToServer(p->first, p->second);
-  _isAuthentified = true;
+  std::cout << "yay!" << std::endl;
+  if (_isAuthentified && _gameStarted)
+    {
+      std::cout << _client->getNetworkHandler()->getSocketGame().getIp() << std::endl;
+      std::shared_ptr<Message> pM = std::make_shared<Message>(99, _client->getNetworkHandler()->getSocketGame().getIp(), _client->getNetworkHandler()->getSocketGame().getPort());
+      std::cout << "caca" << std::endl;
+      _client->getNetworkHandler()->getSocketGame().writeSocket(*(pM->createDatagram()));
+    }
 }

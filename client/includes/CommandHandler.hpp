@@ -27,6 +27,7 @@ public:
   bool			listOfRoom(RTypeClient * client, Message * message);
   bool			roomCreated(RTypeClient * client, Message * message);
   bool			roomJoined(RTypeClient * client, Message * message);
+  bool			gameStarted(RTypeClient * client, Message * message);
 
   bool			roomDontExist(RTypeClient * client, Message * message);
   bool			numberPlayerMax(RTypeClient * client, Message * message);

@@ -3,14 +3,15 @@
 
 # include	<memory>
 
-# include	"RTypeClient.hpp"
+# include	"../includes/RTypeClient.hpp"
 # include	"Message.hpp"
 
 RTypeClient::RTypeClient() :
   _networkHandler(std::make_shared<NetworkHandler>()),
   _commandHandler(std::make_unique<CommandHandler>()),
   _askedForAuth(false),
-  _isAuthentified(false)
+  _isAuthentified(false),
+  _hasGameStarted(false)
 {
 }
 
@@ -18,7 +19,8 @@ RTypeClient::RTypeClient(const std::string ip, const int port) :
   _networkHandler(std::make_shared<NetworkHandler>(ip, port)),
   _commandHandler(std::make_unique<CommandHandler>()),
   _askedForAuth(false),
-  _isAuthentified(false)
+  _isAuthentified(false),
+  _hasGameStarted(false)
 {
   // create the co cmd
   std::unique_ptr< Message >	message =
@@ -54,6 +56,11 @@ bool			RTypeClient::connectToServer(const std::string &ip, const int port)
   return true;
 }
 
+void			RTypeClient::setGameStarted(bool state)
+{
+  _hasGameStarted = state;
+}
+
 bool	RTypeClient::run()
 {
   if (_networkHandler->getSocket().somethingToRead())
@@ -69,12 +76,8 @@ bool	RTypeClient::run()
     }
   if (!_isAuthentified)
     {
-      // std::cout << "RTypeClient::run isnt auth" << std::endl;
       if (_askedForAuth)
-	{
-	  std::cout << "RTypeClient::run asked for auth" << std::endl;
-	  _askedForAuth = false;
-	}
+	_askedForAuth = false;
       return false;
     }
   return true;

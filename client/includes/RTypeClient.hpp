@@ -21,12 +21,14 @@ public :
   void					setNetworkHandler(std::shared_ptr<NetworkHandler> &ptr);
   bool					connectToServer(const std::string &ip, const int port);
   bool					run();
-
+  void					setGameStarted(bool state);
+  
 private :
   std::shared_ptr<NetworkHandler>	_networkHandler;
   std::unique_ptr<CommandHandler>	_commandHandler;
   bool					_askedForAuth;
   bool					_isAuthentified;
+  bool					_hasGameStarted;
 };
 
 # endif			// !__RTYPECLIENT_HPP__

@@ -26,6 +26,7 @@ private:
   
   RTypeClient   *_client;
   bool		_isAuthentified;
+  bool		_gameStarted;
 };
 
 #endif          // !__NETWORK_SYSTEM_HPP__

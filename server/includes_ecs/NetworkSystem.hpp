@@ -24,7 +24,8 @@ public:
   
 private:
   
-  std::vector<std::shared_ptr<RTypeClient>>   _clients;
+  std::vector<std::pair<std::string, int>>   _clients;
+  bool					     _hasGameStarted;
 };
 
 #endif          // !__NETWORK_SYSTEM_HPP__

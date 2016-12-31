@@ -9,6 +9,7 @@ CommandHandler::CommandHandler() :
 	  { 2, &CommandHandler::listOfRoom },
 	  { 3, &CommandHandler::roomCreated },
 	  { 4, &CommandHandler::roomJoined },
+	  { 5, &CommandHandler::gameStarted },
 	  { 202, &CommandHandler::roomDontExist },
 	  { 201, &CommandHandler::numberPlayerMax },
 	  { 203, &CommandHandler::maxRoom },
@@ -168,5 +169,13 @@ bool	CommandHandler::roomExist(RTypeClient *client, Message *message)
 	    << " id already in use"
 	    << std::endl;
 
+  return true;
+}
+
+bool	CommandHandler::gameStarted(RTypeClient *client, Message *message)
+{
+  std::cout << " \033[1;31m[+] Action 005 is managed\033[0m" << std::endl;
+
+  client->setGameStarted(true);
   return true;
 }
