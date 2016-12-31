@@ -21,6 +21,16 @@ void			PhysicComponent::setSpeedY(float speedY)
   _speedY = speedY;
 }
 
+void			PhysicComponent::modifySpeedX(float modifier)
+{
+  _speedX += modifier;
+}
+
+void			PhysicComponent::modifySpeedY(float modifier)
+{
+  _speedY += modifier;
+}
+
 void			PhysicComponent::setAccelerationX(float accelerationX)
 {
   _accelerationX = accelerationX;

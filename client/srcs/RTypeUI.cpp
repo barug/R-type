@@ -7,7 +7,7 @@
 
 RTypeUI::RTypeUI(IGui &gui) : _gui(gui),
                               _timer(new Timer),
-                              _context(RTypeUI::Context::Introduction)
+                              _context(RTypeUI::Context::Game)
 {}
 
 RTypeUI::~RTypeUI()
@@ -25,14 +25,14 @@ RTypeUI::Context        RTypeUI::getContext(void) const
 
 void                    RTypeUI::displayIntroduction(void)
 {
-  static unsigned int   i = 0;
+  static int            i = 255;
 
   _gui.loadFont("./assets/font/breeze.ttf");
-  if (i < 255)
-    i += 10;
+  if (i <= 255)
+    i -= 10;
   _gui.setTextureAt("./assets/sprites/background.jpg", 0, 0, 1.);
   _gui.fillRec(0, 0, 1200, 800, 0x000000, i);
-  if (i >= 254)
+  if (i <= 0)
     {
       _gui.fillRec(500, 350, 200, 55, 0x000000, 150);
       _gui.setTextureAt("./assets/sprites/rtype-logo.png", 380, 40, 1.);

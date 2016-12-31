@@ -29,9 +29,9 @@ void	loadGameLibData(EntityManager &e, SystemManager &s, MessageBus &m)
   e.addComponentType<SpriteComponent>(SpriteComponent::name);
   e.addComponentType<HitBoxComponent>(HitBoxComponent::name);
   e.addComponentType<HealthComponent>(HealthComponent::name);
-  // std::cout << "[loading ScriptComponent]" << std::endl;
-  // e.addComponentType<ScriptComponent>(ScriptComponent::name);
-  // std::cout << "[Script Component Loaded]" << std::endl;
+  std::cout << "[loading ScriptComponent]" << std::endl;
+  e.addComponentType<ScriptComponent>(ScriptComponent::name);
+  std::cout << "[Script Component Loaded]" << std::endl;
   m.registerValidMessageId(ClientMessages::KEY_INPUT_DATA);
   m.registerValidMessageId(ClientMessages::AUTHENTIFICATION);
   m.registerValidMessageId(ClientMessages::AUTHENTIFICATION_FAILED);
@@ -48,7 +48,8 @@ void	loadGameLibData(EntityManager &e, SystemManager &s, MessageBus &m)
 		      PhysicComponent::name,
 		      SpriteComponent::name,
 		      HitBoxComponent::name,
-		      HealthComponent::name});
+		      HealthComponent::name,
+		      ScriptComponent::name});
   e.addEntityType("playerBasicProjectile",
 		  {PositionComponent::name,
 		      PhysicComponent::name,
@@ -85,11 +86,11 @@ void	loadGameLibData(EntityManager &e, SystemManager &s, MessageBus &m)
   	      HealthSystem::name,
   	      {HealthComponent::name},
   	      {CoreGameSrcsMessages::COLLISION_DETECTED});
-  // s.addSystem(std::make_shared<ScriptSystem>(e, m),
-  // 	      ScriptSystem::name,
-  // 	      {ScriptComponent::name},
-  // 	      {});
-  std::cout << "Done loading" << std::endl;
+  s.addSystem(std::make_shared<ScriptSystem>(e, m),
+  	      ScriptSystem::name,
+  	      {ScriptComponent::name},
+  	      {});
+  std::cout << "DONE LOADING" << std::endl;
 }
 
 #if defined(__GNUC__)

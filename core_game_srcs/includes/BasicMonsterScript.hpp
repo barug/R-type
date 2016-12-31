@@ -10,7 +10,7 @@ class			BasicMonsterScript : public IScript
 {
   EntityManager		&_entityManager;
   int			_entityId;
-  int			_ySpeedModifier;
+  float			_ySpeedModifier;
   std::chrono::time_point<std::chrono::system_clock> _lastSwitch;
   
 public:

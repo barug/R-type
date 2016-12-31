@@ -3,6 +3,7 @@
 
 # include       "ASystem.hpp"
 # include       "IGui.hpp"
+# include       "IAudio.hpp"
 # include       "RTypeUI.hpp"
 # include	"clientMessages.hpp"
 
@@ -10,6 +11,7 @@ class           GuiSystem : public ASystem
 {
   // ui
   IGui          *_gui;
+  IAudio        *_audio;
   RTypeUI       _rtypeUI;
 
   // network transition
