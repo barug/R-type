@@ -104,6 +104,7 @@ void	Room::setRun(const bool state)
 
 bool	Room::gameStep()
 {
+  std::cout << "GAME STEP" << std::endl;
   return true;
 }
 
@@ -122,7 +123,7 @@ bool	Room::run()
 	  const std::shared_ptr<ISocket::Datagram>	data = _socket->readSocket();
 	  std::string					ipPort(data->_ip + ":" + std::to_string(data->_port));
 	  std::unique_ptr<Message>			message = std::make_unique<Message>(*data);
-	  if (_playersGameId.size() != 1)
+	  if (_playersGameId.size() != 2)
 	    {
 	      Message::Room				*room = (Message::Room *)message->getData();
 	      _playersGameId.emplace(ipPort, room->_name);
@@ -136,7 +137,7 @@ bool	Room::run()
 	      _commandHandler->execFuncByOperationCode(this, client, message.get());
 	    }
 	}
-      if (_nbPlayers > 0)
+      if (_nbPlayers >= 2)
 	this->gameStep();
     }
   return true;
