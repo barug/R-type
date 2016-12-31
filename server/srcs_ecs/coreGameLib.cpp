@@ -4,14 +4,13 @@
 #include "../../core_game_srcs/includes/PositionComponent.hpp"
 #include "../../core_game_srcs/includes/PhysicComponent.hpp"
 #include "../../core_game_srcs/includes/PhysicSystem.hpp"
-#include "../includes_ecs/PlayerInputComponent.hpp"
-#include "../includes_ecs/PlayerInputSystem.hpp"
 #include "../includes_ecs/NetworkSystem.hpp"
+#include "../includes_ecs/NetworkComponent.hpp"
 #include "../../core_game_srcs/includes/HitBoxComponent.hpp"
 #include "../../core_game_srcs/includes/CollisionSystem.hpp"
 #include "../../core_game_srcs/includes/HealthComponent.hpp"
 #include "../../core_game_srcs/includes/HealthSystem.hpp"
-#include "../includes_ecs/clientMessages.hpp"
+#include "../includes_ecs/serverMessages.hpp"
 #include "../../core_game_srcs/includes/ScriptComponent.hpp"
 #include "../../core_game_srcs/includes/ScriptSystem.hpp"
 
@@ -26,11 +25,12 @@ void	loadGameLibData(EntityManager &e, SystemManager &s, MessageBus &m)
   e.addComponentType<HitBoxComponent>(HitBoxComponent::name);
   e.addComponentType<HealthComponent>(HealthComponent::name);
   e.addComponentType<ScriptComponent>(ScriptComponent::name);
+  e.addComponentType<NetworkComponent>(NetworkComponent::name);
   m.registerValidMessageId(CoreGameSrcsMessages::COLLISION_DETECTED);
+  m.registerValidMessageId(ServerMessages::ADD_CLIENT);
   e.addEntityType("PlayerShip",
   		  {PositionComponent::name,
   		      PhysicComponent::name,
-  		      PlayerInputComponent::name,
   		      HitBoxComponent::name,
   		      HealthComponent::name});
   e.addEntityType("BasicMonster",
@@ -49,10 +49,12 @@ void	loadGameLibData(EntityManager &e, SystemManager &s, MessageBus &m)
   	      {PhysicComponent::name,
   		  PositionComponent::name},
   	      {});
+  std::cout << "Before Network" << std::endl;
   s.addSystem(std::make_shared<NetworkSystem>(e, m),
   	      NetworkSystem::name,
-  	      {PhysicComponent::name},
-  	      {});
+  	      {NetworkComponent::name},
+  	      {ServerMessages::ADD_CLIENT});
+  std::cout << "After Network" << std::endl;
   s.addSystem(std::make_shared<CollisionSystem>(e, m),
   	      CollisionSystem::name,
   	      {PositionComponent::name,
@@ -66,6 +68,7 @@ void	loadGameLibData(EntityManager &e, SystemManager &s, MessageBus &m)
   	      ScriptSystem::name,
   	      {ScriptComponent::name},
   	      {});
+  e.createEntity("PlayerShip");
   std::cout << "DONE LOADING" << std::endl;
 }
 

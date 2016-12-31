@@ -20,6 +20,7 @@ public:
   virtual void  updateEntity(int entityId);
 
   void		handleAuthentification(void *MessageData);
+  void	        handleKeyInputData(void *MessageData);
   
 private:
   

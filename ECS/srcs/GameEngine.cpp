@@ -5,7 +5,7 @@
 // Login   <mikaz3@epitech.net>
 //
 // Started on  Fri Nov 25 17:20:05 2016 Thomas Billot
-// Last update Wed Dec 28 18:56:29 2016 Thomas Billot
+// Last update Sat Dec 31 12:44:48 2016 Thomas Billot
 //
 
 #include <iostream>
@@ -123,6 +123,13 @@ void			GameEngine::loadLib(const std::string &libPath)
 
 GameEngine::~GameEngine()
 {}
+
+void					GameEngine::postImmediateMessage(int messageId, void *data)
+{
+  _messageBus.post(messageId, data);
+  _messageBus.broadcast();
+}
+
 
 int			GameEngine::run(void)
 {

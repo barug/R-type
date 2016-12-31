@@ -1,6 +1,7 @@
 # include	<iostream>
-# include       "NetworkSystem.hpp"
+# include       "../includes/NetworkSystem.hpp"
 # include	"GuiSystem.hpp"
+# include	"clientMessages.hpp"
 
 const std::string NetworkSystem::name = "NetworkSystem";
 
@@ -11,6 +12,8 @@ NetworkSystem::NetworkSystem(EntityManager &entityManager, MessageBus &messageBu
 {
   loadMessageHandler(ClientMessages::AUTHENTIFICATION,
 		     static_cast<message_handler>(&NetworkSystem::handleAuthentification));
+  loadMessageHandler(ClientMessages::KEY_INPUT_DATA,
+		     static_cast<message_handler>(&NetworkSystem::handleKeyInputData));
 }
 
 NetworkSystem::~NetworkSystem()
@@ -50,6 +53,14 @@ void		NetworkSystem::handleAuthentification(void *messageData)
 {
   std::pair<std::string, unsigned int>	*p =
     static_cast<std::pair<std::string, unsigned int>* >(messageData);
+
+  _client->connectToServer(p->first, p->second);
+  _isAuthentified = true;
+}
+
+void		NetworkSystem::handleKeyInputData(void *messageData)
+{
+  IGui::Key	*key = static_cast<IGui::Key*>(messageData);  
 
   _client->connectToServer(p->first, p->second);
   _isAuthentified = true;

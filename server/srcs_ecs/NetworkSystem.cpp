@@ -6,11 +6,11 @@ const std::string NetworkSystem::name = "NetworkSystem";
 
 NetworkSystem::NetworkSystem(EntityManager &entityManager, MessageBus &messageBus)
   : ASystem(entityManager, messageBus),
-    _client(new RTypeClient()),
+    _clients(),
     _isAuthentified(false)
 {
-  loadMessageHandler(ClientMessages::AUTHENTIFICATION,
-		     static_cast<message_handler>(&NetworkSystem::handleAuthentification));
+  loadMessageHandler(ServerMessages::ADD_CLIENT,
+		     static_cast<message_handler>(&NetworkSystem::handleAddClient));
 }
 
 NetworkSystem::~NetworkSystem()
@@ -18,39 +18,23 @@ NetworkSystem::~NetworkSystem()
 
 void            NetworkSystem::preRoutine(void)
 {
-  static int	ticks = 0;
-
-  if (_isAuthentified)
-    {
-      if (_client->run() != true)
-	{
-	  if (ticks >= 100)
-	    {
-	      _isAuthentified = false;
-	      _messageBus.post(ClientMessages::AUTHENTIFICATION_FAILED, NULL);
-	      ticks = 0;
-	    }
-	  ticks++;
-	}
-      else
-      	_messageBus.post(ClientMessages::AUTHENTIFICATION_SUCCESS, NULL);
-    }
 }
 
 void            NetworkSystem::updateEntity(int entityId)
 {
-  if (_isAuthentified)
-    _client->run();
+  for (auto it : clients)
+    it->run();
 }
 
 void            NetworkSystem::postRoutine(void)
 {}
 
-void		NetworkSystem::handleAuthentification(void *messageData)
+void		NetworkSystem::handleAddClient(void *messageData)
 {
-  std::pair<std::string, unsigned int>	*p =
-    static_cast<std::pair<std::string, unsigned int>* >(messageData);
+  std::pair<std::string, int> *p = static_cast<std::pair<std::string, int> *>(messageData);
 
-  _client->connectToServer(p->first, p->second);
-  _isAuthentified = true;
+  std::cout << p->first << " " << p->second << std::endl;
+  std::shared_ptr<RTypeClient>	newClient = std::make_shared<RTypeClient>(p->first, p->second);
+  _clients.push_back(newClient);
 }
+

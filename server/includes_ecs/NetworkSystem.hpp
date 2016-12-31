@@ -5,6 +5,7 @@
 # include       "RTypeClient.hpp"
 # include       "EntityManager.hpp"
 # include       "MessageBus.hpp"
+# include	"serverMessages.hpp"
 
 class           NetworkSystem : public ASystem
 {
@@ -19,12 +20,11 @@ public:
   virtual void  postRoutine(void);
   virtual void  updateEntity(int entityId);
 
-  void		handleAuthentification(void *MessageData);
+  void		handleAddClient(void *MessageData);
   
 private:
   
-  RTypeClient   *_client;
-  bool		_isAuthentified;
+  std::vector<std::shared_ptr<RTypeClient>>   _clients;
 };
 
 #endif          // !__NETWORK_SYSTEM_HPP__

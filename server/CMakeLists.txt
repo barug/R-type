@@ -29,11 +29,6 @@ set(SOURCES_ECS_SERVER
     ${CORE_GAME_LIB_DIRECTORY}/srcs/BasicMonsterScript.cpp
     ${CORE_GAME_LIB_DIRECTORY}/srcs/HealthSystem.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/server/srcs_ecs/coreGameLib.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/server/srcs_ecs/GuiSystem.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/server/srcs_ecs/SpriteComponent.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/server/srcs_ecs/PlayerInputSystem.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/server/srcs_ecs/PlayerInputComponent.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/server/srcs_ecs/RTypeUI.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/server/srcs_ecs/NetworkSystem.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/server/srcs_ecs/RTypeClient.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/server/srcs_ecs/CommandHandler.cpp
@@ -41,6 +36,7 @@ set(SOURCES_ECS_SERVER
     ${CMAKE_CURRENT_SOURCE_DIR}/server/srcs_ecs/UnixSocket.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/server/srcs_ecs/WinSocket.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/server/srcs_ecs/Message.cpp 
+    ${CMAKE_CURRENT_SOURCE_DIR}/server/srcs_ecs/NetworkComponent.cpp 
   )
 
   add_library(

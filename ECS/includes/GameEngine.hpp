@@ -5,7 +5,7 @@
 // Login   <mikaz3@epitech.net>
 // 
 // Started on  Fri Nov 25 15:08:25 2016 Thomas Billot
-// Last update Tue Dec 27 09:59:52 2016 Thomas Billot
+// Last update Sat Dec 31 12:44:10 2016 Thomas Billot
 //
 
 #ifndef			_GAMEENGINE_HPP_
@@ -30,6 +30,7 @@ public:
   void					loadLib(const std::string &libPath);
   int					run(void);
   void					update(void);
+  void					postImmediateMessage(int messageId, void *data);
   
 private:
 

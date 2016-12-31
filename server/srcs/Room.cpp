@@ -1,8 +1,8 @@
 # include	<iostream>
-
+# include	<sstream>
 # include	"../includes/UnixSocket.hpp"
 # include	"../includes/WinSocket.hpp"
-
+# include       "../includes_ecs/serverMessages.hpp"
 # include	"Room.hpp"
 
 Room::Room(const std::string & name) :
@@ -104,8 +104,9 @@ void	Room::setRun(const bool state)
 
 bool	Room::gameStep()
 {
-  std::cout << "GAME STEP" << std::endl;
-  return true;
+  std::cout << "Engine !" << std::endl;
+  _gameEngine.run();
+  return false;
 }
 
 bool	Room::run()
@@ -123,10 +124,25 @@ bool	Room::run()
 	  const std::shared_ptr<ISocket::Datagram>	data = _socket->readSocket();
 	  std::string					ipPort(data->_ip + ":" + std::to_string(data->_port));
 	  std::unique_ptr<Message>			message = std::make_unique<Message>(*data);
-	  if (_playersGameId.size() != 2)
+	  if (_playersGameId.size() <= 2)
 	    {
 	      Message::Room				*room = (Message::Room *)message->getData();
 	      _playersGameId.emplace(ipPort, room->_name);
+
+	      std::size_t found = ipPort.find(':');
+
+	      std::string ip = ipPort.substr(0, found);
+	      std::cout << ip << std::endl;
+	      
+	      std::string tmpPort = ipPort.substr(found + 1);
+	      std::stringstream ss;
+	      int		port;
+
+	      std::cout << tmpPort << std::endl;
+	      ss << tmpPort;
+	      ss >> port;
+	      std::cout << port << std::endl;
+	      _gameEngine.postImmediateMessage(ServerMessages::ADD_CLIENT, new std::pair<std::string, int>(ip, port));
 	    }
 	  else
 	    {
