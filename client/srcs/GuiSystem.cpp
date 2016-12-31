@@ -3,6 +3,7 @@
 # include "SpriteComponent.hpp"
 # include "PositionComponent.hpp"
 # include "Window.hpp"
+# include "Audio.hpp"
 
 const std::string	GuiSystem::name = "GuiSystem";
 
@@ -12,6 +13,7 @@ GuiSystem::GuiSystem(EntityManager &entityManager,
 		     unsigned int winY)
   : ASystem(entityManager, messageBus),
     _gui(new Window("RType", winX, winY, "./assets/font/breeze.ttf")),
+    _audio(new Audio),
     _rtypeUI(*_gui),
     _ip(),
     _port(),
@@ -23,6 +25,8 @@ GuiSystem::GuiSystem(EntityManager &entityManager,
 {
   loadMessageHandler(ClientMessages::AUTHENTIFICATION_FAILED,
 		     static_cast<message_handler>(&GuiSystem::_handleAuthFailed));
+  _audio->loadMusic("./assets/sound/yasuo.wav");
+  _audio->musicSetLoop(true);
 }
 
 GuiSystem::~GuiSystem()
