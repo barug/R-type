@@ -7,6 +7,7 @@
 enum ServerMessages
   {
     ADD_CLIENT = 12,
+    SOCKET_ROOM = 13,
   };
 
 #endif

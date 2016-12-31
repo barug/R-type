@@ -61,16 +61,19 @@ void			RTypeClient::setGameStarted(bool state)
   _hasGameStarted = state;
 }
 
-bool	RTypeClient::run()
+bool			RTypeClient::tryToAuthenticate()
 {
   if (_networkHandler->getSocket().somethingToRead())
     {
-      _isAuthentified = true;      
-      const std::shared_ptr<ISocket::Datagram>	data = _networkHandler->getSocket().readSocket();
-
+      _isAuthentified = true;
+      std::shared_ptr<ISocket::Datagram>	data;
+      
+      data = _networkHandler->getSocket().readSocket();
+	
       Message*			message = new Message(*data);
 
-      if (_commandHandler->execFuncByOperationCode(this, message) != true)
+      std::cout << "SOMETHING TO READ" << std::endl;
+      if (_commandHandler->execFuncByOperationCode(this, message, 0) != true)
 	return false;
       return true;
     }
@@ -79,6 +82,33 @@ bool	RTypeClient::run()
       if (_askedForAuth)
 	_askedForAuth = false;
       return false;
+    }
+  return true;
+}
+
+bool	RTypeClient::run()
+{
+  if (_networkHandler->getSocketGame().somethingToRead())
+    {
+      std::shared_ptr<ISocket::Datagram>	data;
+      data = _networkHandler->getSocketGame().readSocket();
+      Message*			message = new Message(*data);
+
+      std::cout << "SOMETHING TO READ" << std::endl;
+      if (_commandHandler->execFuncByOperationCode(this, message, 0) != true)
+	return false;
+      return true;
+    }
+  else if (_networkHandler->getSocket().somethingToRead())
+    {
+      std::shared_ptr<ISocket::Datagram>	data;
+      data = _networkHandler->getSocket().readSocket();
+      Message*			message = new Message(*data);
+
+      std::cout << "SOMETHING TO READ" << std::endl;
+      if (_commandHandler->execFuncByOperationCode(this, message, 1) != true)
+	return false;
+      return true;
     }
   return true;
 }

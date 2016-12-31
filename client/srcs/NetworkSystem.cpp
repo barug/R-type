@@ -26,7 +26,7 @@ void            NetworkSystem::preRoutine(void)
 
   if (_isAuthentified)
     {
-      if (_client->run() != true)
+      if (_client->tryToAuthenticate() != true)
 	{
 	  if (ticks >= 100)
 	    {
@@ -43,8 +43,10 @@ void            NetworkSystem::preRoutine(void)
 
 void            NetworkSystem::updateEntity(int entityId)
 {
-  if (_isAuthentified)
-    _client->run();
+  if (_isAuthentified && _gameStarted)
+    {
+      std::cout << "NEED TO UPDATE" << std::endl;
+    }
 }
 
 void            NetworkSystem::postRoutine(void)
@@ -63,7 +65,6 @@ void		NetworkSystem::handleKeyInputData(void *messageData)
 {
   IGui::Key	*key = static_cast<IGui::Key*>(messageData);  
 
-  std::cout << "yay!" << std::endl;
   if (_isAuthentified && _gameStarted)
     {
       std::cout << _client->getNetworkHandler()->getSocketGame().getIp() << std::endl;
