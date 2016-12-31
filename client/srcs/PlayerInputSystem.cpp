@@ -44,6 +44,7 @@ PlayerInputSystem::PlayerInputSystem(EntityManager &entityManager,
   physComp->setSpeedY(0);
   physComp->setAccelerationX(0);
   physComp->setAccelerationY(0);
+  physComp->setCanLeaveScreen(false);
   spriteComp->setPathAnimated("./assets/sprites/r-typesheet42.png");
   spriteComp->setEntityName("PlayerShip");
   spriteComp->setFrames({166/5, 0, 166/5, 17}, 5);
@@ -75,22 +76,23 @@ PlayerInputSystem::PlayerInputSystem(EntityManager &entityManager,
   physComp =
     static_cast<PhysicComponent*>(_entityManager.getComponent(basicMonsterId,
   							      PhysicComponent::name));
-  // ScriptComponent *scriptComp =
-  //   static_cast<ScriptComponent*>(_entityManager.getComponent(basicMonsterId,
-  // 							      ScriptComponent::name));
+  ScriptComponent *scriptComp =
+    static_cast<ScriptComponent*>(_entityManager.getComponent(basicMonsterId,
+  							      ScriptComponent::name));
 
   spriteComp->setPathAnimated("./assets/sprites/r-typesheet17.png");
   spriteComp->setEntityName("BasicMonster");
   spriteComp->setFrames({66, 0, 61, 132}, 8);
   positionComp->setX(1150);
   positionComp->setY(400);
-  physComp->setSpeedX(-5);
-  physComp->setSpeedY(0);
+  physComp->setSpeedX(-2);
+  physComp->setSpeedY(-2);
+  physComp->setCanLeaveScreen(true);
   hitBoxComp->setCircleRadius(20);
   healthComp->setHealth(1);
   healthComp->setDamagePower(-1);
   healthComp->setFaction(HealthComponent::Faction::ENEMIES);
-  // scriptComp->setScript(new BasicMonsterScript(entityManager, basicMonsterId));
+  scriptComp->setScript(new BasicMonsterScript(entityManager, basicMonsterId));
 }
 
 void		PlayerInputSystem::updateEntity(int entityId)

@@ -20,6 +20,8 @@ public:
   virtual const std::string getName();
   void				setSpeedX(float speedX);
   void				setSpeedY(float speedY);
+  void				modifySpeedX(float modifier);
+  void				modifySpeedY(float modifier);
   void				setAccelerationX(float accelerationX);
   void				setAccelerationY(float accelerationY);
   void				setCanLeaveScreen(bool canLeaveScreen);

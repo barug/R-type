@@ -44,7 +44,6 @@ void		EntityManager::addEntityType(const std::string &typeName, const std::vecto
 int				EntityManager::createEntity(const std::string &typeName)
 {
   int typeMask = 0;
-  std::cout << "map size: " << _entityTypes.size() << std::endl;
   try {
     typeMask = _entityTypes.at(typeName);
   } catch (std::exception &e) {
@@ -52,13 +51,13 @@ int				EntityManager::createEntity(const std::string &typeName)
     std::cout << "exception: " << e.what() << std::endl;
   }
 
-  std::cout << "entity mask: " << typeMask << std::endl;
   if (typeMask == -1)
     return (-1);
   for (unsigned int id = 0; id < EntityManager::_maxEntities; id++)
     {
       if (_entities[id] == eState::NONE)
 	{
+	  std::cout << "[new entity] id = " << id << std::endl;
 	  _entities[id] = eState::USED;
 	  _typeOfEntities[id] = typeMask;
 	  _messageBus.post(MessageBus::ENTITY_CREATED, new int(id));

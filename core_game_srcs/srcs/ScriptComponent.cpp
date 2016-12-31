@@ -3,6 +3,9 @@
 
 const std::string	ScriptComponent::name = "ScriptComponent";
 
+ScriptComponent::ScriptComponent()
+{}
+
 const std::string	ScriptComponent::getName()
 {
   return ScriptComponent::name;
