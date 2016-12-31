@@ -25,6 +25,8 @@ GuiSystem::GuiSystem(EntityManager &entityManager,
 {
   loadMessageHandler(ClientMessages::AUTHENTIFICATION_FAILED,
 		     static_cast<message_handler>(&GuiSystem::_handleAuthFailed));
+  loadMessageHandler(ClientMessages::AUTHENTIFICATION_SUCCESS,
+		     static_cast<message_handler>(&GuiSystem::_handleAuthSuccess));
   _audio->loadMusic("./assets/sound/yasuo.wav");
   _audio->musicSetLoop(true);
 }
@@ -122,4 +124,10 @@ void            GuiSystem::_handleLoading(void)
 void		GuiSystem::_handleAuthFailed(void *messageData)
 {
   // _rtypeUI.setContext(RTypeUI::Context::Authentification);
+}
+
+void		GuiSystem::_handleAuthSuccess(void *messageData)
+{
+  std::cout << "DAFUQ" << std::endl;
+  // _rtypeUI.setContext(RTypeUI::Context::Game);
 }

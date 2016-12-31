@@ -162,7 +162,7 @@ void                    RTypeUI::displayAuthentification(std::string *ip, unsign
     }
 }
 
-void                    RTypeUI::displayLoading(void)
+bool                    RTypeUI::displayLoading(void)
 {
   std::string           displayDot;
 
@@ -171,14 +171,15 @@ void                    RTypeUI::displayLoading(void)
       for (unsigned int i = 0; i < _timer->timeLeft() / 100 && i < 3; i++)
         displayDot += ".";
       _gui.setTextureAt("./assets/sprites/background.jpg", 0, 0, 1.);
-      _gui.setTextureAt("./assets/sprites/rtype-logo.png", 380, 40, 1.);
-      _gui.fillRec(0, 0, 1200, 800, 0x000000, 180);
-      _gui.writeAt("loading" + displayDot, (1200/2) - 50, (800/2) - 50, 0x00ff00, 1.2);
+      _gui.setTextureAt("./assets/sprites/rtype-logo.png", 180, 40, 1.);
+      _gui.fillRec(0, 0, 800, 600, 0x000000, 180);
+      _gui.writeAt("loading" + displayDot, (800/2) - 50, (600/2) - 50, 0x00ff00, 1.2);
+      return false;
     }
   else
     {
       _timer->setState(Timer::State::NONE);
-      _context = RTypeUI::Context::WaitingRoom;
+      return true;
     }
 }
 
@@ -187,7 +188,6 @@ void                    RTypeUI::displayWaitingRoom(void)
   _gui.setTextureAt("./assets/sprites/background.jpg", 0, 0, 1.);
   _gui.fillRec(0, 0, 1200, 800, 0x000000, 180);
   _gui.writeAt("Waiting Room", 300, 30, 0x00ff00, 1.2);
-  _context = RTypeUI::Context::Game;
 }
 
 void                    RTypeUI::displayGame(void)

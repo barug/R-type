@@ -30,6 +30,7 @@ class           GuiSystem : public ASystem
   void          _handleLoading(void);
 
   void		_handleAuthFailed(void *messageData);
+  void		_handleAuthSuccess(void *messageData);
 
 public:
   static const std::string	name;

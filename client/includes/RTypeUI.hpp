@@ -29,7 +29,7 @@ public:
 
   void                  displayIntroduction(void);
   void                  displayAuthentification(std::string *ip, unsigned int *port);
-  void                  displayLoading(void);
+  bool                  displayLoading(void);
   void                  displayWaitingRoom(void);
   void                  displayGame(void);
   void                  displayMenu(void);
