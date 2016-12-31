@@ -199,8 +199,8 @@ void                    RTypeUI::displayGame(void)
     firstImageSpaceX = 0;
   if (secondImageSpaceX == 0)
     secondImageSpaceX = 1200;
-  _gui.setTextureAt("./assets/sprites/rtype-space.jpg", firstImageSpaceX-=10, 0, 1.);
-  _gui.setTextureAt("./assets/sprites/rtype-space.jpg", secondImageSpaceX-=10, 0, 1.);
+  _gui.setTextureAt("./assets/sprites/rtype-space.jpg", firstImageSpaceX-=2, 0, 1.);
+  _gui.setTextureAt("./assets/sprites/rtype-space.jpg", secondImageSpaceX-=2, 0, 1.);
 }
 
 void                    RTypeUI::displayMenu(void)
