@@ -38,8 +38,8 @@ PlayerInputSystem::PlayerInputSystem(EntityManager &entityManager,
   PlayerInputComponent *playerComp =
     static_cast<PlayerInputComponent*>(_entityManager.getComponent(playerShipId,
 								   PlayerInputComponent::name));
-  positionComp->setX(10);
-  positionComp->setY(10);
+  positionComp->setX(100);
+  positionComp->setY(400);
   physComp->setSpeedX(0);
   physComp->setSpeedY(0);
   physComp->setAccelerationX(0);
@@ -107,10 +107,15 @@ void		PlayerInputSystem::updateEntity(int entityId)
     static_cast<PositionComponent*>(_entityManager.getComponent(entityId,
 								PositionComponent::name));
 
+  std::cout << "[playerInputSystem update Entity] id = " << entityId << std::endl;
+  
   physComp->setAccelerationX(0);
   physComp->setAccelerationY(0);
   if (_lastKey == IGui::Key::UP)
-    physComp->setSpeedY(physComp->getSpeedY() - 0.5);
+    {
+      std::cout << "up input" << std::endl;
+      physComp->setSpeedY(physComp->getSpeedY() - 0.5);
+    }
   if (_lastKey == IGui::Key::DOWN)
     physComp->setSpeedY(physComp->getSpeedY() + 0.5);
   if (_lastKey == IGui::Key::LEFT)
@@ -170,5 +175,7 @@ void		PlayerInputSystem::handleNewKeyInput(void *messageData)
 {
   IGui::Key	*key = static_cast<IGui::Key*>(messageData);
 
-  _lastKey = *key;
+  std::cout << "[key input message] id = " << *key << std::endl;
+  std::cout << "up id: " << IGui::Key::UP << std::endl;
+    _lastKey = *key;
 }
