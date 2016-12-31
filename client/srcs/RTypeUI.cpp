@@ -7,7 +7,7 @@
 
 RTypeUI::RTypeUI(IGui &gui) : _gui(gui),
                               _timer(new Timer),
-                              _context(RTypeUI::Context::Game)
+                              _context(RTypeUI::Context::Introduction)
 {}
 
 RTypeUI::~RTypeUI()
@@ -171,9 +171,9 @@ bool                    RTypeUI::displayLoading(void)
       for (unsigned int i = 0; i < _timer->timeLeft() / 100 && i < 3; i++)
         displayDot += ".";
       _gui.setTextureAt("./assets/sprites/background.jpg", 0, 0, 1.);
-      _gui.setTextureAt("./assets/sprites/rtype-logo.png", 180, 40, 1.);
-      _gui.fillRec(0, 0, 800, 600, 0x000000, 180);
-      _gui.writeAt("loading" + displayDot, (800/2) - 50, (600/2) - 50, 0x00ff00, 1.2);
+      _gui.setTextureAt("./assets/sprites/rtype-logo.png", 380, 40, 1.);
+      _gui.fillRec(0, 0, 1200, 800, 0x000000, 180);
+      _gui.writeAt("loading" + displayDot, (1200/2) - 50, (800/2) - 50, 0x00ff00, 1.2);
       return false;
     }
   else
