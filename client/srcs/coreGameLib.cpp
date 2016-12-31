@@ -29,9 +29,7 @@ void	loadGameLibData(EntityManager &e, SystemManager &s, MessageBus &m)
   e.addComponentType<SpriteComponent>(SpriteComponent::name);
   e.addComponentType<HitBoxComponent>(HitBoxComponent::name);
   e.addComponentType<HealthComponent>(HealthComponent::name);
-  std::cout << "[loading ScriptComponent]" << std::endl;
   e.addComponentType<ScriptComponent>(ScriptComponent::name);
-  std::cout << "[Script Component Loaded]" << std::endl;
   m.registerValidMessageId(ClientMessages::KEY_INPUT_DATA);
   m.registerValidMessageId(ClientMessages::AUTHENTIFICATION);
   m.registerValidMessageId(ClientMessages::AUTHENTIFICATION_FAILED);
