@@ -60,6 +60,7 @@ PlayerInputSystem::PlayerInputSystem(EntityManager &entityManager,
   healthComp->setDamagePower(0);
   healthComp->setFaction(HealthComponent::Faction::PLAYERS);
   playerComp->setLastFire(std::chrono::system_clock::now());
+
   int basicMonsterId = _entityManager.createEntity("BasicMonster");
   spriteComp =
     static_cast<SpriteComponent*>(_entityManager.getComponent(basicMonsterId,
@@ -107,7 +108,7 @@ void		PlayerInputSystem::updateEntity(int entityId)
     static_cast<PositionComponent*>(_entityManager.getComponent(entityId,
 								PositionComponent::name));
 
-  
+
   physComp->setAccelerationX(0);
   physComp->setAccelerationY(0);
   if (_lastKey == IGui::Key::UP)
@@ -124,7 +125,7 @@ void		PlayerInputSystem::updateEntity(int entityId)
 	std::chrono::system_clock::now();
       std::chrono::time_point<std::chrono::system_clock> lastFire =
 	inputComp->getLastFire();
-      int elapsed = 
+      int elapsed =
 	std::chrono::duration_cast<std::chrono::milliseconds>(now - lastFire).count();
       if (elapsed > 250)
 	{
