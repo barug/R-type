@@ -33,6 +33,7 @@ void	loadGameLibData(EntityManager &e, SystemManager &s, MessageBus &m)
   m.registerValidMessageId(ClientMessages::KEY_INPUT_DATA);
   m.registerValidMessageId(ClientMessages::AUTHENTIFICATION);
   m.registerValidMessageId(ClientMessages::AUTHENTIFICATION_FAILED);
+  m.registerValidMessageId(ClientMessages::AUTHENTIFICATION_SUCCESS);
   m.registerValidMessageId(CoreGameSrcsMessages::COLLISION_DETECTED);
   e.addEntityType("PlayerShip",
 		  {PositionComponent::name,
