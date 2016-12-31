@@ -1,4 +1,3 @@
-
 #include <iostream>
 #include "ASystem.hpp"
 
@@ -22,7 +21,7 @@ void			ASystem::addAffectedComponents(const std::vector<std::string> &affectedCo
     {
       _mask |= _entityManager.getComponentMask(affectedComponent);
     }
-}							
+}
 
 
 const std::string	&ASystem::name() const
@@ -57,6 +56,7 @@ void			ASystem::update()
        it != _affectedEntities.end();
        ++it)
     {
+      std::cout << "Test" << std::endl;
       updateEntity(*it);
     }
   postRoutine();
