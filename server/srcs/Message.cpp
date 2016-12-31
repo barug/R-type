@@ -38,9 +38,9 @@ Message::Message(const ISocket::Datagram& data) :
   std::cout << "Header = [" << _size
 	    << "] [" << _operationCode
 	    << "]" << std::endl;
-  std::cout << "Data = [\n";
-  for (unsigned int i = 0; i < data._lenght; i++)
-    printf("[%c]", data._data[i]);
+  // std::cout << "Data = [\n";
+  // for (unsigned int i = 0; i < data._lenght; i++)
+  //   printf("[%c]", data._data[i]);
   std::cout << "\n] ]" << std::endl;
 }
 
@@ -104,9 +104,9 @@ std::shared_ptr<ISocket::Datagram>	Message::createDatagram()
   std::cout << "Header = [" << header._size
 	    << "] [" << header._opCode
 	    << "]" << std::endl;
-  std::cout << "Data = [\n";
-  for (unsigned int i = 0; i < datagram->_lenght; i++)
-    printf("[%c]", datagram->_data[i]);
+  // std::cout << "Data = [\n";
+  // for (unsigned int i = 0; i < datagram->_lenght; i++)
+  //   printf("[%c]", datagram->_data[i]);
   std::cout <<  "\n] ]" << std::endl;
 
   return datagram;
