@@ -3,6 +3,7 @@
 
 # include       "ASystem.hpp"
 # include       "IGui.hpp"
+# include       "IAudio.hpp"
 # include       "RTypeUI.hpp"
 # include	"clientMessages.hpp"
 
@@ -10,6 +11,7 @@ class           GuiSystem : public ASystem
 {
   // ui
   IGui          *_gui;
+  IAudio        *_audio;
   RTypeUI       _rtypeUI;
 
   // network transition
@@ -28,6 +30,7 @@ class           GuiSystem : public ASystem
   void          _handleLoading(void);
 
   void		_handleAuthFailed(void *messageData);
+  void		_handleAuthSuccess(void *messageData);
 
 public:
   static const std::string	name;
