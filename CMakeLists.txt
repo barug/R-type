@@ -31,3 +31,7 @@ server()
 # build Server
 include(${CMAKE_CURRENT_SOURCE_DIR}/client/CMakeLists.txt)
 client()
+
+# build ecs
+include(${CMAKE_CURRENT_SOURCE_DIR}/ECS/CMakeLists.txt)
+ecs()

@@ -6,7 +6,7 @@ function (client)
   project (client_rtype)
   set(CMAKE_CXX_FLAGS "-Wall -std=c++14 -Wl,-z,defs")
 
-  set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/client/gameLibs)
+  set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/gameLibs)
 
   include_directories(
     ${CMAKE_CURRENT_SOURCE_DIR}/client/includes

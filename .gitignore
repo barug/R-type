@@ -5,3 +5,6 @@ Makefile
 server_rtype
 RType_client
 ECS/dynamicLibs/
+ecs
+server_rtype
+gameLibs/

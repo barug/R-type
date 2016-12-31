@@ -39,6 +39,7 @@ void            NetworkSystem::preRoutine(void)
 
 void            NetworkSystem::updateEntity(int entityId)
 {
+  _client->run();
 }
 
 void            NetworkSystem::postRoutine(void)

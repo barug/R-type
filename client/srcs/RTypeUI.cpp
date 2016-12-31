@@ -92,7 +92,7 @@ void                    RTypeUI::displayAuthentification(std::string *ip, unsign
         ipSet = _gui.getCurrentInputBuffer();
 
       _gui.writeAt(ipSet, (1200/2)-(ipSet.size()*4), 305, 0xffffff, 1.);
-      _gui.writeAt(portSet, 570, 405, 0xffffff, 1.);
+      _gui.writeAt(portSet, (1200/2)-(portSet.size()*4), 405, 0xffffff, 1.);
 
       if (_gui.getKey() == IGui::Key::ENTER)
         {
@@ -131,8 +131,8 @@ void                    RTypeUI::displayAuthentification(std::string *ip, unsign
 
       if (portSet != _gui.getCurrentInputBuffer())
         portSet = _gui.getCurrentInputBuffer();
-      _gui.writeAt(ipSet, 550, 305, 0xffffff, 1.);
-      _gui.writeAt(portSet, (1200/2)-(ipSet.size()*4), 405, 0xffffff, 1.);
+      _gui.writeAt(ipSet, (1200/2)-(ipSet.size()*4), 305, 0xffffff, 1.);
+      _gui.writeAt(portSet, (1200/2)-(portSet.size()*4), 405, 0xffffff, 1.);
 
       if (_gui.getKey() == IGui::Key::ENTER)
         {
