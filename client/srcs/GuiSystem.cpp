@@ -28,6 +28,7 @@ GuiSystem::GuiSystem(EntityManager &entityManager,
   loadMessageHandler(ClientMessages::AUTHENTIFICATION_SUCCESS,
 		     static_cast<message_handler>(&GuiSystem::_handleAuthSuccess));
   _audio->loadMusic("./assets/sound/yasuo.wav");
+  _audio->musicSetVolume(100);
   _audio->musicSetLoop(true);
 }
 
