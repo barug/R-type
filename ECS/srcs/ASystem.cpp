@@ -57,9 +57,7 @@ void			ASystem::update()
        it != _affectedEntities.end();
        ++it)
     {
-      std::cout << "Update =" << *it << std::endl;
       updateEntity(*it);
-      std::cout << "Done update" << std::endl;
     }
   postRoutine();
 }

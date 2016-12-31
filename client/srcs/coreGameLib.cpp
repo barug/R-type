@@ -35,6 +35,7 @@ void	loadGameLibData(EntityManager &e, SystemManager &s, MessageBus &m)
   m.registerValidMessageId(ClientMessages::AUTHENTIFICATION_FAILED);
   m.registerValidMessageId(ClientMessages::AUTHENTIFICATION_SUCCESS);
   m.registerValidMessageId(CoreGameSrcsMessages::COLLISION_DETECTED);
+  m.registerValidMessageId(CoreGameSrcsMessages::ENTITY_DEATH);
   e.addEntityType("PlayerShip",
 		  {PositionComponent::name,
 		      PhysicComponent::name,
@@ -60,7 +61,8 @@ void	loadGameLibData(EntityManager &e, SystemManager &s, MessageBus &m)
 	      {SpriteComponent::name,
 		  PositionComponent::name},
 	      {ClientMessages::AUTHENTIFICATION_FAILED,
-		  ClientMessages::AUTHENTIFICATION_SUCCESS});
+		  ClientMessages::AUTHENTIFICATION_SUCCESS,
+		  CoreGameSrcsMessages::ENTITY_DEATH});
   s.addSystem(std::make_shared<PhysicSystem>(e, m, winX, winY),
 	      PhysicSystem::name,
 	      {PhysicComponent::name,

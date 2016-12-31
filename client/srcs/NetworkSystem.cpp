@@ -17,9 +17,6 @@ NetworkSystem::~NetworkSystem()
 {}
 
 void            NetworkSystem::preRoutine(void)
-{}
-
-void            NetworkSystem::updateEntity(int entityId)
 {
   static int	ticks = 0;
 
@@ -38,6 +35,10 @@ void            NetworkSystem::updateEntity(int entityId)
       else
       	_messageBus.post(ClientMessages::AUTHENTIFICATION_SUCCESS, NULL);
     }
+}
+
+void            NetworkSystem::updateEntity(int entityId)
+{
 }
 
 void            NetworkSystem::postRoutine(void)
