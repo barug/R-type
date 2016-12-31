@@ -27,9 +27,10 @@ public:
   bool		listOfRoom(RTypeServer * server, Client & client, Message * message);
   bool		createRoom(RTypeServer * server, Client & client, Message * message);
   bool		joinRoom(RTypeServer * server, Client & client, Message * message);
+  bool		changePort(RTypeServer * server, Client & client, Message * message);
 
   bool		userJoinedGame(RTypeServer * server, Client & client, Message * message);
-  
+
 private:
 
   void			sendMessage(RTypeServer * server,

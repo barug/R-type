@@ -19,12 +19,14 @@ public :
   explicit CommandHandlerGame();
   ~CommandHandlerGame();
 
-  typedef bool		(CommandHandlerGame::* f)(Room *room, Client &client, Message *message);
+  typedef bool		(CommandHandlerGame::* f)(Room *room, Message *message);
 
-  bool			execFuncByOperationCode(Room *room, Client &client, Message *message);
-  void			sendGameMessage(Room *room, int opCode, void * data = NULL, int size = 0);
+  bool			execFuncByOperationCode(Room *room, Message *message);
+  void			sendGameMessage(Room *room, const std::string & ip ,
+					const int port, const int opCode,
+					void * data = NULL, const int size = 0);
 
-  bool			userJoinedGame(Room *room, Client &client, Message *message);
+  bool			userJoinedGame(Room *room, Message *message);
 private:
 
   std::map<int, f>	_fptr;

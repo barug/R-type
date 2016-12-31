@@ -32,7 +32,7 @@ bool	CommandHandler::execFuncByOperationCode(RTypeClient * client, Message * mes
 }
 
 void				CommandHandler::sendGameMessage(RTypeClient *client,
-							    int opCode,
+								int opCode,
 								void * data,
 								int size)
 {
@@ -43,7 +43,6 @@ void				CommandHandler::sendGameMessage(RTypeClient *client,
   std::string			ip = client->getNetworkHandler()->getSocketGame().getIpServer();
   int				port = client->getNetworkHandler()->getSocketGame().getPortServer();
 
-  std::cout << "IP="  << ip << " port=" << port << std::endl;
   std::shared_ptr< Message >	message = std::make_shared< Message >(opCode, ip, port, data, size);
   client->getNetworkHandler()->getSocketGame().writeSocket(*(message->createDatagram()));
 }
@@ -53,14 +52,13 @@ void				CommandHandler::sendMessage(RTypeClient *client,
 							    void * data,
 							    int size)
 {
-  std::cout << " \033[1;33m[+] Reaction in Game" << ((opCode < 100) ? " 00" : " ");
+  std::cout << " \033[1;33m[+] Reaction " << ((opCode < 100) ? " 00" : " ");
   std::cout << opCode;
   std::cout << " is invoque\033[0m" << std::endl;
 
   std::string			ip = client->getNetworkHandler()->getSocket().getIpServer();
   int				port = client->getNetworkHandler()->getSocket().getPortServer();
 
-  std::cout << "IP="  << ip << " port=" << port << std::endl;
   std::shared_ptr< Message >	message = std::make_shared< Message >(opCode, ip, port, data, size);
   client->getNetworkHandler()->getSocket().writeSocket(*(message->createDatagram()));
 }
@@ -108,11 +106,11 @@ bool		CommandHandler::roomJoined(RTypeClient *client, Message *message, int sock
   Message::Room	*room;
 
   room = (Message::Room *)message->getData();
-  
-  std::cout << "Please connect on the new port :\n\t"
+
+  std::cout << "Please connect to : "
+	    << room->_name << "\nusing the same ip but the port "
 	    << room->_port << std::endl;
-  std::cout << room->_name << std::endl;
-  
+
   client->getNetworkHandler()->setSocketGame(room->_port);
 
   //  Message::Room	tmp = {};
@@ -126,16 +124,22 @@ bool		CommandHandler::roomJoined(RTypeClient *client, Message *message, int sock
   // i = -1;
   // for (auto car : str)
   //   tmp._name[++i] = car;
-  
+
   // ss.clear();
   // ss.write((char*)&tmp, sizeof(tmp));
 
+  std::cout << "Port in sys : " << client->getNetworkHandler()->getSocketGame().getPort()
+	    << std::endl;
+
   const char *oldPort = std::to_string(client->getNetworkHandler()->getSocket().getPort()).c_str();
 
-  this->sendGameMessage(client, 105, (void*)oldPort, (int)std::strlen(oldPort));
+  this->sendGameMessage(client, 109, (void*)oldPort, (int)std::strlen(oldPort));
 
-  const char *newPort =  (std::to_string(client->getNetworkHandler()->getSocketGame().getPort())).c_str();
-  this->sendMessage(client, 105, (void*)newPort, (int)std::strlen(newPort));
+  // std::cout << "Port in game : " << client->getNetworkHandler()->getSocketGame().getPort()
+  //	    << std::endl;
+
+  // const char *newPort =  (std::to_string(client->getNetworkHandler()->getSocketGame().getPort())).c_str();
+  // this->sendMessage(client, 109, (void*)newPort, (int)std::strlen(newPort));
 
   return true;
 }

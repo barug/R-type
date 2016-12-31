@@ -113,7 +113,7 @@ bool	Room::gameStep()
 bool	Room::run()
 {
   bool	run = true;
-  
+
   while (run)
     {
       _locker.lock();
@@ -125,24 +125,8 @@ bool	Room::run()
 	  const std::shared_ptr<ISocket::Datagram>	data = _socket->readSocket();
 	  std::string					ipPort(data->_ip + ":" + std::to_string(data->_port));
 	  std::unique_ptr<Message>			message = std::make_unique<Message>(*data);
-	  if (_playersGameId.size() < 2)
-	    {
-	      Message::Room				*room = (Message::Room *)message->getData();
-	      _playersGameId.emplace(ipPort, room->_name);
 
-	      std::size_t found = ipPort.find(':');
-
-	      std::string ip = ipPort.substr(0, found);
-	      std::cout << ip << std::endl;
-	      
-	      std::string tmpPort = ipPort.substr(found + 1);
-	      std::stringstream ss;
-	      int		port;
-
-	      ss << tmpPort;
-	      ss >> port;
-	      _gameEngine.postImmediateMessage(ServerMessages::ADD_CLIENT, new std::pair<std::string, int>(data->_ip, data->_port));
-	    }
+	  _commandHandler->execFuncByOperationCode(this, (message.get()));
 	}
       if (_playersGameId.size() == 2)
 	{

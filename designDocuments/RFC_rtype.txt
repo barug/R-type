@@ -439,7 +439,7 @@ User Command
 .fi
 104 JoinRoom
 .fi
-105
+105 UserJoinedGame
 .fi
 106
 .fi
