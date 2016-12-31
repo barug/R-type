@@ -60,6 +60,7 @@ void                            SpriteComponent::setEntityName(const std::string
 void                            SpriteComponent::setFrames(const std::vector<unsigned int> &frames,
                                                            const unsigned int nbFrames)
 {
+  _frames.clear();
   for (auto it : frames)
     _frames.push_back(it);
   _nbFrames = nbFrames;
@@ -67,6 +68,7 @@ void                            SpriteComponent::setFrames(const std::vector<uns
 
 void                            SpriteComponent::setFrames(const std::vector<std::vector<unsigned int> > &fullFrames)
 {
+  _fullFrames.clear();
   for (auto it : fullFrames)
     _fullFrames.push_back(it);
   _isFullFrames = true;

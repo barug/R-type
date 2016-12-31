@@ -19,8 +19,18 @@ void				HealthSystem::updateEntity(int entityId)
 
   if (healthComp->getHealth() <= 0)
     {
-      std::cout << "deleting entity" << std::endl;
       _entityManager.deleteEntity(entityId);
+      // if ((_entityManager.getEntityType(entityId) &
+      // 	   _entityManager.getComponentMask(PositionComponent::name))
+      // 	  == _entityManager.getComponentMask(PositionComponent::name))
+      // 	{
+      // 	 PositionComponent		*posComp =
+      // 	    static_cast<PositionComponent*>(_entityManager.getComponent(entityId,
+      // 									PositionComponent::name));
+      // 	  _messageBus.post(CoreGameSrcsMessages::ENTITY_DEATH,
+      // 			   new std::pair<int, int>(posComp->getX(),
+      // 						   posComp->getY()));
+      // 	}
     }
 }
 

@@ -37,7 +37,7 @@ void		EntityManager::addEntityType(const std::string &typeName, const std::vecto
     {
       mask |= getComponentMask(it);
     }
-  std::cout << "new entity type mask" << mask << std::endl;
+  std::cout << "new entity type mask: " << mask << std::endl;
   _entityTypes[typeName] = mask;
 }
 
@@ -81,8 +81,9 @@ int				EntityManager::getEntityType(int entityId)
 int				EntityManager::createComponentMask(const std::string &name)
 {
   static int i = 0;
-
-  _componentMasks.emplace(name, 1 << i++);
+  int	newComponentMask = 1 << i++;
+  std::cout << "new Component Mask: " << newComponentMask << std::endl;
+  _componentMasks.emplace(name, newComponentMask);
   return 1 << i;
 }
 

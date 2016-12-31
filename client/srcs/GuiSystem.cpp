@@ -49,9 +49,11 @@ void            GuiSystem::updateEntity(int entityId)
   if (_rtypeUI.getContext() == RTypeUI::Context::Game)
     {
       SpriteComponent *spriteComponent =
-        static_cast<SpriteComponent*>(_entityManager.getComponent(entityId, "SpriteComponent"));
+        static_cast<SpriteComponent*>(_entityManager.getComponent(entityId,
+								  SpriteComponent::name));
       PositionComponent *positionComponent =
-        static_cast<PositionComponent*>(_entityManager.getComponent(entityId, "PositionComponent"));
+        static_cast<PositionComponent*>(_entityManager.getComponent(entityId,
+								    PositionComponent::name));
 
       auto it = _animationHandler.find(spriteComponent->getEntityName());
       if (it == _animationHandler.end())
