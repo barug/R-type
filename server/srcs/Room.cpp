@@ -104,8 +104,6 @@ void	Room::setRun(const bool state)
 
 bool	Room::gameStep()
 {
-  // shall we do a new object ?
-  // std::cout << "And one more Step" << std::endl;
   return true;
 }
 

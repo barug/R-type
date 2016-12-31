@@ -62,7 +62,8 @@ void	loadGameLibData(EntityManager &e, SystemManager &s, MessageBus &m)
 		  PositionComponent::name},
 	      {ClientMessages::AUTHENTIFICATION_FAILED,
 		  ClientMessages::AUTHENTIFICATION_SUCCESS,
-		  CoreGameSrcsMessages::ENTITY_DEATH});
+		  // CoreGameSrcsMessages::ENTITY_DEATH
+		  });
   s.addSystem(std::make_shared<PhysicSystem>(e, m, winX, winY),
 	      PhysicSystem::name,
 	      {PhysicComponent::name,

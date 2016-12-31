@@ -48,9 +48,15 @@ bool		CommandHandler::logInUser(RTypeServer *server,
   std::cout << " \033[1;32m[+] Action 101 is managed\033[0m" << std::endl;
 
   this->sendMessage(server, 1, client.getIp(), client.getPort());
-  this->listOfRoom(server, client, message);
 
-  return true;
+  std::string	str = server->getRoomManager()->getFirstIdForRoom();
+  
+  if (!str.empty())
+    {
+      std::shared_ptr<Message> pM = std::make_shared<Message>(104, client.getIp(), client.getPort(), (char*) str.c_str(), str.size()); 
+      this->joinRoom(server, client, pM.get());
+      return true;
+    }
 }
 
 bool						CommandHandler::listOfRoom(RTypeServer *server,
@@ -115,104 +121,103 @@ bool						CommandHandler::listOfRoom(RTypeServer *server,
   return true;
 }
 
-bool	CommandHandler::checkId(const std::string & id)
-{
-  for (auto it : id)
-    if ( !(it >= 'a' && it <= 'z') &&
-	 !(it >= 'A' && it <= 'Z') &&
-	 !(it >= '0' && it <= '9') )
-      return false;
-  return true;
-}
+  bool	CommandHandler::checkId(const std::string & id)
+  {
+    for (auto it : id)
+      if ( !(it >= 'a' && it <= 'z') &&
+	   !(it >= 'A' && it <= 'Z') &&
+	   !(it >= '0' && it <= '9') )
+	return false;
+    return true;
+  }
 
-bool		CommandHandler::createRoom(RTypeServer *server,
+  bool		CommandHandler::createRoom(RTypeServer *server,
 					   Client &client,
 					   Message *message)
-{
-  std::cout << " \033[1;32m[+] Action 103 is managed\033[0m" << std::endl;
+  {
+    std::cout << " \033[1;32m[+] Action 103 is managed\033[0m" << std::endl;
 
-  char	*	id;
-  memcpy(&id, (char *)message->getData(), message->getSize());
+    char	*	id;
+    memcpy(&id, (char *)message->getData(), message->getSize());
 
-  std::string	str(id);
-  std::cout << id << std::endl;
+    std::string	str(id);
+    std::cout << id << std::endl;
 
-  if (!this->checkId(str))
-    this->sendMessage(server, 204, client.getIp(), client.getPort());
-  else if (!server->getRoomManager()->getRoomById(id))
-    {
-      if (server->getRoomManager()->getRoomNumber() == MAX_ROOM)
-	this->sendMessage(server, 203, client.getIp(), client.getPort());
-      server->getRoomManager()->createRoom(str);
-      this->sendMessage(server, 3, client.getIp(), client.getPort());
-      this->joinRoom(server, client, message);
-    }
-  else
-    this->sendMessage(server, 205, client.getIp(), client.getPort());
+    if (!this->checkId(str))
+      this->sendMessage(server, 204, client.getIp(), client.getPort());
+    else if (!server->getRoomManager()->getRoomById(id))
+      {
+	if (server->getRoomManager()->getRoomNumber() == MAX_ROOM)
+	  this->sendMessage(server, 203, client.getIp(), client.getPort());
+	server->getRoomManager()->createRoom(str);
+	this->sendMessage(server, 3, client.getIp(), client.getPort());
+	this->joinRoom(server, client, message);
+      }
+    else
+      this->sendMessage(server, 205, client.getIp(), client.getPort());
 
-  return false;
-}
+    return false;
+  }
 
-bool							CommandHandler::joinRoom(RTypeServer *server,
+  bool							CommandHandler::joinRoom(RTypeServer *server,
 										 Client &client,
 										 Message *message)
-{
-  std::cout << " \033[1;32m[+] Action 104 is managed\033[0m" << std::endl;
+  {
+    std::cout << " \033[1;32m[+] Action 104 is managed\033[0m" << std::endl;
 
-  char *						id;
-  memcpy(&id, message->getData(), message->getSize());
+    char *						id = (char *)message->getData();
 
-  std::string						str(id);
-  Room *						room = server->getRoomManager()->getRoomById(str);
+    std::string						str(id);
+    Room *						room = server->getRoomManager()->getRoomById(str);
 
-  if (room)
-    {
-      if (room->getNbPlayers() < 4)
-  	{
-	  room->addPlayer(client);
+    if (room)
+      {
+	if (room->getNbPlayers() < 4)
+	  {
+	    room->addPlayer(client);
 	  
-  	  int						i = -1;
-  	  std::stringstream				ss;
-	  Message::Room				answer = {};
-	  std::vector<Message::Entity>			players;
+	    int						i = -1;
+	    std::stringstream				ss;
+	    Message::Room				answer = {};
+	    std::vector<Message::Entity>			players;
 
-	  for (auto name : room->getName())
-	    answer._name[++i] = name;
+	    for (auto name : room->getName())
+	      answer._name[++i] = name;
       
-	  answer._port = room->getSocket()->getPort();
+	    answer._port = room->getSocket()->getPort();
 
-	  i = -1;
-	  for (auto ip : room->getSocket()->getIp())
-	    answer._ip[++i] = ip;
+	    i = -1;
+	    for (auto ip : room->getSocket()->getIp())
+	      answer._ip[++i] = ip;
 
-	  answer._nbPlayer = room->getNbPlayers();
+	    answer._nbPlayer = room->getNbPlayers();
 
-	  for (auto currentPlayer : room->getPlayers())
-	    {
-	      i = -1;
-	      Message::Entity		player = {};
+	    for (auto currentPlayer : room->getPlayers())
+	      {
+		i = -1;
+		Message::Entity		player = {};
 
-	      for (auto car : currentPlayer.second->getIp())
-		player._name[++i] = car;
-	      player._name[++i] = ':';
-	      for (auto car : std::to_string(currentPlayer.second->getPort()))
-		player._name[++i] = car;
-	      i = -1;
-	      players.push_back(player);
-	    }
-	  ss.write((char *) &answer, sizeof(answer));
+		for (auto car : currentPlayer.second->getIp())
+		  player._name[++i] = car;
+		player._name[++i] = ':';
+		for (auto car : std::to_string(currentPlayer.second->getPort()))
+		  player._name[++i] = car;
+		i = -1;
+		players.push_back(player);
+	      }
+	    ss.write((char *) &answer, sizeof(answer));
 
-	  for (auto it : players)
-	    ss.write((char *) &it, sizeof(it));
+	    for (auto it : players)
+	      ss.write((char *) &it, sizeof(it));
 
-	  this->sendMessage(server, 4, client.getIp(), client.getPort(),
-			    (void *)ss.str().c_str(), ss.str().size());
-  	  return true;
-  	}
-      else
-  	this->sendMessage(server, 202, client.getIp(), client.getPort());
-    }
-  else
-    this->sendMessage(server, 201, client.getIp(), client.getPort());
-  return false;
-}
+	    this->sendMessage(server, 4, client.getIp(), client.getPort(),
+			      (void *)ss.str().c_str(), ss.str().size());
+	    return true;
+	  }
+	else
+	  this->sendMessage(server, 202, client.getIp(), client.getPort());
+      }
+    else
+      this->sendMessage(server, 201, client.getIp(), client.getPort());
+    return false;
+  }
