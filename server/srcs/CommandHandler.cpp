@@ -8,9 +8,10 @@
 
 CommandHandler::CommandHandler() :
   _fptr{ {101, &CommandHandler::logInUser },
-	 {102, &CommandHandler::listOfRoom },
-	 {103, &CommandHandler::createRoom },
-	 {104, &CommandHandler::joinRoom } }
+    {102, &CommandHandler::listOfRoom },
+      {103, &CommandHandler::createRoom },
+	{104, &CommandHandler::joinRoom },
+	  {109, &CommandHandler::changePort } }
 {}
 
 CommandHandler::~CommandHandler()
@@ -50,13 +51,14 @@ bool		CommandHandler::logInUser(RTypeServer *server,
   this->sendMessage(server, 1, client.getIp(), client.getPort());
 
   std::string	str = server->getRoomManager()->getFirstIdForRoom();
-  
+
   if (!str.empty())
     {
-      std::shared_ptr<Message> pM = std::make_shared<Message>(104, client.getIp(), client.getPort(), (char*) str.c_str(), str.size()); 
+      std::shared_ptr<Message> pM = std::make_shared<Message>(104, client.getIp(), client.getPort(), (char*) str.c_str(), str.size());
       this->joinRoom(server, client, pM.get());
       return true;
     }
+  return false;
 }
 
 bool						CommandHandler::listOfRoom(RTypeServer *server,
@@ -70,17 +72,17 @@ bool						CommandHandler::listOfRoom(RTypeServer *server,
   std::vector<Message::Room>			rooms;
   std::vector<Message::Entity>			players;
   std::stringstream				ss;
-  
+
   answer._nbRoom = server->getRoomManager()->getRoomNumber();
   std::cout << "Nbr of Rooms" << answer._nbRoom << std::endl;
   for (auto it : server->getRoomManager()->getGameRooms())
     {
-      int				        i = -1;
+      int					i = -1;
       Message::Room				currentRoom = {};
 
       for (auto name : it.second->getName())
 	currentRoom._name[++i] = name;
-      
+
       currentRoom._port = it.second->getSocket()->getPort();
 
       i = -1;
@@ -89,7 +91,7 @@ bool						CommandHandler::listOfRoom(RTypeServer *server,
 
       currentRoom._nbPlayer = it.second->getNbPlayers();
 
-      
+
       for (auto currentPlayer : it.second->getPlayers())
 	{
 	  i = -1;
@@ -103,9 +105,9 @@ bool						CommandHandler::listOfRoom(RTypeServer *server,
 	  i = -1;
 	  players.push_back(player);
 	}
-      rooms.push_back(currentRoom);      
+      rooms.push_back(currentRoom);
     }
-  
+
   ss.write((char*) &answer, sizeof(answer));
   int	countPlayer = 0;
   int	nbPlayerWrite = 0;
@@ -159,65 +161,70 @@ bool						CommandHandler::listOfRoom(RTypeServer *server,
     return false;
   }
 
-  bool							CommandHandler::joinRoom(RTypeServer *server,
+bool							CommandHandler::joinRoom(RTypeServer *server,
 										 Client &client,
 										 Message *message)
-  {
-    std::cout << " \033[1;32m[+] Action 104 is managed\033[0m" << std::endl;
+{
+  std::cout << " \033[1;32m[+] Action 104 is managed\033[0m" << std::endl;
 
-    char *						id = (char *)message->getData();
+  char *						id = (char *)message->getData();
 
-    std::string						str(id);
-    Room *						room = server->getRoomManager()->getRoomById(str);
+  std::string						str(id);
+  Room *						room = server->getRoomManager()->getRoomById(str);
 
-    if (room)
-      {
-	if (room->getNbPlayers() < 4)
-	  {
-	    room->addPlayer(client);
-	  
-	    int						i = -1;
-	    std::stringstream				ss;
-	    Message::Room				answer = {};
-	    std::vector<Message::Entity>			players;
+  if (room)
+    {
+      if (room->getNbPlayers() < 4)
+	{
+	  room->addPlayer(client);
 
-	    for (auto name : room->getName())
-	      answer._name[++i] = name;
-      
-	    answer._port = room->getSocket()->getPort();
+	  int						i = -1;
+	  std::stringstream				ss;
+	  Message::Room				answer = {};
+	  std::vector<Message::Entity>			players;
 
-	    i = -1;
-	    for (auto ip : room->getSocket()->getIp())
-	      answer._ip[++i] = ip;
+	  for (auto name : room->getName())
+	    answer._name[++i] = name;
 
-	    answer._nbPlayer = room->getNbPlayers();
+	  answer._port = room->getSocket()->getPort();
 
-	    for (auto currentPlayer : room->getPlayers())
-	      {
-		i = -1;
-		Message::Entity		player = {};
+	  i = -1;
+	  for (auto ip : room->getSocket()->getIp())
+	    answer._ip[++i] = ip;
 
-		for (auto car : currentPlayer.second->getIp())
-		  player._name[++i] = car;
-		player._name[++i] = ':';
-		for (auto car : std::to_string(currentPlayer.second->getPort()))
-		  player._name[++i] = car;
-		i = -1;
-		players.push_back(player);
-	      }
-	    ss.write((char *) &answer, sizeof(answer));
+	  answer._nbPlayer = room->getNbPlayers();
 
-	    for (auto it : players)
-	      ss.write((char *) &it, sizeof(it));
+	  for (auto currentPlayer : room->getPlayers())
+	    {
+	      i = -1;
+	      Message::Entity		player = {};
 
-	    this->sendMessage(server, 4, client.getIp(), client.getPort(),
-			      (void *)ss.str().c_str(), ss.str().size());
-	    return true;
-	  }
-	else
-	  this->sendMessage(server, 202, client.getIp(), client.getPort());
-      }
-    else
-      this->sendMessage(server, 201, client.getIp(), client.getPort());
-    return false;
-  }
+	      for (auto car : currentPlayer.second->getIp())
+		player._name[++i] = car;
+	      player._name[++i] = ':';
+	      for (auto car : std::to_string(currentPlayer.second->getPort()))
+		player._name[++i] = car;
+	      i = -1;
+	      players.push_back(player);
+	    }
+	  ss.write((char *) &answer, sizeof(answer));
+
+	  for (auto it : players)
+	    ss.write((char *) &it, sizeof(it));
+
+	  this->sendMessage(server, 4, client.getIp(), client.getPort(),
+			    (void *)ss.str().c_str(), ss.str().size());
+	  return true;
+	}
+      else
+	this->sendMessage(server, 202, client.getIp(), client.getPort());
+    }
+  else
+    this->sendMessage(server, 201, client.getIp(), client.getPort());
+  return false;
+}
+
+bool		CommandHandler::changePort(RTypeServer * server, Client & client, Message * message)
+{
+  return false;
+}

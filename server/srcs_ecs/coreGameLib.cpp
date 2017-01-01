@@ -28,7 +28,8 @@ void	loadGameLibData(EntityManager &e, SystemManager &s, MessageBus &m)
   e.addComponentType<NetworkComponent>(NetworkComponent::name);
   m.registerValidMessageId(CoreGameSrcsMessages::COLLISION_DETECTED);
   m.registerValidMessageId(ServerMessages::ADD_CLIENT);
-    e.addEntityType("PlayerShip",
+  m.registerValidMessageId(ServerMessages::SOCKET_ROOM);
+  e.addEntityType("PlayerShip",
 		  {PositionComponent::name,
 		      PhysicComponent::name,
 		      PlayerInputComponent::name,
@@ -60,7 +61,8 @@ void	loadGameLibData(EntityManager &e, SystemManager &s, MessageBus &m)
   s.addSystem(std::make_shared<NetworkSystem>(e, m),
   	      NetworkSystem::name,
   	      {NetworkComponent::name},
-  	      {ServerMessages::ADD_CLIENT});
+  	      {ServerMessages::ADD_CLIENT,
+		  ServerMessages::SOCKET_ROOM});
   std::cout << "After Network" << std::endl;
   s.addSystem(std::make_shared<CollisionSystem>(e, m),
   	      CollisionSystem::name,

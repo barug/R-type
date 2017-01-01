@@ -18,22 +18,24 @@ public:
   explicit CommandHandler();
   ~CommandHandler();
 
-  typedef bool		(CommandHandler::* f)(RTypeClient * client, Message * message);
+  typedef bool		(CommandHandler::* f)(RTypeClient * client, Message * message, int sock);
 
-  bool			execFuncByOperationCode(RTypeClient * client, Message * message);
+  bool			execFuncByOperationCode(RTypeClient * client, Message * message, int sock);
+
   void			sendGameMessage(RTypeClient *client, int opCode, void * data = NULL, int size = 0);
+  void			sendMessage(RTypeClient *client, int opCode, void * data = NULL, int size = 0);
 
-  bool			userLoggedIn(RTypeClient * client, Message * message);
-  bool			listOfRoom(RTypeClient * client, Message * message);
-  bool			roomCreated(RTypeClient * client, Message * message);
-  bool			roomJoined(RTypeClient * client, Message * message);
-  bool			gameStarted(RTypeClient * client, Message * message);
+  bool			userLoggedIn(RTypeClient * client, Message * message, int sock);
+  bool			listOfRoom(RTypeClient * client, Message * message, int sock);
+  bool			roomCreated(RTypeClient * client, Message * message, int sock);
+  bool			roomJoined(RTypeClient * client, Message * message, int sock);
+  bool			gameStarted(RTypeClient * client, Message * message, int sock);
 
-  bool			roomDontExist(RTypeClient * client, Message * message);
-  bool			numberPlayerMax(RTypeClient * client, Message * message);
-  bool			maxRoom(RTypeClient * client, Message * message);
-  bool			illegaleId(RTypeClient * client, Message * message);
-  bool			roomExist(RTypeClient * client, Message * message);
+  bool			roomDontExist(RTypeClient * client, Message * message, int sock);
+  bool			numberPlayerMax(RTypeClient * client, Message * message, int sock);
+  bool			maxRoom(RTypeClient * client, Message * message, int sock);
+  bool			illegaleId(RTypeClient * client, Message * message, int sock);
+  bool			roomExist(RTypeClient * client, Message * message, int sock);
 
 private:
 

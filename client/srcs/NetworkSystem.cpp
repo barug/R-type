@@ -26,7 +26,7 @@ void            NetworkSystem::preRoutine(void)
 
   if (_isAuthentified)
     {
-      if (_client->run() != true)
+      if (_client->tryToAuthenticate() != true)
 	{
 	  if (ticks >= 100)
 	    {
@@ -43,8 +43,10 @@ void            NetworkSystem::preRoutine(void)
 
 void            NetworkSystem::updateEntity(int entityId)
 {
-  if (_isAuthentified)
-    _client->run();
+  if (_isAuthentified && _gameStarted)
+    {
+      std::cout << "NEED TO UPDATE" << std::endl;
+    }
 }
 
 void            NetworkSystem::postRoutine(void)

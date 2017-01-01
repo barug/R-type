@@ -22,19 +22,19 @@ CommandHandler::CommandHandler() :
 CommandHandler::~CommandHandler()
 {}
 
-bool	CommandHandler::execFuncByOperationCode(RTypeClient * client, Message * message)
+bool	CommandHandler::execFuncByOperationCode(RTypeClient * client, Message * message, int sock)
 {
   auto	it = _fptr.find(message->getOperationCode());
 
   if (it == _fptr.end())
     return false;
-  return appelDeFonctionMembre(*this, it->second)(client, message);
+  return appelDeFonctionMembre(*this, it->second)(client, message, sock);
 }
 
 void				CommandHandler::sendGameMessage(RTypeClient *client,
-							    int opCode,
-							    void * data,
-							    int size)
+								int opCode,
+								void * data,
+								int size)
 {
   std::cout << " \033[1;33m[+] Reaction in Game" << ((opCode < 100) ? " 00" : " ");
   std::cout << opCode;
@@ -43,19 +43,34 @@ void				CommandHandler::sendGameMessage(RTypeClient *client,
   std::string			ip = client->getNetworkHandler()->getSocketGame().getIpServer();
   int				port = client->getNetworkHandler()->getSocketGame().getPortServer();
 
-  std::cout << "IP="  << ip << " port=" << port << std::endl;
   std::shared_ptr< Message >	message = std::make_shared< Message >(opCode, ip, port, data, size);
   client->getNetworkHandler()->getSocketGame().writeSocket(*(message->createDatagram()));
 }
 
-bool	CommandHandler::userLoggedIn(RTypeClient *, Message *message)
+void				CommandHandler::sendMessage(RTypeClient *client,
+							    int opCode,
+							    void * data,
+							    int size)
+{
+  std::cout << " \033[1;33m[+] Reaction " << ((opCode < 100) ? " 00" : " ");
+  std::cout << opCode;
+  std::cout << " is invoque\033[0m" << std::endl;
+
+  std::string			ip = client->getNetworkHandler()->getSocket().getIpServer();
+  int				port = client->getNetworkHandler()->getSocket().getPortServer();
+
+  std::shared_ptr< Message >	message = std::make_shared< Message >(opCode, ip, port, data, size);
+  client->getNetworkHandler()->getSocket().writeSocket(*(message->createDatagram()));
+}
+
+bool	CommandHandler::userLoggedIn(RTypeClient *, Message *message, int sock)
 {
   std::cout << " \033[1;32m[+] Action 001 is managed\033[0m" << std::endl;
 
   return true;
 }
 
-bool			CommandHandler::listOfRoom(RTypeClient *client, Message *message)
+bool			CommandHandler::listOfRoom(RTypeClient *client, Message *message, int sock)
 {
   std::cout << " \033[1;32m[+] Action 002 is managed\033[0m" << std::endl;
 
@@ -75,7 +90,7 @@ bool			CommandHandler::listOfRoom(RTypeClient *client, Message *message)
   return true;
 }
 
-bool	CommandHandler::roomCreated(RTypeClient *client, Message *message)
+bool	CommandHandler::roomCreated(RTypeClient *client, Message *message, int sock)
 {
   std::cout << " \033[1;32m[+] Action 003 is managed\033[0m" << std::endl;
 
@@ -84,40 +99,52 @@ bool	CommandHandler::roomCreated(RTypeClient *client, Message *message)
   return true;
 }
 
-bool		CommandHandler::roomJoined(RTypeClient *client, Message *message)
+bool		CommandHandler::roomJoined(RTypeClient *client, Message *message, int sock)
 {
   std::cout << " \033[1;32m[+] Action 004 is managed\033[0m" << std::endl;
 
   Message::Room	*room;
 
   room = (Message::Room *)message->getData();
-  
-  std::cout << "Please connect on the new port :\n\t"
+
+  std::cout << "Please connect to : "
+	    << room->_name << "\nusing the same ip but the port "
 	    << room->_port << std::endl;
-  std::cout << room->_name << std::endl;
+
   client->getNetworkHandler()->setSocketGame(room->_port);
 
-  Message::Room	tmp = {};
+  //  Message::Room	tmp = {};
 
-  std::stringstream	ss;
+  //  std::stringstream	ss;
 
-  int i = room->_nbPlayer - 1;
+  // int i = room->_nbPlayer - 1;
 
-  std::string str(room->_players[i]._name);
+  //  std::string str(room->_players[i]._name);
 
-  i = -1;
-  for (auto car : str)
-    tmp._name[++i] = car;
-  
-  ss.clear();
-  ss.write((char*)&tmp, sizeof(tmp));
+  // i = -1;
+  // for (auto car : str)
+  //   tmp._name[++i] = car;
 
-  this->sendGameMessage(client, 105, (char*)&tmp, sizeof(tmp));
+  // ss.clear();
+  // ss.write((char*)&tmp, sizeof(tmp));
+
+  std::cout << "Port in sys : " << client->getNetworkHandler()->getSocketGame().getPort()
+	    << std::endl;
+
+  const char *oldPort = std::to_string(client->getNetworkHandler()->getSocket().getPort()).c_str();
+
+  this->sendGameMessage(client, 109, (void*)oldPort, (int)std::strlen(oldPort));
+
+  // std::cout << "Port in game : " << client->getNetworkHandler()->getSocketGame().getPort()
+  //	    << std::endl;
+
+  // const char *newPort =  (std::to_string(client->getNetworkHandler()->getSocketGame().getPort())).c_str();
+  // this->sendMessage(client, 109, (void*)newPort, (int)std::strlen(newPort));
 
   return true;
 }
 
-bool	CommandHandler::roomDontExist(RTypeClient *client, Message *message)
+bool	CommandHandler::roomDontExist(RTypeClient *client, Message *message, int sock)
 {
   std::cout << " \033[1;31m[+] Action 201 is managed\033[0m" << std::endl;
 
@@ -128,7 +155,7 @@ bool	CommandHandler::roomDontExist(RTypeClient *client, Message *message)
   return true;
 }
 
-bool	CommandHandler::numberPlayerMax(RTypeClient *client, Message *message)
+bool	CommandHandler::numberPlayerMax(RTypeClient *client, Message *message, int sock)
 {
   std::cout << " \033[1;31m[+] Action 202 is managed\033[0m" << std::endl;
 
@@ -139,7 +166,7 @@ bool	CommandHandler::numberPlayerMax(RTypeClient *client, Message *message)
   return true;
 }
 
-bool	CommandHandler::maxRoom(RTypeClient *client, Message *message)
+bool	CommandHandler::maxRoom(RTypeClient *client, Message *message, int sock)
 {
   std::cout << " \033[1;31m[+] Action 203 is managed\033[0m" << std::endl;
 
@@ -150,7 +177,7 @@ bool	CommandHandler::maxRoom(RTypeClient *client, Message *message)
   return true;
 }
 
-bool	CommandHandler::illegaleId(RTypeClient *client, Message *message)
+bool	CommandHandler::illegaleId(RTypeClient *client, Message *message, int sock)
 {
   std::cout << " \033[1;31m[+] Action 204 is managed\033[0m" << std::endl;
 
@@ -161,7 +188,7 @@ bool	CommandHandler::illegaleId(RTypeClient *client, Message *message)
   return true;
 }
 
-bool	CommandHandler::roomExist(RTypeClient *client, Message *message)
+bool	CommandHandler::roomExist(RTypeClient *client, Message *message, int sock)
 {
   std::cout << " \033[1;31m[+] Action 203 is managed\033[0m" << std::endl;
 
@@ -172,7 +199,7 @@ bool	CommandHandler::roomExist(RTypeClient *client, Message *message)
   return true;
 }
 
-bool	CommandHandler::gameStarted(RTypeClient *client, Message *message)
+bool	CommandHandler::gameStarted(RTypeClient *client, Message *message, int sock)
 {
   std::cout << " \033[1;31m[+] Action 005 is managed\033[0m" << std::endl;
 

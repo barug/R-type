@@ -21,7 +21,8 @@ Room::Room(const std::string & name) :
   _locker(),
   _thread(std::thread(&Room::run, this)),
   _run(true)
-{}
+{
+}
 
 Room::~Room()
 {
@@ -112,7 +113,7 @@ bool	Room::gameStep()
 bool	Room::run()
 {
   bool	run = true;
-  
+
   while (run)
     {
       _locker.lock();
@@ -124,37 +125,17 @@ bool	Room::run()
 	  const std::shared_ptr<ISocket::Datagram>	data = _socket->readSocket();
 	  std::string					ipPort(data->_ip + ":" + std::to_string(data->_port));
 	  std::unique_ptr<Message>			message = std::make_unique<Message>(*data);
-	  if (_playersGameId.size() <= 2)
-	    {
-	      Message::Room				*room = (Message::Room *)message->getData();
-	      _playersGameId.emplace(ipPort, room->_name);
 
-	      std::size_t found = ipPort.find(':');
-
-	      std::string ip = ipPort.substr(0, found);
-	      std::cout << ip << std::endl;
-	      
-	      std::string tmpPort = ipPort.substr(found + 1);
-	      std::stringstream ss;
-	      int		port;
-
-	      std::cout << tmpPort << std::endl;
-	      ss << tmpPort;
-	      ss >> port;
-	      std::cout << port << std::endl;
-	      _gameEngine.postImmediateMessage(ServerMessages::ADD_CLIENT, new std::pair<std::string, int>(ip, port));
-	    }
-	  else
-	    {
-	      std::string realId = _playersGameId[ipPort];
-
-	      Client &client = *_players[realId];
-	      std::cout << " [+] Game Cmd " << std::endl;
-	      _commandHandler->execFuncByOperationCode(this, client, message.get());
-	    }
+	  _commandHandler->execFuncByOperationCode(this, (message.get()));
 	}
-      if (_nbPlayers >= 2)
-	this->gameStep();
+      if (_playersGameId.size() == 2)
+	{
+	  std::cout << _socket->getIp() << std::endl;
+	  std::cout << _socket->getPort() << std::endl;
+	  std::cout << "ImmediateMessageCall" << std::endl;
+	  _gameEngine.postImmediateMessage(ServerMessages::SOCKET_ROOM, new std::pair<std::string, int>(_socket->getIp(), _socket->getPort()));
+	  this->gameStep();
+	}
     }
   return true;
 }

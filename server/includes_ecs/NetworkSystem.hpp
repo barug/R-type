@@ -21,9 +21,13 @@ public:
   virtual void  updateEntity(int entityId);
 
   void		handleAddClient(void *MessageData);
+  void		handleSetSocketRoom(void *MessageData);
+
+  void		setSocketRoom(std::shared_ptr<ISocket> socketRoom);
   
 private:
-  
+
+  std::shared_ptr<ISocket>		     _socketRoom;
   std::vector<std::pair<std::string, int>>   _clients;
   bool					     _hasGameStarted;
 };

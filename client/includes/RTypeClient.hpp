@@ -20,6 +20,7 @@ public :
   NetworkHandler *			getNetworkHandler() const;
   void					setNetworkHandler(std::shared_ptr<NetworkHandler> &ptr);
   bool					connectToServer(const std::string &ip, const int port);
+  bool					tryToAuthenticate();
   bool					run();
   void					setGameStarted(bool state);
   
