@@ -25,8 +25,8 @@ set (SFML_DIRECTORY ./mSFML)
 set (CORE_GAME_LIB_DIRECTORY ./core_game_srcs)
 
 # build Client
-include(${CMAKE_CURRENT_SOURCE_DIR}/server/CMakeLists.txt)
-server()
+# include(${CMAKE_CURRENT_SOURCE_DIR}/server/CMakeLists.txt)
+# server()
 
 # build Server
 include(${CMAKE_CURRENT_SOURCE_DIR}/client/CMakeLists.txt)

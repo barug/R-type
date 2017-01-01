@@ -63,7 +63,6 @@ void		NetworkSystem::handleKeyInputData(void *messageData)
 {
   IGui::Key	*key = static_cast<IGui::Key*>(messageData);  
 
-  std::cout << "yay!" << std::endl;
   if (_isAuthentified && _gameStarted)
     {
       std::cout << _client->getNetworkHandler()->getSocketGame().getIp() << std::endl;

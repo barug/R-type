@@ -1,5 +1,6 @@
 
 #include "ScriptComponent.hpp"
+#include "MonsterSpawnScript.hpp"
 
 const std::string	ScriptComponent::name = "ScriptComponent";
 

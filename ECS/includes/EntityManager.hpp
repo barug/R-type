@@ -17,6 +17,7 @@
 # include				<memory>
 # include				<type_traits>
 # include				<stdexcept>
+# include				<stdarg.h>
 # include				"IComponent.hpp"
 # include				"MessageBus.hpp"
 
@@ -25,7 +26,11 @@ class MessageBus;
 class					EntityManager
 { 
 
-public:  
+public:
+
+  typedef void	(*EntityInitialiser)(EntityManager &entityManager,
+				     int entityId,
+				     va_list args);
 
   typedef enum
     {
@@ -61,9 +66,11 @@ public:
   int					getComponentMask(const std::string &name);
   IComponent				*getComponent(int entityId,
 						      const std::string &componentType);
-  
-  void					addEntityType(const std::string &typeName, const std::vector<std::string> &components);
-  int					createEntity(const std::string &typeName);
+  void			addEntityType(const std::string &typeName,
+				      const std::vector<std::string> &components,
+				      EntityInitialiser entityInitialiser);
+  int					createEntity(const std::string &typeName,
+						     ...);
   void					deleteEntity(int id);
   int					getEntityType(int entityId);
   std::shared_ptr<std::vector<IComponent*> > getComponentsById(int entity) const;
@@ -78,6 +85,7 @@ private:
   std::array<int, _maxEntities>		_entities;
   std::array<int, _maxEntities>		_typeOfEntities;
   std::map<std::string, int>		_entityTypes;
+  std::map<std::string, EntityInitialiser>	_entityInitialisers;
   std::map<std::string, int>		_componentMasks;
   std::map<std::string, std::shared_ptr<component_pool> >  _components;
 };

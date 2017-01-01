@@ -37,6 +37,8 @@ function (client)
     ${CORE_GAME_LIB_DIRECTORY}/srcs/ScriptSystem.cpp
     ${CORE_GAME_LIB_DIRECTORY}/srcs/BasicMonsterScript.cpp
     ${CORE_GAME_LIB_DIRECTORY}/srcs/HealthSystem.cpp
+    ${CORE_GAME_LIB_DIRECTORY}/srcs/MonsterSpawnScript.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/client/srcs/entityInitialiser.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/client/srcs/coreGameLib.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/client/srcs/GuiSystem.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/client/srcs/SpriteComponent.cpp

@@ -16,6 +16,7 @@
 #include "clientMessages.hpp"
 #include "ScriptComponent.hpp"
 #include "ScriptSystem.hpp"
+#include "entityInitialiser.hpp"
 
 void	loadGameLibData(EntityManager &e, SystemManager &s, MessageBus &m)
 {
@@ -42,20 +43,26 @@ void	loadGameLibData(EntityManager &e, SystemManager &s, MessageBus &m)
 		      PlayerInputComponent::name,
 		      SpriteComponent::name,
 		      HitBoxComponent::name,
-		      HealthComponent::name});
+		      HealthComponent::name},
+		  initializePlayerShip);
   e.addEntityType("BasicMonster",
 		  {PositionComponent::name,
 		      PhysicComponent::name,
 		      SpriteComponent::name,
 		      HitBoxComponent::name,
 		      HealthComponent::name,
-		      ScriptComponent::name});
-  e.addEntityType("playerBasicProjectile",
+		      ScriptComponent::name},
+		  initializeBasicMonster);
+  e.addEntityType("basicProjectile",
 		  {PositionComponent::name,
 		      PhysicComponent::name,
 		      SpriteComponent::name,
 		      HitBoxComponent::name,
-		      HealthComponent::name});
+		      HealthComponent::name},
+		  initializeBasicProjectile);
+  e.addEntityType("MonsterSpawnScript",
+		  {ScriptComponent::name},
+		  initializeMonsterSpawnScript);
   s.addSystem(std::make_shared<GuiSystem>(e, m, winX, winY),
 	      GuiSystem::name,
 	      {SpriteComponent::name,

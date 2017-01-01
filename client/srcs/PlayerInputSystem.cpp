@@ -17,82 +17,7 @@ PlayerInputSystem::PlayerInputSystem(EntityManager &entityManager,
 {
   loadMessageHandler(ClientMessages::KEY_INPUT_DATA,
   		     static_cast<message_handler>(&PlayerInputSystem::handleNewKeyInput));
-  int playerShipId = _entityManager.createEntity("PlayerShip");
-
-  PhysicComponent *physComp =
-    static_cast<PhysicComponent*>(_entityManager.getComponent(playerShipId,
-  							      PhysicComponent::name));
-  SpriteComponent *spriteComp =
-    static_cast<SpriteComponent*>(_entityManager.getComponent(playerShipId,
-  							      SpriteComponent::name));
-  PositionComponent *positionComp =
-    static_cast<PositionComponent*>(_entityManager.getComponent(playerShipId,
-								PositionComponent::name));
-  HitBoxComponent *hitBoxComp =
-    static_cast<HitBoxComponent*>(_entityManager.getComponent(playerShipId,
-  							      HitBoxComponent::name));
-  HealthComponent *healthComp =
-    static_cast<HealthComponent*>(_entityManager.getComponent(playerShipId,
-							      HealthComponent::name));
-  PlayerInputComponent *playerComp =
-    static_cast<PlayerInputComponent*>(_entityManager.getComponent(playerShipId,
-								   PlayerInputComponent::name));
-  positionComp->setX(100);
-  positionComp->setY(400);
-  physComp->setSpeedX(0);
-  physComp->setSpeedY(0);
-  physComp->setAccelerationX(0);
-  physComp->setAccelerationY(0);
-  physComp->setCanLeaveScreen(false);
-  spriteComp->setPathAnimated("./assets/sprites/r-typesheet42.png");
-  spriteComp->setEntityName("PlayerShip");
-  spriteComp->setFrames({166/5, 0, 166/5, 17}, 5);
-  // ou
-  // spriteComp->setFrames({
-  //     {166/5, 0, 166/5, 17},
-  //       {(166/5)*2, 0, 166/5, 17},
-  //         {(166/5)*3, 0, 166/5, 17},
-  //           {(166/5)*4, 0, 166/5, 17},
-  //             {(166/5)*5, 0, 166/5, 17}}
-  //   );
-  healthComp->setHealth(1);
-  healthComp->setDamagePower(0);
-  healthComp->setFaction(HealthComponent::Faction::PLAYERS);
-  playerComp->setLastFire(std::chrono::system_clock::now());
-
-  int basicMonsterId = _entityManager.createEntity("BasicMonster");
-  spriteComp =
-    static_cast<SpriteComponent*>(_entityManager.getComponent(basicMonsterId,
-  							      SpriteComponent::name));
-  positionComp =
-    static_cast<PositionComponent*>(_entityManager.getComponent(basicMonsterId,
-        							PositionComponent::name));
-  hitBoxComp =
-    static_cast<HitBoxComponent*>(_entityManager.getComponent(basicMonsterId,
-  							      HitBoxComponent::name));
-  healthComp =
-    static_cast<HealthComponent*>(_entityManager.getComponent(basicMonsterId,
-							      HealthComponent::name));
-  physComp =
-    static_cast<PhysicComponent*>(_entityManager.getComponent(basicMonsterId,
-  							      PhysicComponent::name));
-  ScriptComponent *scriptComp =
-    static_cast<ScriptComponent*>(_entityManager.getComponent(basicMonsterId,
-  							      ScriptComponent::name));
-
-  spriteComp->setPathAnimated("./assets/sprites/r-typesheet17.png");
-  spriteComp->setEntityName("BasicMonster");
-  spriteComp->setFrames({66, 0, 61, 132}, 8);
-  positionComp->setX(1150);
-  positionComp->setY(400);
-  physComp->setSpeedX(-2);
-  physComp->setSpeedY(-2);
-  physComp->setCanLeaveScreen(true);
-  hitBoxComp->setCircleRadius(20);
-  healthComp->setHealth(1);
-  healthComp->setDamagePower(-1);
-  healthComp->setFaction(HealthComponent::Faction::ENEMIES);
-  scriptComp->setScript(new BasicMonsterScript(entityManager, basicMonsterId));
+  _entityManager.createEntity("PlayerShip", 100, 400);
 }
 
 void		PlayerInputSystem::updateEntity(int entityId)
@@ -128,34 +53,17 @@ void		PlayerInputSystem::updateEntity(int entityId)
       if (elapsed > 250)
 	{
 	  inputComp->setLastFire(now);
-	  int projectileId = _entityManager.createEntity("playerBasicProjectile");
-	  PositionComponent *projectilePosComp =
-	    static_cast<PositionComponent*>(_entityManager.getComponent(projectileId,
-									PositionComponent::name));
-	  PhysicComponent *projectilePhysComp =
-	    static_cast<PhysicComponent*>(_entityManager.getComponent(projectileId,
-								      PhysicComponent::name));
-	  HitBoxComponent *projectileHitBoxComp =
-	    static_cast<HitBoxComponent*>(_entityManager.getComponent(projectileId,
-								      HitBoxComponent::name));
-	  SpriteComponent *projectileSpriteComp =
-	    static_cast<SpriteComponent*>(_entityManager.getComponent(projectileId,
-								      SpriteComponent::name));
-	  HealthComponent *projectileHealthComp =
-	    static_cast<HealthComponent*>(_entityManager.getComponent(projectileId,
-								      HealthComponent::name));
-	  projectilePosComp->setX(playerPosComp->getX() + 20);
-	  projectilePosComp->setY(playerPosComp->getY());
-	  projectilePhysComp->setSpeedX(15);
-	  projectilePhysComp->setSpeedY(0);
-	  projectilePhysComp->setCanLeaveScreen(true);
-	  projectileHitBoxComp->setCircleRadius(10);
-	  projectileSpriteComp->setPathAnimated("./assets/sprites/r-typesheet3.png");
-	  projectileSpriteComp->setEntityName("playerBasicProjectile");
-	  projectileSpriteComp->setFrames({208/12, 0, 208/12, 18}, 12);
-	  projectileHealthComp->setHealth(1);
-	  projectileHealthComp->setDamagePower(-1);
-	  projectileHealthComp->setFaction(HealthComponent::Faction::PLAYERS);
+	  _entityManager.createEntity("basicProjectile",
+				      playerPosComp->getX() + 20,
+				      playerPosComp->getY(),
+				      15,
+				      std::vector<unsigned int>({208/12,
+					    0,
+					    208/12,
+					    18}).data(),
+				      12,
+				      HealthComponent::Faction::PLAYERS,
+				      "./assets/sprites/r-typesheet3.png");
 	}
     }
 }

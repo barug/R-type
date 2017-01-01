@@ -28,22 +28,29 @@ void	loadGameLibData(EntityManager &e, SystemManager &s, MessageBus &m)
   e.addComponentType<NetworkComponent>(NetworkComponent::name);
   m.registerValidMessageId(CoreGameSrcsMessages::COLLISION_DETECTED);
   m.registerValidMessageId(ServerMessages::ADD_CLIENT);
-  e.addEntityType("PlayerShip",
-  		  {PositionComponent::name,
-  		      PhysicComponent::name,
-  		      HitBoxComponent::name,
-  		      HealthComponent::name});
+    e.addEntityType("PlayerShip",
+		  {PositionComponent::name,
+		      PhysicComponent::name,
+		      PlayerInputComponent::name,
+		      SpriteComponent::name,
+		      HitBoxComponent::name,
+		      HealthComponent::name},
+		  initializePlayerShip);
   e.addEntityType("BasicMonster",
-  		  {PositionComponent::name,
-  		      PhysicComponent::name,
-  		      HitBoxComponent::name,
-  		      HealthComponent::name,
-  		      ScriptComponent::name});
+		  {PositionComponent::name,
+		      PhysicComponent::name,
+		      SpriteComponent::name,
+		      HitBoxComponent::name,
+		      HealthComponent::name,
+		      ScriptComponent::name},
+		  initializeBasicMonster);
   e.addEntityType("playerBasicProjectile",
-  		  {PositionComponent::name,
-  		      PhysicComponent::name,
-  		      HitBoxComponent::name,
-  		      HealthComponent::name});
+		  {PositionComponent::name,
+		      PhysicComponent::name,
+		      SpriteComponent::name,
+		      HitBoxComponent::name,
+		      HealthComponent::name},
+		  initializePlayerBasicProjectile);
   s.addSystem(std::make_shared<PhysicSystem>(e, m, winX, winY),
   	      PhysicSystem::name,
   	      {PhysicComponent::name,

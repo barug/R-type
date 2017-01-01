@@ -29,7 +29,9 @@ EntityManager::~EntityManager()
   std::cout << "really destroying entity Manager!!!!!!!!" << std::endl;
 }
 
-void		EntityManager::addEntityType(const std::string &typeName, const std::vector<std::string> &components)
+void		EntityManager::addEntityType(const std::string &typeName,
+					     const std::vector<std::string> &components,
+					     EntityInitialiser entityInitialiser)
 {
   int		mask = 0;
   
@@ -39,11 +41,14 @@ void		EntityManager::addEntityType(const std::string &typeName, const std::vecto
     }
   std::cout << "new entity type mask: " << mask << std::endl;
   _entityTypes[typeName] = mask;
+  _entityInitialisers[typeName] = entityInitialiser;
 }
 
-int				EntityManager::createEntity(const std::string &typeName)
+int				EntityManager::createEntity(const std::string &typeName,
+							    ...)
 {
   int typeMask = 0;
+
   try {
     typeMask = _entityTypes.at(typeName);
   } catch (std::exception &e) {
@@ -61,6 +66,10 @@ int				EntityManager::createEntity(const std::string &typeName)
 	  _entities[id] = eState::USED;
 	  _typeOfEntities[id] = typeMask;
 	  _messageBus.post(MessageBus::ENTITY_CREATED, new int(id));
+	  va_list args;
+	  va_start(args, typeName);
+	  _entityInitialisers.at(typeName)(*this, id, args);
+	  va_end(args);
 	  return id;
 	}
     }

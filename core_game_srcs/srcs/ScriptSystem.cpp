@@ -6,7 +6,7 @@ const std::string	ScriptSystem::name = "ScriptSystem";
 ScriptSystem::ScriptSystem(EntityManager &entityManager, MessageBus &messageBus)
   : ASystem(entityManager, messageBus)
 {
-
+  _entityManager.createEntity("MonsterSpawnScript");
 }
 
 void			ScriptSystem::updateEntity(int entityId)

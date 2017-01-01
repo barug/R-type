@@ -73,6 +73,7 @@ void            GuiSystem::updateEntity(int entityId)
 
       if (spriteComponent->isAnimated())
         {
+	  try {
           auto it = _animationHandler.find(spriteComponent->getEntityName());
           if (it != _animationHandler.end())
             {
@@ -80,6 +81,11 @@ void            GuiSystem::updateEntity(int entityId)
                                          positionComponent->getX() - (spriteComponent->getWidth() / 2),
                                          positionComponent->getY() - (spriteComponent->getHeight() / 2));
             }
+	  }
+	  catch (std::exception &e)
+	    {
+	      std::cout << "gui exception: " << e.what() << std::endl;
+	    }
         }
       else
         {
