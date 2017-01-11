@@ -11,6 +11,7 @@
 #include "ScriptComponent.hpp"
 #include "BasicMonsterScript.hpp"
 #include "MonsterSpawnScript.hpp"
+#include "strafingMonsterScript.hpp"
 #include <iostream>
 
 void		initializePlayerShip(EntityManager &entityManager,
@@ -19,7 +20,9 @@ void		initializePlayerShip(EntityManager &entityManager,
 void		initializeBasicMonster(EntityManager &entityManager,
 				       int entityId,
 				       va_list args);
-
+void		initializeBasicProjectile(EntityManager &entityManager,
+					  int entityId,
+					  va_list args);
 void		initializeBasicProjectile(EntityManager &entityManager,
 					  int entityId,
 					  va_list args);

@@ -44,6 +44,46 @@ void	initializePlayerShip(EntityManager &entityManager,
 
 }
 			     
+void			initializeStrafingMonster(EntityManager &entityManager,
+						  int entityId,
+						  va_list args)
+{
+  SpriteComponent *spriteComp =
+    static_cast<SpriteComponent*>(entityManager.getComponent(entityId,
+  							      SpriteComponent::name));
+  PositionComponent *positionComp =
+    static_cast<PositionComponent*>(entityManager.getComponent(entityId,
+        							PositionComponent::name));
+  HitBoxComponent *hitBoxComp =
+    static_cast<HitBoxComponent*>(entityManager.getComponent(entityId,
+  							      HitBoxComponent::name));
+  HealthComponent *healthComp =
+    static_cast<HealthComponent*>(entityManager.getComponent(entityId,
+							      HealthComponent::name));
+  PhysicComponent *physComp =
+    static_cast<PhysicComponent*>(entityManager.getComponent(entityId,
+  							      PhysicComponent::name));
+  ScriptComponent *scriptComp =
+    static_cast<ScriptComponent*>(entityManager.getComponent(entityId,
+  							      ScriptComponent::name));
+  int	x = va_arg(args, int);
+  int	y = va_arg(args, int);
+  float	speedY = va_arg(args, int);
+  spriteComp->setPathAnimated("./assets/sprites/r-typesheet17.png");
+  spriteComp->setEntityName("BasicMonster");
+  spriteComp->setFrames({66, 0, 61, 132}, 8);
+  positionComp->setX(x);
+  positionComp->setY(y);
+  physComp->setSpeedX(-2);
+  physComp->setSpeedY(speedY);
+  physComp->setCanLeaveScreen(true);
+  hitBoxComp->setCircleRadius(30);
+  healthComp->setHealth(1);
+  healthComp->setDamagePower(-1);
+  healthComp->setFaction(HealthComponent::Faction::ENEMIES);
+  scriptComp->setScript(new StrafingMonsterScript(entityManager, entityId));  
+}
+
 void			initializeBasicMonster(EntityManager &entityManager,
 					       int entityId,
 					       va_list args)
@@ -77,12 +117,13 @@ void			initializeBasicMonster(EntityManager &entityManager,
   physComp->setSpeedX(-2);
   physComp->setSpeedY(speedY);
   physComp->setCanLeaveScreen(true);
-  hitBoxComp->setCircleRadius(20);
+  hitBoxComp->setCircleRadius(30);
   healthComp->setHealth(1);
   healthComp->setDamagePower(-1);
   healthComp->setFaction(HealthComponent::Faction::ENEMIES);
   scriptComp->setScript(new BasicMonsterScript(entityManager, entityId));  
 }
+
 
 void		initializeBasicProjectile(EntityManager &entityManager,
 					  int entityId,
@@ -106,6 +147,7 @@ void		initializeBasicProjectile(EntityManager &entityManager,
   int	x = va_arg(args, int);
   int	y = va_arg(args, int);
   float	speedX = va_arg(args, int);
+  float	speedY = va_arg(args, int);
   unsigned int *frameArray = va_arg(args, unsigned int*);
   std::vector<unsigned int> rec;
   rec.assign(frameArray, frameArray + 4);
@@ -116,7 +158,7 @@ void		initializeBasicProjectile(EntityManager &entityManager,
   projectilePosComp->setX(x);
   projectilePosComp->setY(y);
   projectilePhysComp->setSpeedX(speedX);
-  projectilePhysComp->setSpeedY(0);
+  projectilePhysComp->setSpeedY(speedY);
   projectilePhysComp->setCanLeaveScreen(true);
   projectileHitBoxComp->setCircleRadius(10);
   projectileSpriteComp->setPathAnimated(spritePath);
