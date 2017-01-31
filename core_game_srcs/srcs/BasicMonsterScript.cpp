@@ -33,6 +33,7 @@ void		BasicMonsterScript::operator()()
 				  posComp->getX() - 20,
 				  posComp->getY(),
 				  -10,
+				  0,
 				  std::vector<unsigned int>({208/12,
 					0,
 					208/12,

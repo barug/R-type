@@ -53,6 +53,14 @@ void	loadGameLibData(EntityManager &e, SystemManager &s, MessageBus &m)
 		      HealthComponent::name,
 		      ScriptComponent::name},
 		  initializeBasicMonster);
+  e.addEntityType("StrafingMonster",
+		  {PositionComponent::name,
+		      PhysicComponent::name,
+		      SpriteComponent::name,
+		      HitBoxComponent::name,
+		      HealthComponent::name,
+		      ScriptComponent::name},
+		  initializeStrafingMonster);
   e.addEntityType("basicProjectile",
 		  {PositionComponent::name,
 		      PhysicComponent::name,

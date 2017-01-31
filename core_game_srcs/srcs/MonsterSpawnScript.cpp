@@ -24,23 +24,23 @@ void		MonsterSpawnScript::operator()()
 	_lastSpawn = now;
 	int yValue = _yValueDistribution(_mt);
 	int monsterType = _monsterTypeDistribution(_mt);
-	_entityManager.createEntity("BasicMonster",
-				    1199,
-				    yValue,
-				    -2);
+	// _entityManager.createEntity("BasicMonster",
+	// 			    1199,
+	// 			    yValue,
+	// 			    -2);
 
-	// switch (monsterType)
-	//   {
-	//   case 1:
-	//     _entityManager.createEntity("BasicMonster",
-	// 				1199,
-	// 				yValue,
-	// 				-2,
-	// 				0);
-	//     break;
-	//   case 2:
-	//     _entityManager.createEntity("BasicMonster", 1199, yValue, -2, 0);
-	//     break;
-	//   }
+	switch (monsterType)
+	  {
+	  case 1:
+	    _entityManager.createEntity("BasicMonster",
+					1199,
+					yValue,
+					-2,
+					0);
+	    break;
+	  case 2:
+	    _entityManager.createEntity("StrafingMonster", 1199, yValue, -2, 0);
+	    break;
+	  }
       }
 }

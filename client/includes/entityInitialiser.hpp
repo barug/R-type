@@ -20,6 +20,9 @@ void		initializePlayerShip(EntityManager &entityManager,
 void		initializeBasicMonster(EntityManager &entityManager,
 				       int entityId,
 				       va_list args);
+void		initializeStrafingMonster(EntityManager &entityManager,
+					  int entityId,
+					  va_list args);
 void		initializeBasicProjectile(EntityManager &entityManager,
 					  int entityId,
 					  va_list args);
